@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Home Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Noto Sans TC',sans-serif;
+}
+
+
+body{
+background:#f5f7fb;
+}
+
+
+.container{
+width:1200px;
+margin:auto;
+padding:40px;
+}
+
+
+
+.header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+
+}
+
+
+.header p{
+color:#666;
+}
+
+
+
+.editBtn{
+
+padding:12px 20px;
+border:none;
+background:white;
+border-radius:20px;
+cursor:pointer;
+box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+}
+
+
+
+.summary{
+
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+margin-bottom:30px;
+
+}
+
+
+
+.infoCard{
+
+background:white;
+padding:20px;
+border-radius:18px;
+
+display:flex;
+align-items:center;
+gap:15px;
+
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+
+
+.infoCard i{
+
+font-size:26px;
+color:#2d6cff;
+
+}
+
+
+
+.tabs{
+
+display:flex;
+gap:15px;
+margin-bottom:25px;
+
+}
+
+
+
+.tabs button{
+
+padding:10px 25px;
+border:none;
+border-radius:20px;
+background:white;
+cursor:pointer;
+
+}
+
+
+.tabs .active{
+
+background:#2d6cff;
+color:white;
+
+}
+
+
+
+.deviceGrid{
+
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+
+}
+
+
+
+.device{
+
+background:white;
+height:130px;
+
+border-radius:20px;
+
+padding:20px;
+
+cursor:pointer;
+
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+transition:.3s;
+
+}
+
+
+
+.device:hover{
+
+transform:translateY(-5px);
+
+}
+
+
+
+.device.active{
+
+background:#2d6cff;
+color:white;
+
+}
+
+
+.device i{
+
+font-size:28px;
+margin-bottom:15px;
+
+}
+
+
+
+.device span{
+
+color:#888;
+
+}
+
+
+.device.active span{
+
+color:white;
+
+}
+
+
+
+.sliderCard{
+
+margin-top:40px;
+
+background:white;
+
+padding:25px;
+
+border-radius:20px;
+
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+
+
+.sliderTitle{
+
+display:flex;
+justify-content:space-between;
+margin-bottom:20px;
+
+}
+
+
+
+input[type=range]{
+
+width:100%;
+
+}
+
+
+
+.status{
+
+margin-top:20px;
+padding:15px;
+background:white;
+border-radius:15px;
+
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="header">
+
+<div>
+
+<h1>居家智慧控制</h1>
+
+<p>Smart Home Dashboard</p>
+
+</div>
+
+
+<button class="editBtn">
+
+<i class="fa-solid fa-sliders"></i>
+
+編輯模式
+
+</button>
+
+</div>
+
+
+
+
+<div class="summary">
+
+
+<div class="infoCard">
+
+<i class="fa-solid fa-temperature-three-quarters"></i>
+
+<div>
+
+<small>室內溫度</small>
+
+<h2 id="temp">--°C</h2>
+
+</div>
+
+</div>
+
+
+
+
+<div class="infoCard">
+
+<i class="fa-solid fa-droplet"></i>
+
+<div>
+
+<small>濕度</small>
+
+<h2 id="humi">--%</h2>
+
+</div>
+
+</div>
+
+
+
+
+<div class="infoCard">
+
+<i class="fa-solid fa-bolt"></i>
+
+<div>
+
+<small>功率</small>
+
+<h2 id="power">--W</h2>
+
+</div>
+
+</div>
+
+
+
+
+<div class="infoCard">
+
+<i class="fa-solid fa-lightbulb"></i>
+
+<div>
+
+<small>Relay狀態</small>
+
+<h2 id="relay">--</h2>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<h3>6 個裝置</h3>
+
+
+<div class="deviceGrid">
+
+
+<div class="device active" id="ac">
+
+<i class="fa-solid fa-wind"></i>
+
+<h2>冷氣</h2>
+
+<span>ac</span>
+
+</div>
+
+
+
+<div class="device" id="blind">
+
+<i class="fa-solid fa-bars"></i>
+
+<h2>窗簾</h2>
+
+<span>blinds</span>
+
+</div>
+
+
+
+<div class="device" id="light">
+
+<i class="fa-regular fa-lightbulb"></i>
+
+<h2>主燈</h2>
+
+<span>light</span>
+
+</div>
+
+
+
+<div class="device">
+
+<i class="fa-solid fa-tv"></i>
+
+<h2>電視</h2>
+
+<span>tv</span>
+
+</div>
+
+
+
+<div class="device">
+
+<i class="fa-solid fa-fan"></i>
+
+<h2>風扇</h2>
+
+<span>fan</span>
+
+</div>
+
+
+
+
+<div class="device" id="lock">
+
+<i class="fa-solid fa-lock"></i>
+
+<h2>大門鎖</h2>
+
+<span>lock</span>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="sliderCard">
+
+
+<div class="sliderTitle">
+
+<h2>冷氣溫度設定</h2>
+
+<h2 id="tempValue">26°C</h2>
+
+
+</div>
+
+
+<input 
+type="range"
+min="16"
+max="30"
+value="26"
+id="slider">
+
+
+</div>
+
+
+
+<div class="status">
+
+<h3>ESP32 狀態</h3>
+
+<p id="deviceID">設備：--</p>
+
+<p id="voltage">電壓：--</p>
+
+<p id="current">電流：--</p>
+
+<p id="time">更新時間：--</p>
+
+<p id="alert">狀態：--</p>
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+const API="https://ascent-disperser-groove.ngrok-free.dev/api/latest-data";
+
+
+
+async function getData(){
+
+
+try{
+
+
+let res = await fetch(API, {
+    method: "GET",
+    headers: {
+        "ngrok-skip-browser-warning": "true"
+    }
+});
+
+
+let json=await res.json();
+
+
+
+if(json.success){
+
+
+let d=json.data;
+
+
+
+document.getElementById("temp").innerHTML=d.temp+"°C";
+
+
+document.getElementById("humi").innerHTML=d.humi+"%";
+
+
+document.getElementById("power").innerHTML=d.power+"W";
+
+
+document.getElementById("relay").innerHTML=d.relay;
+
+
+
+document.getElementById("deviceID").innerHTML=
+"設備："+d.id;
+
+
+document.getElementById("voltage").innerHTML=
+"電壓："+d.voltage+"V";
+
+
+document.getElementById("current").innerHTML=
+"電流："+d.current+"A";
+
+
+document.getElementById("time").innerHTML=
+"更新時間："+d.time;
+
+
+document.getElementById("alert").innerHTML=
+"狀態："+d.alert;
+
+
+
+// Relay同步燈光
+
+let light=document.getElementById("light");
+
+
+if(d.relay==="ON"){
+
+light.classList.add("active");
+
+}else{
+
+light.classList.remove("active");
+
+}
+
+
+
+// 門鎖同步
+
+let lock=document.getElementById("lock");
+
+
+if(d.lock){
+
+lock.classList.add("active");
+
+}else{
+
+lock.classList.remove("active");
+
+}
+
+
+
+}
+
+
+}catch(e){
+
+
+document.getElementById("alert").innerHTML=
+"API連線失敗";
+
+
+console.log(e);
+
+
+}
+
+
+}
+
+
+
+
+
+// 每5秒更新
+
+getData();
+
+setInterval(getData,5000);
+
+
+
+
+
+// 溫度滑桿
+
+
+const slider=document.getElementById("slider");
+
+const tempValue=document.getElementById("tempValue");
+
+
+slider.oninput=function(){
+
+tempValue.innerHTML=this.value+"°C";
+
+}
+
+
+
+</script>
+
+
+
+</body>
+</html>
