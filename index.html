@@ -1,647 +1,1053 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Smart Home Dashboard</title>
+<title>SMARTCTRL Dashboard</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
 
-
 <style>
-
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Noto Sans TC',sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Noto Sans TC',sans-serif;
 }
-
 
 body{
-background:#f5f7fb;
+    background:#f5f7fb;
+    color:#1d2939;
 }
 
+/* ===== 上方導覽列 ===== */
+.topNav{
+    width:100%;
+    min-height:64px;
+    background:#fff;
+    border-bottom:1px solid #e8ecf2;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 max(30px, calc((100% - 1200px) / 2));
+    position:sticky;
+    top:0;
+    z-index:100;
+}
 
+.logo{
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    color:#101828;
+}
+
+.navMenu{
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+.navButton{
+    border:none;
+    background:transparent;
+    color:#667085;
+    border-radius:22px;
+    padding:10px 16px;
+    cursor:pointer;
+    transition:.25s;
+    font-size:14px;
+}
+
+.navButton i{
+    margin-right:6px;
+}
+
+.navButton:hover{
+    background:#edf3ff;
+    color:#2d6cff;
+}
+
+.navButton.active{
+    background:#2d6cff;
+    color:#fff;
+}
+
+/* ===== 頁面切換 ===== */
+.page{
+    display:none;
+}
+
+.page.activePage{
+    display:block;
+}
+
+/* ===== 原本居家頁面 ===== */
 .container{
-width:1200px;
-margin:auto;
-padding:40px;
+    width:1200px;
+    margin:auto;
+    padding:40px;
 }
-
-
 
 .header{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:30px;
-
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
 }
-
 
 .header p{
-color:#666;
+    color:#666;
 }
-
-
 
 .editBtn{
-
-padding:12px 20px;
-border:none;
-background:white;
-border-radius:20px;
-cursor:pointer;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
-
+    padding:12px 20px;
+    border:none;
+    background:white;
+    border-radius:20px;
+    cursor:pointer;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
-
-
 
 .summary{
-
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:20px;
-margin-bottom:30px;
-
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:30px;
 }
-
-
 
 .infoCard{
-
-background:white;
-padding:20px;
-border-radius:18px;
-
-display:flex;
-align-items:center;
-gap:15px;
-
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
 }
-
-
 
 .infoCard i{
-
-font-size:26px;
-color:#2d6cff;
-
+    font-size:26px;
+    color:#2d6cff;
 }
-
-
 
 .tabs{
-
-display:flex;
-gap:15px;
-margin-bottom:25px;
-
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
 }
-
-
 
 .tabs button{
-
-padding:10px 25px;
-border:none;
-border-radius:20px;
-background:white;
-cursor:pointer;
-
+    padding:10px 25px;
+    border:none;
+    border-radius:20px;
+    background:white;
+    cursor:pointer;
 }
-
 
 .tabs .active{
-
-background:#2d6cff;
-color:white;
-
+    background:#2d6cff;
+    color:white;
 }
-
-
 
 .deviceGrid{
-
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:20px;
-
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
 }
-
-
 
 .device{
-
-background:white;
-height:130px;
-
-border-radius:20px;
-
-padding:20px;
-
-cursor:pointer;
-
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-
-transition:.3s;
-
+    background:white;
+    height:130px;
+    border-radius:20px;
+    padding:20px;
+    cursor:pointer;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    transition:.3s;
 }
-
-
 
 .device:hover{
-
-transform:translateY(-5px);
-
+    transform:translateY(-5px);
 }
-
-
 
 .device.active{
-
-background:#2d6cff;
-color:white;
-
+    background:#2d6cff;
+    color:white;
 }
-
 
 .device i{
-
-font-size:28px;
-margin-bottom:15px;
-
+    font-size:28px;
+    margin-bottom:15px;
 }
-
-
 
 .device span{
-
-color:#888;
-
+    color:#888;
 }
-
 
 .device.active span{
-
-color:white;
-
+    color:white;
 }
-
-
 
 .sliderCard{
-
-margin-top:40px;
-
-background:white;
-
-padding:25px;
-
-border-radius:20px;
-
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-
+    margin-top:40px;
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
 }
-
-
 
 .sliderTitle{
-
-display:flex;
-justify-content:space-between;
-margin-bottom:20px;
-
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
 }
-
-
 
 input[type=range]{
-
-width:100%;
-
+    width:100%;
+    accent-color:#2d6cff;
 }
-
-
 
 .status{
-
-margin-top:20px;
-padding:15px;
-background:white;
-border-radius:15px;
-
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-
+    margin-top:20px;
+    padding:15px;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    line-height:1.8;
 }
 
+/* ===== 醫院病房 ===== */
+.hospitalContainer{
+    width:970px;
+    max-width:94%;
+    margin:0 auto;
+    padding:36px 0 55px;
+}
 
+.hospitalHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.hospitalHeader h1{
+    font-size:25px;
+}
+
+.hospitalHeader p{
+    color:#7a8493;
+    font-size:13px;
+    margin-top:2px;
+}
+
+.hospitalActions{
+    display:flex;
+    gap:10px;
+}
+
+.hospitalAction{
+    border:none;
+    background:#fff;
+    padding:10px 16px;
+    border-radius:20px;
+    color:#667085;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.roomTabs{
+    display:flex;
+    gap:9px;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+}
+
+.roomButton{
+    border:none;
+    padding:9px 18px;
+    border-radius:18px;
+    background:#e8edf4;
+    color:#667085;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.roomButton.active{
+    background:#2d6cff;
+    color:white;
+}
+
+.healthGrid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+    margin-bottom:25px;
+}
+
+.healthCard{
+    background:#fff;
+    min-height:160px;
+    border:1px solid #e1e6ed;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.04);
+}
+
+.healthTop{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:17px;
+}
+
+.healthIcon{
+    width:35px;
+    height:35px;
+    border-radius:11px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.healthStatus{
+    font-size:11px;
+    font-weight:600;
+    padding:4px 9px;
+    border-radius:12px;
+}
+
+.healthValue{
+    font-size:28px;
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.healthValue small{
+    font-size:11px;
+    font-weight:400;
+    color:#7c8797;
+}
+
+.healthCard h4{
+    margin-top:5px;
+    font-size:13px;
+    color:#596273;
+    font-weight:500;
+}
+
+.healthEnglish{
+    font-size:10px;
+    color:#a0a8b4;
+    margin-top:2px;
+}
+
+.heart .healthIcon,
+.heart .healthStatus{
+    background:#ffe8eb;
+    color:#ff4f63;
+}
+.heart .healthValue{ color:#ff4f57; }
+
+.pressure .healthIcon,
+.pressure .healthStatus{
+    background:#e6efff;
+    color:#3478f6;
+}
+.pressure .healthValue{ color:#3478f6; }
+
+.oxygen .healthIcon,
+.oxygen .healthStatus{
+    background:#dff8fa;
+    color:#00aebd;
+}
+.oxygen .healthValue{ color:#00aebd; }
+
+.patientTemp .healthIcon,
+.patientTemp .healthStatus{
+    background:#fff0dd;
+    color:#f97316;
+}
+.patientTemp .healthValue{ color:#f97316; }
+
+.respiration .healthIcon,
+.respiration .healthStatus{
+    background:#f1e7ff;
+    color:#9847e8;
+}
+.respiration .healthValue{ color:#9847e8; }
+
+.environmentCard{
+    background:#fff;
+    border:1px solid #e1e6ed;
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 3px 12px rgba(0,0,0,.04);
+}
+
+.environmentTitle{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.environmentIcon{
+    width:36px;
+    height:36px;
+    border-radius:11px;
+    background:#e8efff;
+    color:#2d6cff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.environmentTitle h3{
+    font-size:15px;
+}
+
+.environmentTitle p{
+    font-size:10px;
+    color:#a0a8b4;
+}
+
+.hospitalTempControl{
+    padding-bottom:20px;
+    border-bottom:1px solid #e7eaf0;
+}
+
+.hospitalTempTitle{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.hospitalTempTitle strong{
+    font-size:14px;
+}
+
+.hospitalTempTitle i{
+    color:#2d6cff;
+    margin-right:8px;
+}
+
+.hospitalTempValue{
+    color:#2d6cff;
+    font-weight:700;
+}
+
+.controlRow{
+    min-height:52px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #e7eaf0;
+}
+
+.controlRow:last-child{
+    border-bottom:none;
+}
+
+.controlName{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:14px;
+    font-weight:500;
+}
+
+.controlName i{
+    width:17px;
+    color:#10b981;
+}
+
+.controlName i.inactiveIcon{
+    color:#b8c0cb;
+}
+
+.switch{
+    position:relative;
+    display:inline-block;
+    width:44px;
+    height:24px;
+}
+
+.switch input{
+    display:none;
+}
+
+.switchSlider{
+    position:absolute;
+    cursor:pointer;
+    inset:0;
+    background:#dfe4ea;
+    border-radius:30px;
+    transition:.25s;
+}
+
+.switchSlider:before{
+    content:"";
+    position:absolute;
+    width:18px;
+    height:18px;
+    top:3px;
+    left:3px;
+    background:#fff;
+    border-radius:50%;
+    transition:.25s;
+    box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+
+.switch input:checked + .switchSlider{
+    background:#10b981;
+}
+
+.switch input:checked + .switchSlider:before{
+    transform:translateX(20px);
+}
+
+.demoNote{
+    margin-top:14px;
+    color:#98a2b3;
+    font-size:11px;
+}
+
+@media(max-width:1000px){
+    .container{
+        width:100%;
+        padding:25px;
+    }
+
+    .summary{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .healthGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:650px){
+    .topNav{
+        position:static;
+        padding:14px;
+        flex-direction:column;
+        gap:12px;
+    }
+
+    .navMenu{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+    .header,
+    .hospitalHeader{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .summary,
+    .deviceGrid,
+    .healthGrid{
+        grid-template-columns:1fr;
+    }
+}
 </style>
-
 </head>
-
 
 <body>
 
+<!-- 上方導覽列 -->
+<div class="topNav">
+    <div class="logo">SMARTCTRL</div>
 
-<div class="container">
+    <div class="navMenu">
+        <button id="homeNav" class="navButton active" onclick="showPage('home')">
+            <i class="fa-solid fa-house"></i>居家控制
+        </button>
 
-
-<div class="header">
-
-<div>
-
-<h1>居家智慧控制</h1>
-
-<p>Smart Home Dashboard</p>
-
+        <button id="hospitalNav" class="navButton" onclick="showPage('hospital')">
+            <i class="fa-solid fa-hospital"></i>醫院病房
+        </button>
+    </div>
 </div>
 
+<!-- ================= 居家控制 ================= -->
+<div id="homePage" class="page activePage">
+    <div class="container">
 
-<button class="editBtn">
+        <div class="header">
+            <div>
+                <h1>居家智慧控制</h1>
+                <p>Smart Home Dashboard</p>
+            </div>
 
-<i class="fa-solid fa-sliders"></i>
+            <button class="editBtn">
+                <i class="fa-solid fa-sliders"></i>
+                編輯模式
+            </button>
+        </div>
 
-編輯模式
+        <div class="summary">
 
-</button>
+            <div class="infoCard">
+                <i class="fa-solid fa-temperature-three-quarters"></i>
+                <div>
+                    <small>室內溫度</small>
+                    <h2 id="temp">--°C</h2>
+                </div>
+            </div>
 
+            <div class="infoCard">
+                <i class="fa-solid fa-droplet"></i>
+                <div>
+                    <small>濕度</small>
+                    <h2 id="humi">--%</h2>
+                </div>
+            </div>
+
+            <div class="infoCard">
+                <i class="fa-solid fa-bolt"></i>
+                <div>
+                    <small>功率</small>
+                    <h2 id="power">--W</h2>
+                </div>
+            </div>
+
+            <div class="infoCard">
+                <i class="fa-solid fa-lightbulb"></i>
+                <div>
+                    <small>Relay狀態</small>
+                    <h2 id="relay">--</h2>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="tabs">
+            <button class="active">客廳</button>
+            <button>臥室</button>
+            <button>+ 新增房間</button>
+        </div>
+
+        <h3>6 個裝置</h3>
+
+        <div class="deviceGrid">
+
+            <div class="device active" id="ac">
+                <i class="fa-solid fa-wind"></i>
+                <h2>冷氣</h2>
+                <span>ac</span>
+            </div>
+
+            <div class="device" id="blind">
+                <i class="fa-solid fa-bars"></i>
+                <h2>窗簾</h2>
+                <span>blinds</span>
+            </div>
+
+            <div class="device" id="light">
+                <i class="fa-regular fa-lightbulb"></i>
+                <h2>主燈</h2>
+                <span>light</span>
+            </div>
+
+            <div class="device">
+                <i class="fa-solid fa-tv"></i>
+                <h2>電視</h2>
+                <span>tv</span>
+            </div>
+
+            <div class="device">
+                <i class="fa-solid fa-fan"></i>
+                <h2>風扇</h2>
+                <span>fan</span>
+            </div>
+
+            <div class="device" id="lock">
+                <i class="fa-solid fa-lock"></i>
+                <h2>大門鎖</h2>
+                <span>lock</span>
+            </div>
+
+        </div>
+
+        <div class="sliderCard">
+            <div class="sliderTitle">
+                <h2>冷氣溫度設定</h2>
+                <h2 id="tempValue">26°C</h2>
+            </div>
+
+            <input
+                type="range"
+                min="16"
+                max="30"
+                value="26"
+                id="slider">
+        </div>
+
+        <div class="status">
+            <h3>ESP32 狀態</h3>
+            <p id="deviceID">設備：--</p>
+            <p id="voltage">電壓：--</p>
+            <p id="current">電流：--</p>
+            <p id="powerStatus">功率：--</p>
+            <p id="time">更新時間：--</p>
+            <p id="alert">狀態：--</p>
+        </div>
+
+    </div>
 </div>
 
+<!-- ================= 醫院病房 ================= -->
+<div id="hospitalPage" class="page">
+    <div class="hospitalContainer">
 
+        <div class="hospitalHeader">
+            <div>
+                <h1>醫院病房監控</h1>
+                <p>Hospital Ward Dashboard</p>
+            </div>
 
+            <div class="hospitalActions">
+                <button class="hospitalAction">
+                    <i class="fa-solid fa-sliders"></i>
+                    編輯模式
+                </button>
 
-<div class="summary">
+                <button class="hospitalAction" onclick="callNurse()">
+                    <i class="fa-regular fa-bell"></i>
+                    呼叫護士
+                </button>
+            </div>
+        </div>
 
+        <div class="roomTabs">
+            <button class="roomButton active" onclick="changeRoom(this,'201')">201 號病房</button>
+            <button class="roomButton" onclick="changeRoom(this,'202')">202 號病房</button>
+            <button class="roomButton" onclick="changeRoom(this,'203')">203 號病房</button>
+            <button class="roomButton" onclick="addRoom()">＋ 新增病房</button>
+        </div>
 
-<div class="infoCard">
+        <div class="healthGrid">
 
-<i class="fa-solid fa-temperature-three-quarters"></i>
+            <div class="healthCard heart">
+                <div class="healthTop">
+                    <div class="healthIcon"><i class="fa-regular fa-heart"></i></div>
+                    <div class="healthStatus">正常</div>
+                </div>
+                <div class="healthValue">
+                    <span id="heartRate">72</span>
+                    <small>bpm</small>
+                </div>
+                <h4>心率</h4>
+                <div class="healthEnglish">Heart Rate</div>
+            </div>
 
-<div>
+            <div class="healthCard pressure">
+                <div class="healthTop">
+                    <div class="healthIcon"><i class="fa-solid fa-wave-square"></i></div>
+                    <div class="healthStatus">正常</div>
+                </div>
+                <div class="healthValue">
+                    <span id="bloodPressure">116/75</span>
+                    <small>mmHg</small>
+                </div>
+                <h4>血壓</h4>
+                <div class="healthEnglish">Blood Pressure</div>
+            </div>
 
-<small>室內溫度</small>
+            <div class="healthCard oxygen">
+                <div class="healthTop">
+                    <div class="healthIcon"><i class="fa-solid fa-droplet"></i></div>
+                    <div class="healthStatus">正常</div>
+                </div>
+                <div class="healthValue">
+                    <span id="oxygen">98.2</span>
+                    <small>%</small>
+                </div>
+                <h4>血氧</h4>
+                <div class="healthEnglish">SpO₂</div>
+            </div>
 
-<h2 id="temp">--°C</h2>
+            <div class="healthCard patientTemp">
+                <div class="healthTop">
+                    <div class="healthIcon"><i class="fa-solid fa-temperature-three-quarters"></i></div>
+                    <div class="healthStatus">正常</div>
+                </div>
+                <div class="healthValue">
+                    <span id="bodyTemperature">36.7</span>
+                    <small>°C</small>
+                </div>
+                <h4>體溫</h4>
+                <div class="healthEnglish">Temperature</div>
+            </div>
 
+            <div class="healthCard respiration">
+                <div class="healthTop">
+                    <div class="healthIcon"><i class="fa-solid fa-wind"></i></div>
+                    <div class="healthStatus">正常</div>
+                </div>
+                <div class="healthValue">
+                    <span id="respRate">16</span>
+                    <small>/min</small>
+                </div>
+                <h4>呼吸率</h4>
+                <div class="healthEnglish">Resp. Rate</div>
+            </div>
+
+        </div>
+
+        <div class="environmentCard">
+
+            <div class="environmentTitle">
+                <div class="environmentIcon">
+                    <i class="fa-solid fa-wind"></i>
+                </div>
+                <div>
+                    <h3>環境控制</h3>
+                    <p>Room Environment</p>
+                </div>
+            </div>
+
+            <div class="hospitalTempControl">
+                <div class="hospitalTempTitle">
+                    <strong>
+                        <i class="fa-solid fa-wind"></i>
+                        冷氣溫度
+                    </strong>
+                    <span id="hospitalTempValue" class="hospitalTempValue">24°C</span>
+                </div>
+
+                <input
+                    type="range"
+                    min="16"
+                    max="30"
+                    value="24"
+                    id="hospitalTemperatureSlider">
+            </div>
+
+            <div class="controlRow">
+                <div class="controlName">
+                    <i class="fa-solid fa-wind"></i>
+                    冷氣電源
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="switchSlider"></span>
+                </label>
+            </div>
+
+            <div class="controlRow">
+                <div class="controlName">
+                    <i class="fa-solid fa-bars inactiveIcon"></i>
+                    窗簾
+                </div>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="switchSlider"></span>
+                </label>
+            </div>
+
+            <div class="controlRow">
+                <div class="controlName">
+                    <i class="fa-regular fa-lightbulb"></i>
+                    主燈
+                </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="switchSlider"></span>
+                </label>
+            </div>
+
+            <div class="controlRow">
+                <div class="controlName">
+                    <i class="fa-solid fa-shield-halved inactiveIcon"></i>
+                    病房隔離模式
+                </div>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="switchSlider"></span>
+                </label>
+            </div>
+
+            <div class="demoNote">
+                ※ 目前醫療數值與病房控制為介面示範資料，尚未連接醫療設備 API。
+            </div>
+
+        </div>
+    </div>
 </div>
-
-</div>
-
-
-
-
-<div class="infoCard">
-
-<i class="fa-solid fa-droplet"></i>
-
-<div>
-
-<small>濕度</small>
-
-<h2 id="humi">--%</h2>
-
-</div>
-
-</div>
-
-
-
-
-<div class="infoCard">
-
-<i class="fa-solid fa-bolt"></i>
-
-<div>
-
-<small>功率</small>
-
-<h2 id="power">--W</h2>
-
-</div>
-
-</div>
-
-
-
-
-<div class="infoCard">
-
-<i class="fa-solid fa-lightbulb"></i>
-
-<div>
-
-<small>Relay狀態</small>
-
-<h2 id="relay">--</h2>
-
-</div>
-
-</div>
-
-
-</div>
-
-
-
-
-
-<h3>6 個裝置</h3>
-
-
-<div class="deviceGrid">
-
-
-<div class="device active" id="ac">
-
-<i class="fa-solid fa-wind"></i>
-
-<h2>冷氣</h2>
-
-<span>ac</span>
-
-</div>
-
-
-
-<div class="device" id="blind">
-
-<i class="fa-solid fa-bars"></i>
-
-<h2>窗簾</h2>
-
-<span>blinds</span>
-
-</div>
-
-
-
-<div class="device" id="light">
-
-<i class="fa-regular fa-lightbulb"></i>
-
-<h2>主燈</h2>
-
-<span>light</span>
-
-</div>
-
-
-
-<div class="device">
-
-<i class="fa-solid fa-tv"></i>
-
-<h2>電視</h2>
-
-<span>tv</span>
-
-</div>
-
-
-
-<div class="device">
-
-<i class="fa-solid fa-fan"></i>
-
-<h2>風扇</h2>
-
-<span>fan</span>
-
-</div>
-
-
-
-
-<div class="device" id="lock">
-
-<i class="fa-solid fa-lock"></i>
-
-<h2>大門鎖</h2>
-
-<span>lock</span>
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<div class="sliderCard">
-
-
-<div class="sliderTitle">
-
-<h2>冷氣溫度設定</h2>
-
-<h2 id="tempValue">26°C</h2>
-
-
-</div>
-
-
-<input 
-type="range"
-min="16"
-max="30"
-value="26"
-id="slider">
-
-
-</div>
-
-
-
-<div class="status">
-
-<h3>ESP32 狀態</h3>
-
-<p id="deviceID">設備：--</p>
-
-<p id="voltage">電壓：--</p>
-
-<p id="current">電流：--</p>
-
-<p id="time">更新時間：--</p>
-
-<p id="alert">狀態：--</p>
-
-</div>
-
-
-
-
-</div>
-
-
-
-
 
 <script>
+/* ===== 同一個 index.html 裡切換居家 / 醫院 ===== */
+function showPage(page){
+    const homePage = document.getElementById("homePage");
+    const hospitalPage = document.getElementById("hospitalPage");
+    const homeNav = document.getElementById("homeNav");
+    const hospitalNav = document.getElementById("hospitalNav");
 
+    if(page === "hospital"){
+        homePage.classList.remove("activePage");
+        hospitalPage.classList.add("activePage");
+        homeNav.classList.remove("active");
+        hospitalNav.classList.add("active");
+    }else{
+        hospitalPage.classList.remove("activePage");
+        homePage.classList.add("activePage");
+        hospitalNav.classList.remove("active");
+        homeNav.classList.add("active");
+    }
+}
 
+/* ===== 原本的 ESP32 API ===== */
 const API="https://ascent-disperser-groove.ngrok-free.dev/api/latest-data";
 
-
-
 async function getData(){
+    try{
+        let res = await fetch(API,{
+            method:"GET",
+            headers:{
+                "ngrok-skip-browser-warning":"true"
+            }
+        });
 
+        if(!res.ok){
+            throw new Error("HTTP " + res.status);
+        }
 
-try{
+        let json=await res.json();
 
+        if(json.success){
+            let d=json.data;
 
-let res = await fetch(API, {
-    method: "GET",
-    headers: {
-        "ngrok-skip-browser-warning": "true"
+            document.getElementById("temp").innerHTML=d.temp+"°C";
+            document.getElementById("humi").innerHTML=d.humi+"%";
+            document.getElementById("power").innerHTML=d.power+"W";
+            document.getElementById("relay").innerHTML=d.relay;
+
+            document.getElementById("deviceID").innerHTML=
+            "設備："+d.id;
+
+            document.getElementById("voltage").innerHTML=
+            "電壓："+d.voltage+"V";
+
+            document.getElementById("current").innerHTML=
+            "電流："+d.current+"A";
+
+            document.getElementById("powerStatus").innerHTML=
+            "功率："+d.power+"W";
+
+            document.getElementById("time").innerHTML=
+            "更新時間："+d.time;
+
+            document.getElementById("alert").innerHTML=
+            "狀態："+d.alert;
+
+            // Relay同步燈光
+            let light=document.getElementById("light");
+
+            if(d.relay==="ON"){
+                light.classList.add("active");
+            }else{
+                light.classList.remove("active");
+            }
+
+            // 門鎖同步
+            let lock=document.getElementById("lock");
+
+            if(d.lock){
+                lock.classList.add("active");
+            }else{
+                lock.classList.remove("active");
+            }
+        }
+
+    }catch(e){
+        document.getElementById("alert").innerHTML=
+        "API連線失敗";
+
+        console.log(e);
     }
-});
-
-
-let json=await res.json();
-
-
-
-if(json.success){
-
-
-let d=json.data;
-
-
-
-document.getElementById("temp").innerHTML=d.temp+"°C";
-
-
-document.getElementById("humi").innerHTML=d.humi+"%";
-
-
-document.getElementById("power").innerHTML=d.power+"W";
-
-
-document.getElementById("relay").innerHTML=d.relay;
-
-
-
-document.getElementById("deviceID").innerHTML=
-"設備："+d.id;
-
-
-document.getElementById("voltage").innerHTML=
-"電壓："+d.voltage+"V";
-
-
-document.getElementById("current").innerHTML=
-"電流："+d.current+"A";
-
-
-document.getElementById("time").innerHTML=
-"更新時間："+d.time;
-
-
-document.getElementById("alert").innerHTML=
-"狀態："+d.alert;
-
-
-
-// Relay同步燈光
-
-let light=document.getElementById("light");
-
-
-if(d.relay==="ON"){
-
-light.classList.add("active");
-
-}else{
-
-light.classList.remove("active");
-
 }
-
-
-
-// 門鎖同步
-
-let lock=document.getElementById("lock");
-
-
-if(d.lock){
-
-lock.classList.add("active");
-
-}else{
-
-lock.classList.remove("active");
-
-}
-
-
-
-}
-
-
-}catch(e){
-
-
-document.getElementById("alert").innerHTML=
-"API連線失敗";
-
-
-console.log(e);
-
-
-}
-
-
-}
-
-
-
-
 
 // 每5秒更新
-
 getData();
-
 setInterval(getData,5000);
 
-
-
-
-
-// 溫度滑桿
-
-
+/* ===== 原本冷氣溫度滑桿 ===== */
 const slider=document.getElementById("slider");
-
 const tempValue=document.getElementById("tempValue");
 
-
 slider.oninput=function(){
+    tempValue.innerHTML=this.value+"°C";
+};
 
-tempValue.innerHTML=this.value+"°C";
+/* ===== 醫院冷氣溫度滑桿 ===== */
+const hospitalTemperatureSlider=
+document.getElementById("hospitalTemperatureSlider");
 
+hospitalTemperatureSlider.oninput=function(){
+    document.getElementById("hospitalTempValue").innerHTML=
+    this.value+"°C";
+};
+
+/* ===== 醫院病房示範資料 ===== */
+const roomData={
+    "201":{
+        heart:"72",
+        pressure:"116/75",
+        oxygen:"98.2",
+        temperature:"36.7",
+        resp:"16"
+    },
+    "202":{
+        heart:"78",
+        pressure:"120/78",
+        oxygen:"97.8",
+        temperature:"36.5",
+        resp:"18"
+    },
+    "203":{
+        heart:"69",
+        pressure:"113/72",
+        oxygen:"99.1",
+        temperature:"36.8",
+        resp:"15"
+    }
+};
+
+function changeRoom(button,room){
+    document.querySelectorAll(".roomButton").forEach(function(btn){
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    const data=roomData[room];
+
+    document.getElementById("heartRate").innerHTML=data.heart;
+    document.getElementById("bloodPressure").innerHTML=data.pressure;
+    document.getElementById("oxygen").innerHTML=data.oxygen;
+    document.getElementById("bodyTemperature").innerHTML=data.temperature;
+    document.getElementById("respRate").innerHTML=data.resp;
 }
 
+/* 示範互動 */
+function callNurse(){
+    alert("已送出呼叫護士示範訊息");
+}
 
-
+function addRoom(){
+    alert("新增病房功能目前為介面示範");
+}
 </script>
-
-
 
 </body>
 </html>
