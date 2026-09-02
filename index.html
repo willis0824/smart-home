@@ -1047,6 +1047,36 @@ function callNurse(){
 function addRoom(){
     alert("新增病房功能目前為介面示範");
 }
+    function addRoom(){
+    alert("新增病房功能目前為介面示範");
+}
+
+
+/* ===== 居家裝置點擊開關 ===== */
+
+const devices = document.querySelectorAll("#homePage .device");
+
+devices.forEach(function(device){
+
+    device.addEventListener("click", function(){
+
+        // 主燈目前由 ESP32 Relay 控制
+        if(device.id === "light"){
+            return;
+        }
+
+        // 點一下變藍色，再點一下變白色
+        device.classList.toggle("active");
+
+    });
+
+});
+
+
+</script>
+
+</body>
+</html>
 </script>
 
 </body>
