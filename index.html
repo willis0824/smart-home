@@ -153,6 +153,14 @@ body{
     color:white;
 }
 
+.homeRoomPanel{
+    display:none;
+}
+
+.homeRoomPanel.activeRoom{
+    display:block;
+}
+
 .deviceGrid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -517,6 +525,272 @@ input[type=range]{
     font-size:11px;
 }
 
+
+/* ===== 新增房間視窗 ===== */
+.roomModalOverlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.68);
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.roomModalOverlay.show{
+    display:flex;
+}
+
+.roomModal{
+    width:450px;
+    max-width:100%;
+    background:#fff;
+    border-radius:14px;
+    padding:24px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.roomModalHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+}
+
+.roomModalHeader h2{
+    font-size:20px;
+}
+
+.roomModalClose{
+    border:none;
+    background:transparent;
+    font-size:25px;
+    color:#667085;
+    cursor:pointer;
+    line-height:1;
+}
+
+.roomModal label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.roomModal input{
+    width:100%;
+    height:42px;
+    border:1.5px solid #2d6cff;
+    border-radius:11px;
+    padding:0 13px;
+    font-size:14px;
+    outline:none;
+}
+
+.roomModalActions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:24px;
+}
+
+.roomModalCancel,
+.roomModalAdd{
+    border:none;
+    border-radius:11px;
+    padding:10px 17px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:500;
+}
+
+.roomModalCancel{
+    background:#fff;
+    color:#344054;
+    border:1px solid #e0e5ec;
+}
+
+.roomModalAdd{
+    background:#2d6cff;
+    color:#fff;
+}
+
+.roomModalAdd:disabled{
+    background:#a9bdf5;
+    cursor:not-allowed;
+}
+
+
+/* ===== 新增裝置卡片 ===== */
+.addDeviceCard{
+    height:130px;
+    border:1.5px dashed #d7dde7;
+    border-radius:20px;
+    background:transparent;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    color:#667085;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.addDeviceCard:hover{
+    border-color:#2d6cff;
+    color:#2d6cff;
+    background:#f7f9ff;
+    transform:translateY(-3px);
+}
+
+.addDeviceCard i{
+    font-size:25px;
+}
+
+.addDeviceCard span{
+    font-size:14px;
+    font-weight:500;
+}
+
+/* ===== 新增裝置視窗 ===== */
+.deviceModalOverlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.68);
+    z-index:1100;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.deviceModalOverlay.show{
+    display:flex;
+}
+
+.deviceModal{
+    width:450px;
+    max-width:100%;
+    background:#fff;
+    border-radius:14px;
+    padding:24px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.deviceModalHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+}
+
+.deviceModalHeader h2{
+    font-size:20px;
+}
+
+.deviceModalClose{
+    border:none;
+    background:transparent;
+    font-size:25px;
+    color:#667085;
+    cursor:pointer;
+    line-height:1;
+}
+
+.deviceModal label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.deviceModal input{
+    width:100%;
+    height:42px;
+    border:1.5px solid #2d6cff;
+    border-radius:11px;
+    padding:0 13px;
+    font-size:14px;
+    outline:none;
+}
+
+.deviceIconTitle{
+    display:block;
+    margin-top:18px;
+    margin-bottom:10px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.deviceIconGrid{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:8px;
+}
+
+.deviceIconButton{
+    height:47px;
+    border:1px solid #e0e5ec;
+    border-radius:12px;
+    background:#fff;
+    color:#667085;
+    cursor:pointer;
+    font-size:18px;
+    transition:.2s;
+}
+
+.deviceIconButton:hover{
+    border-color:#2d6cff;
+    color:#2d6cff;
+}
+
+.deviceIconButton.selected{
+    border-color:#2d6cff;
+    background:#edf3ff;
+    color:#2d6cff;
+}
+
+.deviceModalActions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:24px;
+}
+
+.deviceModalCancel,
+.deviceModalAdd{
+    border:none;
+    border-radius:11px;
+    padding:10px 17px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:500;
+}
+
+.deviceModalCancel{
+    background:#fff;
+    color:#344054;
+    border:1px solid #e0e5ec;
+}
+
+.deviceModalAdd{
+    background:#2d6cff;
+    color:#fff;
+}
+
+.deviceModalAdd:disabled{
+    background:#a9bdf5;
+    cursor:not-allowed;
+}
+
+@media(max-width:520px){
+    .deviceIconGrid{
+        grid-template-columns:repeat(5,1fr);
+    }
+}
+
 @media(max-width:1000px){
     .container{
         width:100%;
@@ -631,75 +905,147 @@ input[type=range]{
         </div>
 
         <div class="tabs">
-            <button class="active">客廳</button>
-            <button>臥室</button>
-            <button>+ 新增房間</button>
+            <button class="active" onclick="switchHomeRoom(this,'living')">客廳</button>
+            <button onclick="switchHomeRoom(this,'bedroom')">臥室</button>
+            <button onclick="addHomeRoom()">+ 新增房間</button>
         </div>
 
-        <h3>6 個裝置</h3>
+        <!-- ===== 客廳 ===== -->
+        <div id="livingRoomPanel" class="homeRoomPanel activeRoom">
+            <h3>6 個裝置</h3>
 
-        <div class="deviceGrid">
+            <div class="deviceGrid">
 
-            <div class="device active" id="ac">
-                <i class="fa-solid fa-wind"></i>
-                <h2>冷氣</h2>
-                <span>ac</span>
+                <div class="device active" id="ac">
+                    <i class="fa-solid fa-wind"></i>
+                    <h2>冷氣</h2>
+                    <span>ac</span>
+                </div>
+
+                <div class="device" id="blind">
+                    <i class="fa-solid fa-bars"></i>
+                    <h2>窗簾</h2>
+                    <span>blinds</span>
+                </div>
+
+                <div class="device" id="light">
+                    <i class="fa-regular fa-lightbulb"></i>
+                    <h2>主燈</h2>
+                    <span>light</span>
+                </div>
+
+                <div class="device" id="livingTv">
+                    <i class="fa-solid fa-tv"></i>
+                    <h2>電視</h2>
+                    <span>tv</span>
+                </div>
+
+                <div class="device" id="livingFan">
+                    <i class="fa-solid fa-fan"></i>
+                    <h2>風扇</h2>
+                    <span>fan</span>
+                </div>
+
+                <div class="device" id="lock">
+                    <i class="fa-solid fa-lock"></i>
+                    <h2>大門鎖</h2>
+                    <span>lock</span>
+                </div>
+
+                <button type="button" class="addDeviceCard" onclick="openDeviceModal(this)">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>新增裝置</span>
+                </button>
+
             </div>
 
-            <div class="device" id="blind">
-                <i class="fa-solid fa-bars"></i>
-                <h2>窗簾</h2>
-                <span>blinds</span>
+            <div class="sliderCard">
+                <div class="sliderTitle">
+                    <h2>冷氣溫度設定</h2>
+                    <h2 id="tempValue">26°C</h2>
+                </div>
+
+                <input
+                    type="range"
+                    min="16"
+                    max="30"
+                    value="26"
+                    id="slider">
             </div>
 
-            <div class="device" id="light">
-                <i class="fa-regular fa-lightbulb"></i>
-                <h2>主燈</h2>
-                <span>light</span>
+            <div class="status">
+                <h3>ESP32 狀態</h3>
+                <p id="deviceID">設備：--</p>
+                <p id="voltage">電壓：--</p>
+                <p id="current">電流：--</p>
+                <p id="powerStatus">功率：--</p>
+                <p id="time">更新時間：--</p>
+                <p id="alert">狀態：--</p>
             </div>
-
-            <div class="device">
-                <i class="fa-solid fa-tv"></i>
-                <h2>電視</h2>
-                <span>tv</span>
-            </div>
-
-            <div class="device">
-                <i class="fa-solid fa-fan"></i>
-                <h2>風扇</h2>
-                <span>fan</span>
-            </div>
-
-            <div class="device" id="lock">
-                <i class="fa-solid fa-lock"></i>
-                <h2>大門鎖</h2>
-                <span>lock</span>
-            </div>
-
         </div>
 
-        <div class="sliderCard">
-            <div class="sliderTitle">
-                <h2>冷氣溫度設定</h2>
-                <h2 id="tempValue">26°C</h2>
+        <!-- ===== 臥室 ===== -->
+        <div id="bedroomPanel" class="homeRoomPanel">
+            <h3>6 個裝置</h3>
+
+            <div class="deviceGrid">
+
+                <div class="device" id="bedroomAc">
+                    <i class="fa-solid fa-wind"></i>
+                    <h2>冷氣</h2>
+                    <span>ac</span>
+                </div>
+
+                <div class="device" id="bedroomBlind">
+                    <i class="fa-solid fa-bars"></i>
+                    <h2>窗簾</h2>
+                    <span>blinds</span>
+                </div>
+
+                <div class="device" id="bedroomLight">
+                    <i class="fa-regular fa-lightbulb"></i>
+                    <h2>主燈</h2>
+                    <span>light</span>
+                </div>
+
+                <div class="device" id="bedroomTv">
+                    <i class="fa-solid fa-tv"></i>
+                    <h2>電視</h2>
+                    <span>tv</span>
+                </div>
+
+                <div class="device" id="bedroomFan">
+                    <i class="fa-solid fa-fan"></i>
+                    <h2>風扇</h2>
+                    <span>fan</span>
+                </div>
+
+                <div class="device" id="bedroomLock">
+                    <i class="fa-solid fa-lock"></i>
+                    <h2>房門鎖</h2>
+                    <span>lock</span>
+                </div>
+
+                <button type="button" class="addDeviceCard" onclick="openDeviceModal(this)">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>新增裝置</span>
+                </button>
+
             </div>
 
-            <input
-                type="range"
-                min="16"
-                max="30"
-                value="26"
-                id="slider">
-        </div>
+            <div class="sliderCard">
+                <div class="sliderTitle">
+                    <h2>冷氣溫度設定</h2>
+                    <h2 id="bedroomTempValue">26°C</h2>
+                </div>
 
-        <div class="status">
-            <h3>ESP32 狀態</h3>
-            <p id="deviceID">設備：--</p>
-            <p id="voltage">電壓：--</p>
-            <p id="current">電流：--</p>
-            <p id="powerStatus">功率：--</p>
-            <p id="time">更新時間：--</p>
-            <p id="alert">狀態：--</p>
+                <input
+                    type="range"
+                    min="16"
+                    max="30"
+                    value="26"
+                    id="bedroomSlider">
+            </div>
         </div>
 
     </div>
@@ -885,6 +1231,68 @@ input[type=range]{
     </div>
 </div>
 
+
+<!-- ===== 新增房間彈出視窗 ===== -->
+<div id="roomModalOverlay" class="roomModalOverlay">
+    <div class="roomModal" role="dialog" aria-modal="true" aria-labelledby="roomModalTitle">
+        <div class="roomModalHeader">
+            <h2 id="roomModalTitle">新增房間</h2>
+            <button type="button" class="roomModalClose" id="roomModalClose" aria-label="關閉">×</button>
+        </div>
+
+        <label for="newRoomName">房間名稱</label>
+        <input type="text" id="newRoomName" placeholder="請輸入房間名稱" maxlength="12">
+
+        <div class="roomModalActions">
+            <button type="button" class="roomModalCancel" id="roomModalCancel">取消</button>
+            <button type="button" class="roomModalAdd" id="roomModalAdd" disabled>新增</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== 新增裝置彈出視窗 ===== -->
+<div id="deviceModalOverlay" class="deviceModalOverlay">
+    <div class="deviceModal" role="dialog" aria-modal="true" aria-labelledby="deviceModalTitle">
+        <div class="deviceModalHeader">
+            <h2 id="deviceModalTitle">新增裝置</h2>
+            <button type="button" class="deviceModalClose" id="deviceModalClose" aria-label="關閉">×</button>
+        </div>
+
+        <label for="newDeviceName">裝置名稱</label>
+        <input type="text" id="newDeviceName" placeholder="請輸入裝置名稱" maxlength="16">
+
+        <span class="deviceIconTitle">選擇圖示</span>
+
+        <div class="deviceIconGrid" id="deviceIconGrid">
+            <button type="button" class="deviceIconButton selected" data-icon="fa-solid fa-wind" title="冷氣"><i class="fa-solid fa-wind"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-bars" title="窗簾"><i class="fa-solid fa-bars"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-regular fa-lightbulb" title="燈"><i class="fa-regular fa-lightbulb"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-tv" title="電視"><i class="fa-solid fa-tv"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-fan" title="風扇"><i class="fa-solid fa-fan"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-lock" title="門鎖"><i class="fa-solid fa-lock"></i></button>
+
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-camera" title="攝影機"><i class="fa-solid fa-camera"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-plug" title="插座"><i class="fa-solid fa-plug"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-mobile-screen-button" title="手機"><i class="fa-solid fa-mobile-screen-button"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-volume-high" title="音響"><i class="fa-solid fa-volume-high"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-bell" title="門鈴"><i class="fa-solid fa-bell"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-shield-halved" title="警報"><i class="fa-solid fa-shield-halved"></i></button>
+
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-temperature-three-quarters" title="溫度"><i class="fa-solid fa-temperature-three-quarters"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-wifi" title="Wi-Fi"><i class="fa-solid fa-wifi"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-droplet" title="感測器"><i class="fa-solid fa-droplet"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-door-open" title="門"><i class="fa-solid fa-door-open"></i></button>
+            <button type="button" class="deviceIconButton" data-icon="fa-solid fa-bolt" title="電力"><i class="fa-solid fa-bolt"></i></button>
+        </div>
+
+        <div class="deviceModalActions">
+            <button type="button" class="deviceModalCancel" id="deviceModalCancel">取消</button>
+            <button type="button" class="deviceModalAdd" id="deviceModalAdd" disabled>新增</button>
+        </div>
+    </div>
+</div>
+
 <script>
 /* ===== 同一個 index.html 裡切換居家 / 醫院 ===== */
 function showPage(page){
@@ -1047,37 +1455,252 @@ function callNurse(){
 function addRoom(){
     alert("新增病房功能目前為介面示範");
 }
-    function addRoom(){
-    alert("新增病房功能目前為介面示範");
+
+
+/* ===== 居家房間切換 ===== */
+function switchHomeRoom(button, room){
+    document.querySelectorAll("#homePage .tabs button").forEach(function(btn){
+        if(!btn.textContent.includes("新增房間")){
+            btn.classList.remove("active");
+        }
+    });
+
+    button.classList.add("active");
+
+    document.querySelectorAll("#homePage .homeRoomPanel").forEach(function(panel){
+        panel.classList.remove("activeRoom");
+    });
+
+    if(room === "bedroom"){
+        document.getElementById("bedroomPanel").classList.add("activeRoom");
+    }else{
+        document.getElementById("livingRoomPanel").classList.add("activeRoom");
+    }
 }
 
+const roomModalOverlay = document.getElementById("roomModalOverlay");
+const newRoomName = document.getElementById("newRoomName");
+const roomModalAdd = document.getElementById("roomModalAdd");
+
+function addHomeRoom(){
+    roomModalOverlay.classList.add("show");
+    newRoomName.value = "";
+    roomModalAdd.disabled = true;
+    setTimeout(function(){
+        newRoomName.focus();
+    }, 50);
+}
+
+function closeHomeRoomModal(){
+    roomModalOverlay.classList.remove("show");
+}
+
+newRoomName.addEventListener("input", function(){
+    roomModalAdd.disabled = this.value.trim() === "";
+});
+
+document.getElementById("roomModalClose").addEventListener("click", closeHomeRoomModal);
+document.getElementById("roomModalCancel").addEventListener("click", closeHomeRoomModal);
+
+roomModalOverlay.addEventListener("click", function(event){
+    if(event.target === roomModalOverlay){
+        closeHomeRoomModal();
+    }
+});
+
+roomModalAdd.addEventListener("click", function(){
+    const roomName = newRoomName.value.trim();
+
+    if(roomName === ""){
+        return;
+    }
+
+    // 先建立新的房間分頁按鈕
+    const tabs = document.querySelector("#homePage .tabs");
+    const addButton = Array.from(tabs.querySelectorAll("button"))
+        .find(function(btn){
+            return btn.textContent.includes("新增房間");
+        });
+
+    const newButton = document.createElement("button");
+    newButton.textContent = roomName;
+
+    tabs.insertBefore(newButton, addButton);
+
+    // 建立新房間內容，預設 0 個裝置
+    const newPanel = document.createElement("div");
+    newPanel.className = "homeRoomPanel";
+    newPanel.innerHTML = `
+        <h3>0 個裝置</h3>
+        <div class="deviceGrid">
+            <button type="button" class="addDeviceCard">
+                <i class="fa-solid fa-plus"></i>
+                <span>新增裝置</span>
+            </button>
+        </div>
+    `;
+
+    newPanel.querySelector(".addDeviceCard").addEventListener("click", function(){
+        openDeviceModal(this);
+    });
+
+    document.getElementById("bedroomPanel").insertAdjacentElement("afterend", newPanel);
+
+    newButton.addEventListener("click", function(){
+        document.querySelectorAll("#homePage .tabs button").forEach(function(btn){
+            if(!btn.textContent.includes("新增房間")){
+                btn.classList.remove("active");
+            }
+        });
+
+        document.querySelectorAll("#homePage .homeRoomPanel").forEach(function(panel){
+            panel.classList.remove("activeRoom");
+        });
+
+        newButton.classList.add("active");
+        newPanel.classList.add("activeRoom");
+    });
+
+    closeHomeRoomModal();
+
+    // 新增完成後直接進入新房間
+    newButton.click();
+});
+
+newRoomName.addEventListener("keydown", function(event){
+    if(event.key === "Enter" && !roomModalAdd.disabled){
+        roomModalAdd.click();
+    }
+});
+
+
+/* ===== 新增裝置功能 ===== */
+const deviceModalOverlay = document.getElementById("deviceModalOverlay");
+const newDeviceName = document.getElementById("newDeviceName");
+const deviceModalAdd = document.getElementById("deviceModalAdd");
+const deviceIconButtons = document.querySelectorAll(".deviceIconButton");
+
+let currentAddDeviceButton = null;
+let selectedDeviceIcon = "fa-solid fa-wind";
+
+function openDeviceModal(addButton){
+    currentAddDeviceButton = addButton;
+    newDeviceName.value = "";
+    deviceModalAdd.disabled = true;
+    selectedDeviceIcon = "fa-solid fa-wind";
+
+    deviceIconButtons.forEach(function(btn){
+        btn.classList.toggle("selected", btn.dataset.icon === selectedDeviceIcon);
+    });
+
+    deviceModalOverlay.classList.add("show");
+
+    setTimeout(function(){
+        newDeviceName.focus();
+    }, 50);
+}
+
+function closeDeviceModal(){
+    deviceModalOverlay.classList.remove("show");
+    currentAddDeviceButton = null;
+}
+
+newDeviceName.addEventListener("input", function(){
+    deviceModalAdd.disabled = this.value.trim() === "";
+});
+
+deviceIconButtons.forEach(function(button){
+    button.addEventListener("click", function(){
+        deviceIconButtons.forEach(function(btn){
+            btn.classList.remove("selected");
+        });
+
+        button.classList.add("selected");
+        selectedDeviceIcon = button.dataset.icon;
+    });
+});
+
+document.getElementById("deviceModalClose").addEventListener("click", closeDeviceModal);
+document.getElementById("deviceModalCancel").addEventListener("click", closeDeviceModal);
+
+deviceModalOverlay.addEventListener("click", function(event){
+    if(event.target === deviceModalOverlay){
+        closeDeviceModal();
+    }
+});
+
+deviceModalAdd.addEventListener("click", function(){
+    const deviceName = newDeviceName.value.trim();
+
+    if(deviceName === "" || !currentAddDeviceButton){
+        return;
+    }
+
+    const grid = currentAddDeviceButton.closest(".deviceGrid");
+    const panel = currentAddDeviceButton.closest(".homeRoomPanel");
+
+    const newDevice = document.createElement("div");
+    newDevice.className = "device";
+    newDevice.innerHTML = `
+        <i class="${selectedDeviceIcon}"></i>
+        <h2>${escapeHtml(deviceName)}</h2>
+        <span>device</span>
+    `;
+
+    // 新增裝置也能點一下藍色、再點一下白色
+    newDevice.addEventListener("click", function(){
+        newDevice.classList.toggle("active");
+    });
+
+    grid.insertBefore(newDevice, currentAddDeviceButton);
+
+    // 更新「幾個裝置」
+    const countTitle = panel.querySelector("h3");
+    const deviceCount = grid.querySelectorAll(".device").length;
+    countTitle.textContent = deviceCount + " 個裝置";
+
+    closeDeviceModal();
+});
+
+newDeviceName.addEventListener("keydown", function(event){
+    if(event.key === "Enter" && !deviceModalAdd.disabled){
+        deviceModalAdd.click();
+    }
+});
+
+function escapeHtml(value){
+    return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+/* ===== 臥室冷氣溫度滑桿 ===== */
+const bedroomSlider = document.getElementById("bedroomSlider");
+const bedroomTempValue = document.getElementById("bedroomTempValue");
+
+bedroomSlider.oninput = function(){
+    bedroomTempValue.innerHTML = this.value + "°C";
+};
 
 /* ===== 居家裝置點擊開關 ===== */
-
 const devices = document.querySelectorAll("#homePage .device");
 
 devices.forEach(function(device){
-
     device.addEventListener("click", function(){
 
-        // 主燈目前由 ESP32 Relay 控制
+        // 客廳主燈仍由 ESP32 Relay 的回傳狀態控制
         if(device.id === "light"){
             return;
         }
 
-        // 點一下變藍色，再點一下變白色
+        // 其他裝置：點一下開啟變藍色，再點一下關閉變白色
         device.classList.toggle("active");
-
     });
-
 });
 
-
 </script>
-
-</body>
-</html>
-</script>
-
 </body>
 </html>
