@@ -1316,6 +1316,10 @@ function showPage(page){
 
 /* ===== 原本的 ESP32 API ===== */
 const API="https://ascent-disperser-groove.ngrok-free.dev/api/latest-data";
+const CONTROL_API="https://ascent-disperser-groove.ngrok-free.dev/api/control";
+
+let relayState="OFF";
+let lightControlBusy=false;
 
 async function getData(){
     try{
@@ -1361,7 +1365,9 @@ async function getData(){
             // Relay同步燈光
             let light=document.getElementById("light");
 
-            if(d.relay==="ON"){
+            relayState = String(d.relay).toUpperCase();
+
+            if(relayState==="ON"){
                 light.classList.add("active");
             }else{
                 light.classList.remove("active");
@@ -1684,6 +1690,66 @@ const bedroomTempValue = document.getElementById("bedroomTempValue");
 bedroomSlider.oninput = function(){
     bedroomTempValue.innerHTML = this.value + "°C";
 };
+
+
+/* ===== 客廳主燈：POST /api/control 真實控制 ESP32 Relay ===== */
+async function controlLivingRoomLight(){
+    if(lightControlBusy){
+        return;
+    }
+
+    lightControlBusy = true;
+
+    const light = document.getElementById("light");
+    const nextCommand = relayState === "ON" ? "OFF" : "ON";
+
+    light.style.opacity = "0.7";
+    light.style.pointerEvents = "none";
+
+    try{
+        const res = await fetch(CONTROL_API,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "ngrok-skip-browser-warning":"true"
+            },
+            body:JSON.stringify({
+                command:nextCommand
+            })
+        });
+
+        if(!res.ok){
+            throw new Error("HTTP " + res.status);
+        }
+
+        const responseText = await res.text();
+        console.log("主燈控制成功：", responseText || nextCommand);
+
+        relayState = nextCommand;
+
+        if(relayState === "ON"){
+            light.classList.add("active");
+        }else{
+            light.classList.remove("active");
+        }
+
+        setTimeout(function(){
+            getData();
+        }, 500);
+
+    }catch(error){
+        console.error("主燈控制失敗：", error);
+        document.getElementById("alert").innerHTML = "狀態：主燈控制失敗";
+        getData();
+
+    }finally{
+        lightControlBusy = false;
+        light.style.opacity = "";
+        light.style.pointerEvents = "";
+    }
+}
+
+document.getElementById("light").addEventListener("click", controlLivingRoomLight);
 
 /* ===== 居家裝置點擊開關 ===== */
 const devices = document.querySelectorAll("#homePage .device");
