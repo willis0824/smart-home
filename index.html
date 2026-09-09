@@ -910,6 +910,207 @@ input[type=range]{
         grid-template-columns:1fr;
     }
 }
+
+/* ===== 智慧用電 / 電價分析 ===== */
+.tariffSection{
+    margin-top:30px;
+    background:#fff;
+    border-radius:22px;
+    padding:26px;
+    box-shadow:0 8px 28px rgba(16,24,40,.06);
+}
+
+.tariffHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:18px;
+    margin-bottom:22px;
+}
+
+.tariffHeader h2{
+    font-size:22px;
+    margin-bottom:5px;
+}
+
+.tariffHeader p{
+    color:#667085;
+    font-size:13px;
+}
+
+.tariffInputGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr auto;
+    gap:14px;
+    align-items:end;
+    margin-bottom:22px;
+}
+
+.tariffField label{
+    display:block;
+    font-size:13px;
+    font-weight:500;
+    color:#475467;
+    margin-bottom:7px;
+}
+
+.tariffField input{
+    width:100%;
+    height:44px;
+    border:1px solid #d0d5dd;
+    border-radius:12px;
+    padding:0 13px;
+    outline:none;
+    font-size:14px;
+    background:#fff;
+}
+
+.tariffField input:focus{
+    border-color:#2d6cff;
+    box-shadow:0 0 0 3px rgba(45,108,255,.08);
+}
+
+.tariffAnalyzeBtn{
+    height:44px;
+    border:none;
+    border-radius:12px;
+    padding:0 22px;
+    background:#2d6cff;
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.tariffAnalyzeBtn:disabled{
+    opacity:.65;
+    cursor:not-allowed;
+}
+
+.tariffStatus{
+    min-height:20px;
+    margin:2px 0 18px;
+    font-size:13px;
+    color:#667085;
+}
+
+.tariffResultGrid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:20px;
+}
+
+.tariffResultCard{
+    border:1px solid #eaecf0;
+    border-radius:16px;
+    padding:18px;
+    background:#fbfcfe;
+}
+
+.tariffResultCard small{
+    display:block;
+    color:#667085;
+    margin-bottom:6px;
+    font-size:12px;
+}
+
+.tariffResultCard strong{
+    display:block;
+    font-size:20px;
+    color:#101828;
+    line-height:1.35;
+}
+
+.tariffResultCard span{
+    display:block;
+    margin-top:4px;
+    color:#667085;
+    font-size:12px;
+}
+
+.tariffHighlight{
+    background:#f7f9ff;
+    border-color:#dbe5ff;
+}
+
+.tariffSavings{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:22px;
+}
+
+.tariffSavingCard{
+    border-radius:16px;
+    padding:17px 18px;
+    background:#f8fafc;
+    border:1px solid #eaecf0;
+}
+
+.tariffSavingCard small{
+    display:block;
+    color:#667085;
+    margin-bottom:5px;
+}
+
+.tariffSavingCard strong{
+    font-size:17px;
+}
+
+.tariffChartCard{
+    border:1px solid #eaecf0;
+    border-radius:18px;
+    padding:18px;
+}
+
+.tariffChartCard h3{
+    margin-bottom:4px;
+}
+
+.tariffChartCard p{
+    color:#667085;
+    font-size:12px;
+    margin-bottom:16px;
+}
+
+.tariffChartWrap{
+    width:100%;
+    min-height:360px;
+    position:relative;
+}
+
+@media(max-width:900px){
+    .tariffInputGrid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .tariffAnalyzeBtn{
+        grid-column:1/-1;
+    }
+
+    .tariffResultGrid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+    .tariffInputGrid,
+    .tariffResultGrid,
+    .tariffSavings{
+        grid-template-columns:1fr;
+    }
+
+    .tariffSection{
+        padding:18px;
+    }
+
+    .tariffChartWrap{
+        min-height:300px;
+    }
+}
+
+
 </style>
 </head>
 
@@ -1027,6 +1228,83 @@ input[type=range]{
                 </button>
             </div>
         </div>
+
+        <!-- ===== 智慧用電分析 ===== -->
+        <section class="tariffSection">
+            <div class="tariffHeader">
+                <div>
+                    <h2><i class="fa-solid fa-chart-column"></i> 智慧用電分析</h2>
+                    <p>比較一般家庭電價與二段式時間電價，找出最省錢的家電運轉時段。</p>
+                </div>
+            </div>
+
+            <div class="tariffInputGrid">
+                <div class="tariffField">
+                    <label for="tariffPower">家電功率（kW）</label>
+                    <input id="tariffPower" type="number" min="0.01" step="0.01" value="1.0">
+                </div>
+
+                <div class="tariffField">
+                    <label for="tariffDuration">連續運轉時間（小時）</label>
+                    <input id="tariffDuration" type="number" min="1" max="24" step="1" value="3">
+                </div>
+
+                <button id="tariffAnalyzeBtn" class="tariffAnalyzeBtn" type="button">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+                    開始分析
+                </button>
+            </div>
+
+            <div id="tariffStatus" class="tariffStatus">等待分析...</div>
+
+            <div id="tariffResults" style="display:none;">
+                <div class="tariffResultGrid">
+                    <div class="tariffResultCard">
+                        <small>總耗電量</small>
+                        <strong id="tariffEnergy">-- kWh</strong>
+                        <span id="tariffMetadata">--</span>
+                    </div>
+
+                    <div class="tariffResultCard">
+                        <small>一般家庭預估電費</small>
+                        <strong id="tariffStandardCost">-- 元</strong>
+                        <span id="tariffStandardRate">--</span>
+                    </div>
+
+                    <div class="tariffResultCard tariffHighlight">
+                        <small>最佳省錢時段</small>
+                        <strong id="tariffBestPeriod">--</strong>
+                        <span id="tariffBestCost">-- 元</span>
+                    </div>
+
+                    <div class="tariffResultCard">
+                        <small>最貴尖峰時段</small>
+                        <strong id="tariffWorstPeriod">--</strong>
+                        <span id="tariffWorstCost">-- 元</span>
+                    </div>
+                </div>
+
+                <div class="tariffSavings">
+                    <div class="tariffSavingCard">
+                        <small>相比一般家庭電價可省</small>
+                        <strong id="tariffSavedStandard">--</strong>
+                    </div>
+
+                    <div class="tariffSavingCard">
+                        <small>相比最貴 TOU 時段可省</small>
+                        <strong id="tariffSavedWorst">--</strong>
+                    </div>
+                </div>
+
+                <div class="tariffChartCard">
+                    <h3>各連續時段電費比較</h3>
+                    <p>綠色＝最低費用、紅色＝最高費用、藍色＝其他時段。</p>
+                    <div class="tariffChartWrap">
+                        <canvas id="tariffChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
 
     </div>
 </div>
@@ -1280,6 +1558,8 @@ input[type=range]{
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 /* ===== 同一個 index.html 裡切換居家 / 醫院 ===== */
 function showPage(page){
@@ -1360,13 +1640,15 @@ async function getData(){
                 light.classList.remove("active");
             }
 
-            // 門鎖同步
+            // 如果頁面上有門鎖才同步，避免找不到元素造成 JS 中斷
             let lock=document.getElementById("lock");
 
-            if(d.lock){
-                lock.classList.add("active");
-            }else{
-                lock.classList.remove("active");
+            if(lock){
+                if(d.lock){
+                    lock.classList.add("active");
+                }else{
+                    lock.classList.remove("active");
+                }
             }
         }
 
@@ -1758,6 +2040,272 @@ if(bedroomSlider && bedroomTempValue){
         bedroomTempValue.innerHTML = this.value + "°C";
     };
 }
+
+
+
+/* ===== 電價雙情境分析 API ===== */
+const TARIFF_API =
+    "https://ascent-disperser-groove.ngrok-free.dev/api/tariff-analysis";
+
+let tariffChartInstance = null;
+
+async function loadTariffAnalysis(){
+    const powerInput = document.getElementById("tariffPower");
+    const durationInput = document.getElementById("tariffDuration");
+    const analyzeBtn = document.getElementById("tariffAnalyzeBtn");
+    const status = document.getElementById("tariffStatus");
+    const results = document.getElementById("tariffResults");
+
+    const power = Number(powerInput.value);
+    const duration = Number(durationInput.value);
+
+    if(!Number.isFinite(power) || power <= 0){
+        status.textContent = "請輸入大於 0 的家電功率。";
+        return;
+    }
+
+    if(!Number.isFinite(duration) || duration <= 0 || duration > 24){
+        status.textContent = "運轉時間請輸入 1～24 小時。";
+        return;
+    }
+
+    analyzeBtn.disabled = true;
+    analyzeBtn.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> 分析中';
+
+    status.textContent = "正在向後端取得電價分析資料...";
+
+    try{
+        const url =
+            TARIFF_API +
+            "?duration=" + encodeURIComponent(duration) +
+            "&power=" + encodeURIComponent(power);
+
+        const res = await fetch(url,{
+            method:"GET",
+            headers:{
+                "ngrok-skip-browser-warning":"true"
+            }
+        });
+
+        if(!res.ok){
+            throw new Error("HTTP " + res.status);
+        }
+
+        const json = await res.json();
+
+        if(!json.success || !json.data){
+            throw new Error("API 回傳格式不正確");
+        }
+
+        const data = json.data;
+        const metadata = data.metadata || {};
+        const comparison = data.scenarioComparison || {};
+        const standardHome = comparison.standardHome || {};
+        const timeOfUseHome = comparison.timeOfUseHome || {};
+        const savings = comparison.savings || {};
+        const schedule = data.scheduleCombinations || {};
+        const allIntervals = Array.isArray(schedule.allIntervals)
+            ? schedule.allIntervals
+            : [];
+
+        document.getElementById("tariffEnergy").textContent =
+            formatNumber(metadata.totalEnergyKwh) + " kWh";
+
+        document.getElementById("tariffMetadata").textContent =
+            formatNumber(metadata.powerKw) + " kW × " +
+            formatNumber(metadata.durationHours) + " 小時" +
+            (metadata.date ? "｜基準日 " + metadata.date : "");
+
+        document.getElementById("tariffStandardCost").textContent =
+            formatMoney(standardHome.cost) + " 元";
+
+        document.getElementById("tariffStandardRate").textContent =
+            standardHome.ratePerKwh || standardHome.modelName || "--";
+
+        document.getElementById("tariffBestPeriod").textContent =
+            timeOfUseHome.bestPeriod || "--";
+
+        document.getElementById("tariffBestCost").textContent =
+            "預估 " + formatMoney(timeOfUseHome.bestCost) + " 元";
+
+        document.getElementById("tariffWorstPeriod").textContent =
+            timeOfUseHome.worstPeriod || "--";
+
+        document.getElementById("tariffWorstCost").textContent =
+            "預估 " + formatMoney(timeOfUseHome.worstCost) + " 元";
+
+        document.getElementById("tariffSavedStandard").textContent =
+            savings.savedComparedToStandard || "--";
+
+        document.getElementById("tariffSavedWorst").textContent =
+            savings.savedComparedToWorstTOU || "--";
+
+        results.style.display = "block";
+
+        if(allIntervals.length > 0){
+            renderTariffChart(allIntervals);
+            status.textContent =
+                "分析完成，共比較 " + allIntervals.length + " 組連續運轉時段。";
+        }else{
+            status.textContent = "分析完成，但 API 沒有回傳時段圖表資料。";
+        }
+
+    }catch(error){
+        console.error("電價分析 API 連線失敗：",error);
+        status.textContent =
+            "電價分析載入失敗，請確認 ngrok 後端是否在線上。";
+        results.style.display = "none";
+
+    }finally{
+        analyzeBtn.disabled = false;
+        analyzeBtn.innerHTML =
+            '<i class="fa-solid fa-magnifying-glass-chart"></i> 開始分析';
+    }
+}
+
+function renderTariffChart(allIntervals){
+    if(typeof Chart === "undefined"){
+        document.getElementById("tariffStatus").textContent =
+            "資料取得成功，但 Chart.js 載入失敗。";
+        return;
+    }
+
+    const labels = allIntervals.map(function(item){
+        return item.timeRange;
+    });
+
+    const costs = allIntervals.map(function(item){
+        return Number(item.cost);
+    });
+
+    const validCosts = costs.filter(Number.isFinite);
+
+    if(validCosts.length === 0){
+        return;
+    }
+
+    const minCost = Math.min(...validCosts);
+    const maxCost = Math.max(...validCosts);
+
+    const barColors = costs.map(function(cost){
+        if(cost === minCost){
+            return "#22c55e";
+        }
+
+        if(cost === maxCost){
+            return "#ef4444";
+        }
+
+        return "#3b82f6";
+    });
+
+    const canvas = document.getElementById("tariffChart");
+    const ctx = canvas.getContext("2d");
+
+    if(tariffChartInstance){
+        tariffChartInstance.destroy();
+    }
+
+    tariffChartInstance = new Chart(ctx,{
+        type:"bar",
+        data:{
+            labels:labels,
+            datasets:[{
+                label:"預估電費 (NTD)",
+                data:costs,
+                backgroundColor:barColors,
+                borderRadius:5
+            }]
+        },
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            interaction:{
+                intersect:false,
+                mode:"index"
+            },
+            plugins:{
+                legend:{
+                    display:true
+                },
+                title:{
+                    display:true,
+                    text:"24 小時各連續時段電費成本差異"
+                },
+                tooltip:{
+                    callbacks:{
+                        label:function(context){
+                            return "預估電費：" +
+                                formatMoney(context.parsed.y) + " 元";
+                        }
+                    }
+                }
+            },
+            scales:{
+                y:{
+                    beginAtZero:true,
+                    title:{
+                        display:true,
+                        text:"費用 (元)"
+                    }
+                },
+                x:{
+                    title:{
+                        display:true,
+                        text:"連續運轉時段"
+                    },
+                    ticks:{
+                        maxRotation:60,
+                        minRotation:45
+                    }
+                }
+            }
+        }
+    });
+}
+
+function formatNumber(value){
+    const number = Number(value);
+
+    if(!Number.isFinite(number)){
+        return "--";
+    }
+
+    return Number.isInteger(number)
+        ? String(number)
+        : number.toFixed(2).replace(/\.?0+$/,"");
+}
+
+function formatMoney(value){
+    const number = Number(value);
+
+    if(!Number.isFinite(number)){
+        return "--";
+    }
+
+    return number.toFixed(2).replace(/\.?0+$/,"");
+}
+
+document.getElementById("tariffAnalyzeBtn")
+    .addEventListener("click",loadTariffAnalysis);
+
+document.getElementById("tariffPower")
+    .addEventListener("keydown",function(event){
+        if(event.key === "Enter"){
+            loadTariffAnalysis();
+        }
+    });
+
+document.getElementById("tariffDuration")
+    .addEventListener("keydown",function(event){
+        if(event.key === "Enter"){
+            loadTariffAnalysis();
+        }
+    });
+
+// 網頁開啟時先用預設值 1 kW / 3 小時分析一次
+loadTariffAnalysis();
 
 
 /* ===== 客廳檯燈：POST /api/control 真實控制 ESP32 Relay ===== */
