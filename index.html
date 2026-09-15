@@ -1278,6 +1278,144 @@ input[type=range]{
     .robotControlHeader{align-items:flex-start;flex-direction:column;}
 }
 
+
+/* ===== 掃地機器人自動排程 ===== */
+.robotScheduleSection{
+    margin-top:22px;
+    border:1px solid #eaecf0;
+    border-radius:18px;
+    padding:20px;
+}
+.robotScheduleHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom:16px;
+}
+.robotScheduleHeader h3{
+    margin-bottom:4px;
+}
+.robotScheduleHeader p{
+    color:#667085;
+    font-size:12px;
+}
+.robotScheduleForm{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr auto;
+    gap:12px;
+    align-items:end;
+}
+.robotScheduleField label{
+    display:block;
+    color:#475467;
+    font-size:12px;
+    font-weight:600;
+    margin-bottom:7px;
+}
+.robotScheduleField input,
+.robotScheduleField select{
+    width:100%;
+    height:44px;
+    border:1px solid #d0d5dd;
+    border-radius:12px;
+    padding:0 12px;
+    background:#fff;
+    outline:none;
+}
+.robotScheduleAddBtn{
+    height:44px;
+    border:none;
+    border-radius:12px;
+    padding:0 18px;
+    background:#2d6cff;
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+}
+.robotScheduleList{
+    margin-top:18px;
+    display:grid;
+    gap:10px;
+}
+.robotScheduleEmpty{
+    color:#667085;
+    font-size:13px;
+    padding:14px 0 2px;
+}
+.robotScheduleItem{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:14px;
+    border:1px solid #eaecf0;
+    border-radius:14px;
+    background:#fbfcfe;
+}
+.robotScheduleMain{
+    min-width:0;
+}
+.robotScheduleMain strong{
+    display:block;
+    font-size:15px;
+}
+.robotScheduleMain span{
+    display:block;
+    color:#667085;
+    font-size:12px;
+    margin-top:3px;
+}
+.robotScheduleActions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-shrink:0;
+}
+.robotScheduleToggle,
+.robotScheduleDelete{
+    border:none;
+    border-radius:10px;
+    min-height:38px;
+    padding:0 12px;
+    cursor:pointer;
+}
+.robotScheduleToggle{
+    background:#ecfdf3;
+    color:#027a48;
+}
+.robotScheduleToggle.disabled{
+    background:#f2f4f7;
+    color:#667085;
+}
+.robotScheduleDelete{
+    background:#fef3f2;
+    color:#b42318;
+}
+.robotScheduleNote{
+    margin-top:12px;
+    color:#667085;
+    font-size:12px;
+    line-height:1.6;
+}
+@media(max-width:800px){
+    .robotScheduleForm{
+        grid-template-columns:1fr 1fr;
+    }
+    .robotScheduleAddBtn{
+        grid-column:1/-1;
+    }
+}
+@media(max-width:520px){
+    .robotScheduleForm{
+        grid-template-columns:1fr;
+    }
+    .robotScheduleItem{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+}
+
 </style>
 </head>
 
@@ -1536,6 +1674,47 @@ input[type=range]{
             <button id="robotHomeBtn" class="robotControlBtn robotHomeBtn" type="button">
                 <i class="fa-solid fa-house"></i>返回充電
             </button>
+        </div>
+
+        <div class="robotScheduleSection">
+            <div class="robotScheduleHeader">
+                <div>
+                    <h3><i class="fa-regular fa-clock"></i> 自動排程</h3>
+                    <p>設定掃地機器人在指定時間自動執行。</p>
+                </div>
+            </div>
+
+            <div class="robotScheduleForm">
+                <div class="robotScheduleField">
+                    <label for="robotScheduleTime">執行時間</label>
+                    <input id="robotScheduleTime" type="time" value="22:30">
+                </div>
+
+                <div class="robotScheduleField">
+                    <label for="robotScheduleRepeat">重複</label>
+                    <select id="robotScheduleRepeat">
+                        <option value="daily">每天</option>
+                        <option value="weekdays">週一至週五</option>
+                        <option value="weekends">週六、週日</option>
+                        <option value="once">單次</option>
+                    </select>
+                </div>
+
+                <div class="robotScheduleField">
+                    <label for="robotScheduleAction">執行動作</label>
+                    <select id="robotScheduleAction">
+                        <option value="start">開始清掃</option>
+                        <option value="pause">暫停</option>
+                        <option value="home">返回充電</option>
+                    </select>
+                </div>
+
+                <button id="robotScheduleAddBtn" class="robotScheduleAddBtn" type="button">
+                    <i class="fa-solid fa-plus"></i> 新增排程
+                </button>
+            </div>
+
+            <div id="robotScheduleList" class="robotScheduleList"></div>
         </div>
 
         <div class="robotBottomGrid robotLogOnly">
@@ -2656,6 +2835,7 @@ function openRobotControlPage(){
 
     if(ROBOT_API_BASE){
         getRobotStatus();
+        loadRobotSchedules();
         startRobotStatusTimer();
     }else{
         document.getElementById("robotConnectionBadge").textContent = "等待 API";
@@ -2807,6 +2987,310 @@ document.getElementById("robotHomeBtn").addEventListener("click",function(){
     sendRobotCommand("/home","返回充電");
 });
 
+
+
+/* ===== 掃地機器人自動排程 API =====
+   之後後端 API 規格若不同，只要修改下面三個函式即可：
+   GET    /schedules
+   POST   /schedules
+   DELETE /schedules/:id
+
+   啟用 / 停用：
+   PATCH  /schedules/:id
+*/
+let robotSchedules = [];
+
+// 後端 API 尚未接好前，先把使用者設定的排程存在瀏覽器。
+// 之後填入 ROBOT_API_BASE 後，程式會改成從後端讀取排程。
+const ROBOT_LOCAL_SCHEDULE_KEY = "smartctrlRobotSchedules";
+
+function loadLocalRobotSchedules(){
+    try{
+        const saved = localStorage.getItem(ROBOT_LOCAL_SCHEDULE_KEY);
+        const parsed = saved ? JSON.parse(saved) : [];
+        return Array.isArray(parsed) ? parsed : [];
+    }catch(error){
+        return [];
+    }
+}
+
+function saveLocalRobotSchedules(){
+    localStorage.setItem(
+        ROBOT_LOCAL_SCHEDULE_KEY,
+        JSON.stringify(robotSchedules)
+    );
+}
+
+function robotRepeatLabel(value){
+    const labels = {
+        daily:"每天",
+        weekdays:"週一至週五",
+        weekends:"週六、週日",
+        once:"單次"
+    };
+    return labels[value] || value;
+}
+
+function robotActionLabel(value){
+    const labels = {
+        start:"開始清掃",
+        pause:"暫停",
+        home:"返回充電"
+    };
+    return labels[value] || value;
+}
+
+async function robotScheduleRequest(path,method,body){
+    if(!ROBOT_API_BASE){
+        throw new Error("尚未設定掃地機器人後端 API");
+    }
+
+    const options = {
+        method:method,
+        headers:{
+            "Content-Type":"application/json",
+            "ngrok-skip-browser-warning":"true"
+        }
+    };
+
+    if(body !== undefined){
+        options.body = JSON.stringify(body);
+    }
+
+    const response = await fetch(ROBOT_API_BASE + path,options);
+
+    if(!response.ok){
+        throw new Error("HTTP " + response.status);
+    }
+
+    const responseText = await response.text();
+    return responseText ? JSON.parse(responseText) : {};
+}
+
+async function loadRobotSchedules(){
+    // 還沒有後端 API：先讀取使用者存在瀏覽器裡的排程
+    if(!ROBOT_API_BASE){
+        robotSchedules = loadLocalRobotSchedules();
+        renderRobotSchedules();
+        return;
+    }
+
+    // 有後端 API：改由後端取得排程
+    try{
+        const json = await robotScheduleRequest("/schedules","GET");
+        const data = json.data || json;
+
+        robotSchedules =
+            Array.isArray(data) ? data :
+            Array.isArray(data.schedules) ? data.schedules : [];
+
+        renderRobotSchedules();
+    }catch(error){
+        robotLog("排程讀取失敗：" + error.message);
+    }
+}
+
+async function addRobotSchedule(){
+    const time = document.getElementById("robotScheduleTime").value;
+    const repeat = document.getElementById("robotScheduleRepeat").value;
+    const action = document.getElementById("robotScheduleAction").value;
+
+    if(!time){
+        robotLog("請先選擇排程時間");
+        return;
+    }
+
+    // 後端還沒接好時，先存到瀏覽器，讓介面可以完整展示與測試
+    if(!ROBOT_API_BASE){
+        robotSchedules.push({
+            id:"local-" + Date.now(),
+            time:time,
+            repeat:repeat,
+            action:action,
+            enabled:true
+        });
+
+        saveLocalRobotSchedules();
+        renderRobotSchedules();
+
+        robotLog(
+            "已新增排程：" +
+            robotRepeatLabel(repeat) + " " +
+            time + " " +
+            robotActionLabel(action)
+        );
+        return;
+    }
+
+    const button = document.getElementById("robotScheduleAddBtn");
+    button.disabled = true;
+
+    try{
+        const json = await robotScheduleRequest("/schedules","POST",{
+            time:time,
+            repeat:repeat,
+            action:action,
+            enabled:true
+        });
+
+        if(json.success === false){
+            throw new Error(json.message || "新增失敗");
+        }
+
+        robotLog(
+            "已新增排程：" +
+            robotRepeatLabel(repeat) + " " +
+            time + " " +
+            robotActionLabel(action)
+        );
+
+        await loadRobotSchedules();
+    }catch(error){
+        robotLog("新增排程失敗：" + error.message);
+    }finally{
+        button.disabled = false;
+    }
+}
+
+async function toggleRobotSchedule(id,currentEnabled){
+    // 尚未接後端 API：直接修改瀏覽器內的排程
+    if(!ROBOT_API_BASE){
+        const schedule = robotSchedules.find(function(item){
+            return String(item.id) === String(id);
+        });
+
+        if(schedule){
+            schedule.enabled = !currentEnabled;
+            saveLocalRobotSchedules();
+            renderRobotSchedules();
+            robotLog(schedule.enabled ? "排程已啟用" : "排程已停用");
+        }
+        return;
+    }
+
+    try{
+        const json = await robotScheduleRequest(
+            "/schedules/" + encodeURIComponent(id),
+            "PATCH",
+            {enabled:!currentEnabled}
+        );
+
+        if(json.success === false){
+            throw new Error(json.message || "更新失敗");
+        }
+
+        robotLog(!currentEnabled ? "排程已啟用" : "排程已停用");
+        await loadRobotSchedules();
+    }catch(error){
+        robotLog("排程更新失敗：" + error.message);
+    }
+}
+
+async function deleteRobotSchedule(id){
+    // 尚未接後端 API：直接從瀏覽器刪除
+    if(!ROBOT_API_BASE){
+        robotSchedules = robotSchedules.filter(function(item){
+            return String(item.id) !== String(id);
+        });
+
+        saveLocalRobotSchedules();
+        renderRobotSchedules();
+        robotLog("排程已刪除");
+        return;
+    }
+
+    try{
+        const json = await robotScheduleRequest(
+            "/schedules/" + encodeURIComponent(id),
+            "DELETE"
+        );
+
+        if(json.success === false){
+            throw new Error(json.message || "刪除失敗");
+        }
+
+        robotLog("排程已刪除");
+        await loadRobotSchedules();
+    }catch(error){
+        robotLog("刪除排程失敗：" + error.message);
+    }
+}
+
+function renderRobotSchedules(){
+    const list = document.getElementById("robotScheduleList");
+    list.innerHTML = "";
+
+    if(robotSchedules.length === 0){
+        const empty = document.createElement("div");
+        empty.className = "robotScheduleEmpty";
+        empty.textContent = "目前沒有設定任何排程。";
+        list.appendChild(empty);
+        return;
+    }
+
+    robotSchedules.forEach(function(schedule,index){
+        const id =
+            schedule.id !== undefined
+            ? schedule.id
+            : index;
+
+        const enabled = schedule.enabled !== false;
+
+        const item = document.createElement("div");
+        item.className = "robotScheduleItem";
+
+        const main = document.createElement("div");
+        main.className = "robotScheduleMain";
+
+        const title = document.createElement("strong");
+        title.textContent =
+            (schedule.time || "--:--") +
+            "　" +
+            robotActionLabel(schedule.action || "start");
+
+        const detail = document.createElement("span");
+        detail.textContent =
+            robotRepeatLabel(schedule.repeat || "daily") +
+            " · " +
+            (enabled ? "已啟用" : "已停用");
+
+        main.appendChild(title);
+        main.appendChild(detail);
+
+        const actions = document.createElement("div");
+        actions.className = "robotScheduleActions";
+
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className =
+            "robotScheduleToggle" +
+            (enabled ? "" : " disabled");
+        toggle.textContent = enabled ? "啟用中" : "已停用";
+        toggle.addEventListener("click",function(){
+            toggleRobotSchedule(id,enabled);
+        });
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "robotScheduleDelete";
+        remove.innerHTML = '<i class="fa-regular fa-trash-can"></i> 刪除';
+        remove.addEventListener("click",function(){
+            deleteRobotSchedule(id);
+        });
+
+        actions.appendChild(toggle);
+        actions.appendChild(remove);
+
+        item.appendChild(main);
+        item.appendChild(actions);
+        list.appendChild(item);
+    });
+}
+
+document.getElementById("robotScheduleAddBtn")
+    .addEventListener("click",addRobotSchedule);
+
+loadRobotSchedules();
 
 </script>
 </body>
