@@ -1416,6 +1416,96 @@ input[type=range]{
     }
 }
 
+
+/* ===== 首頁環境資訊與智慧用電分析入口 ===== */
+.summary{
+    grid-template-columns:repeat(3,1fr);
+}
+.homeQuickActions{
+    display:flex;
+    justify-content:flex-end;
+    margin:16px 0 4px;
+}
+.tariffOpenBtn{
+    min-height:42px;
+    padding:0 15px;
+    border:1px solid #d0d5dd;
+    border-radius:12px;
+    background:#fff;
+    color:#344054;
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 3px 12px rgba(16,24,40,.05);
+}
+.tariffOpenBtn:hover{
+    background:#f8fafc;
+}
+#tariffPage{
+    display:none;
+    width:min(1200px,calc(100% - 32px));
+    margin:28px auto 50px;
+}
+.tariffPageTopBar{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:18px;
+}
+.tariffPageTopBar h2{
+    margin:0;
+}
+.tariffPageTopBar p{
+    margin:3px 0 0;
+    color:#667085;
+    font-size:13px;
+}
+.tariffBackBtn{
+    min-height:42px;
+    padding:0 14px;
+    border:1px solid #d0d5dd;
+    border-radius:12px;
+    background:#fff;
+    color:#344054;
+    font-weight:600;
+    cursor:pointer;
+}
+.tariffPageContent .tariffSection{
+    margin-top:0;
+}
+@media(max-width:700px){
+    .summary{
+        grid-template-columns:1fr;
+    }
+    .homeQuickActions{
+        justify-content:stretch;
+    }
+    .tariffOpenBtn{
+        width:100%;
+        justify-content:center;
+    }
+    #tariffPage{
+        width:calc(100% - 20px);
+        margin-top:18px;
+    }
+}
+
+
+.voltageIcon{
+    width:34px;
+    height:34px;
+    border:2px solid currentColor;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    font-weight:700;
+    flex-shrink:0;
+}
+
 </style>
 </head>
 
@@ -1455,34 +1545,28 @@ input[type=range]{
         <div class="summary">
 
             <div class="infoCard">
-                <i class="fa-solid fa-temperature-three-quarters"></i>
+                <span class="voltageIcon">V</span>
                 <div>
-                    <small>室內溫度</small>
-                    <h2 id="temp">--°C</h2>
+                    <small>電壓</small>
+                    <h2 id="voltage">--V</h2>
                 </div>
             </div>
 
             <div class="infoCard">
-                <i class="fa-solid fa-droplet"></i>
+                <i class="fa-solid fa-wave-square"></i>
                 <div>
-                    <small>濕度</small>
-                    <h2 id="humi">--%</h2>
+                    <small>電流</small>
+                    <h2 id="current">--A</h2>
                 </div>
             </div>
 
-            <div class="infoCard">
-                <i class="fa-solid fa-bolt"></i>
-                <div>
-                    <small>功率</small>
-                    <h2 id="power">--W</h2>
-                </div>
-            </div>
+            
 
             <div class="infoCard">
                 <i class="fa-solid fa-lightbulb"></i>
                 <div>
-                    <small>Relay狀態</small>
-                    <h2 id="relay">--</h2>
+                    <small>功率</small>
+                    <h2 id="power">--W</h2>
                 </div>
             </div>
 
@@ -1517,15 +1601,7 @@ input[type=range]{
                 </button>
             </div>
 
-            <div class="status">
-                <h3>ESP32 狀態</h3>
-                <p id="deviceID">設備：--</p>
-                <p id="voltage">電壓：--</p>
-                <p id="current">電流：--</p>
-                <p id="powerStatus">功率：--</p>
-                <p id="time">更新時間：--</p>
-                <p id="alert">狀態：--</p>
-            </div>
+            
         </div>
 
         <!-- ===== 臥室 ===== -->
@@ -1540,7 +1616,35 @@ input[type=range]{
             </div>
         </div>
 
-        <!-- ===== 智慧用電分析 ===== -->
+        
+        <!-- ===== 智慧用電分析入口 ===== -->
+        <div class="homeQuickActions">
+            <button type="button" class="tariffOpenBtn" onclick="openTariffPage()">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>智慧用電分析</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<!-- ================= 智慧用電分析頁 ================= -->
+<div id="tariffPage">
+    <div class="tariffPageTopBar">
+        <button class="tariffBackBtn" type="button" onclick="closeTariffPage()">
+            <i class="fa-solid fa-arrow-left"></i> 返回智慧家庭
+        </button>
+        <div>
+            <h2>智慧用電分析</h2>
+            <p>Smart Energy Analysis</p>
+        </div>
+    </div>
+
+    <div class="tariffPageContent">
         <section class="tariffSection">
             <div class="tariffHeader">
                 <div>
@@ -1616,10 +1720,8 @@ input[type=range]{
                 </div>
             </div>
         </section>
-
     </div>
 </div>
-
 
 <!-- ================= 掃地機器人控制頁 ================= -->
 <div id="robotControlPage">
@@ -1979,15 +2081,40 @@ input[type=range]{
 
 <script>
 /* ===== 同一個 index.html 裡切換居家 / 醫院 ===== */
+
+/* ===== 智慧用電分析獨立頁 ===== */
+function openTariffPage(){
+    document.getElementById("homePage").style.display = "none";
+    document.getElementById("hospitalPage").style.display = "none";
+    document.getElementById("robotControlPage").style.display = "none";
+    document.getElementById("tariffPage").style.display = "block";
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function closeTariffPage(){
+    document.getElementById("tariffPage").style.display = "none";
+    document.getElementById("homePage").style.display = "";
+    document.getElementById("hospitalPage").style.display = "";
+
+    document.getElementById("hospitalPage").classList.remove("activePage");
+    document.getElementById("homePage").classList.add("activePage");
+    document.getElementById("hospitalNav").classList.remove("active");
+    document.getElementById("homeNav").classList.add("active");
+
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+
 function showPage(page){
     const homePage = document.getElementById("homePage");
     const hospitalPage = document.getElementById("hospitalPage");
     const robotControlPage = document.getElementById("robotControlPage");
+    const tariffPage = document.getElementById("tariffPage");
     const homeNav = document.getElementById("homeNav");
     const hospitalNav = document.getElementById("hospitalNav");
 
     // 離開掃地機器人控制頁時先恢復一般頁面顯示邏輯
     robotControlPage.style.display = "none";
+    tariffPage.style.display = "none";
     homePage.style.display = "";
     hospitalPage.style.display = "";
     stopRobotStatusTimer();
@@ -2030,10 +2157,9 @@ async function getData(){
         if(json.success){
             let d=json.data;
 
-            document.getElementById("temp").innerHTML=d.temp+"°C";
-            document.getElementById("humi").innerHTML=d.humi+"%";
+            document.getElementById("voltage").innerHTML=d.voltage+"V";
+            document.getElementById("current").innerHTML=d.current+"A";
             document.getElementById("power").innerHTML=d.power+"W";
-            document.getElementById("relay").innerHTML=d.relay;
 
             document.getElementById("deviceID").innerHTML=
             "設備："+d.id;
@@ -2077,8 +2203,6 @@ async function getData(){
         }
 
     }catch(e){
-        document.getElementById("alert").innerHTML=
-        "API連線失敗";
 
         console.log(e);
     }
