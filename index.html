@@ -1506,6 +1506,124 @@ input[type=range]{
     flex-shrink:0;
 }
 
+
+.deviceInsertAnchor{display:none!important;}
+.settingsOverlay{position:fixed;inset:0;z-index:10020;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(15,23,42,.42);}
+.settingsOverlay.show{display:flex;}
+.settingsPanel{width:min(480px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 24px 70px rgba(15,23,42,.2);}
+.settingsHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;}
+.settingsHeader h2{margin:0}.settingsHeader p{margin:5px 0 0;color:#667085;font-size:13px;}
+.settingsClose{width:40px;height:40px;border:1px solid #e4e7ec;border-radius:12px;background:#fff;cursor:pointer;color:#475467;}
+.settingsCard{border:1px solid #eaecf0;border-radius:16px;padding:18px;background:#fbfcfe;}
+.settingsCard h3{margin:0 0 5px}.settingsCard p{margin:0 0 16px;color:#667085;font-size:13px;}
+.settingsCard label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;}
+.settingsCard select{width:100%;height:44px;border:1px solid #d0d5dd;border-radius:12px;padding:0 12px;background:#fff;margin-bottom:12px;}
+.settingsAddBtn{width:100%;min-height:44px;border:0;border-radius:12px;background:#2d6cff;color:#fff;font-weight:600;cursor:pointer;}
+
+
+.homeScheduleForm{grid-template-columns:1fr 1fr 1fr 1fr auto;}
+.homeScheduleNote{margin-top:12px;color:#667085;font-size:12px;line-height:1.6;}
+@media(max-width:1000px){.homeScheduleForm{grid-template-columns:1fr 1fr}.homeScheduleForm .robotScheduleAddBtn{grid-column:1/-1}}
+@media(max-width:560px){.homeScheduleForm{grid-template-columns:1fr}}
+
+/* ===== 首頁控制紀錄、排程使用者、掃地機器人面板放大 ===== */
+.homeScheduleForm{grid-template-columns:repeat(4,minmax(0,1fr)) auto !important;}
+.homeControlLogSection{margin-top:20px;border:1px solid #e4e7ec;border-radius:20px;padding:20px;background:rgba(255,255,255,.45);}
+.homeControlLogHeader{margin-bottom:14px;}
+.homeControlLogHeader h3{font-size:18px;margin-bottom:5px;}
+.homeControlLogHeader p{color:#667085;font-size:13px;}
+.homeRobotLog{min-height:120px;max-height:190px;}
+#robotControlPage{padding:32px 5vw;}
+#robotControlPage .robotTopBar,#robotControlPage .robotControlPanel{max-width:1320px;margin-left:auto;margin-right:auto;}
+#robotControlPage .robotControlPanel{padding:36px;}
+#robotControlPage .robotBigIcon{width:68px;height:68px;font-size:30px;}
+#robotControlPage .robotStatusCard{padding:22px;min-height:96px;}
+#robotControlPage .robotControlBtn{min-height:118px;font-size:16px;}
+#robotControlPage .robotControlBtn i{font-size:28px;}
+@media(max-width:1100px){.homeScheduleForm{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}.homeScheduleForm .robotScheduleAddBtn{grid-column:1/-1;}}
+@media(max-width:650px){.homeScheduleForm{grid-template-columns:1fr !important;}}
+
+
+.scheduleUserBar{display:flex;align-items:center;gap:10px;margin:14px 0 18px;flex-wrap:wrap;}
+.scheduleUserLabel{font-size:14px;font-weight:700;color:#344054;}
+.scheduleUserButtons{display:flex;gap:8px;flex-wrap:wrap;}
+.scheduleUserBtn,.scheduleAddUserBtn{border:1px solid #e4e7ec;background:#fff;color:#344054;padding:9px 16px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;transition:.2s ease;box-shadow:0 2px 8px rgba(16,24,40,.04);}
+.scheduleUserBtn:hover,.scheduleAddUserBtn:hover{transform:translateY(-1px);border-color:#b9c8ff;}
+.scheduleUserBtn.active{background:#2f6bff;color:#fff;border-color:#2f6bff;box-shadow:0 5px 14px rgba(47,107,255,.22);}
+.scheduleAddUserBtn{color:#2f6bff;border-style:dashed;}
+
+
+/* ===== 排程使用者：移到標題右側 ===== */
+.scheduleHeaderWithUsers{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:20px;
+}
+.scheduleHeaderWithUsers .scheduleUserBar{
+    margin:0;
+    padding:6px 8px;
+    gap:7px;
+    justify-content:flex-end;
+    flex-shrink:0;
+}
+.scheduleHeaderWithUsers .scheduleUserLabel{
+    font-size:13px;
+    color:#667085;
+}
+.scheduleHeaderWithUsers .scheduleUserBtn,
+.scheduleHeaderWithUsers .scheduleAddUserBtn{
+    padding:7px 13px;
+    font-size:13px;
+}
+.scheduleHeaderWithUsers .scheduleAddUserBtn{
+    background:#f5f7fb;
+    color:#667085;
+    border:1px solid #e4e7ec;
+    box-shadow:none;
+}
+.scheduleHeaderWithUsers .scheduleAddUserBtn:hover{
+    background:#eef2f8;
+    color:#344054;
+    border-color:#d0d5dd;
+}
+@media(max-width:850px){
+    .scheduleHeaderWithUsers{
+        flex-direction:column;
+    }
+    .scheduleHeaderWithUsers .scheduleUserBar{
+        justify-content:flex-start;
+        padding-left:0;
+    }
+}
+
+
+.scheduleUserModal{
+    position:fixed;inset:0;background:rgba(15,23,42,.28);
+    display:none;align-items:center;justify-content:center;
+    z-index:9999;padding:20px;
+}
+.scheduleUserModal.show{display:flex;}
+.scheduleUserModalCard{
+    width:min(400px,100%);background:#fff;border-radius:20px;
+    padding:24px;box-shadow:0 20px 60px rgba(15,23,42,.18);
+}
+.scheduleUserModalTitle{font-size:19px;font-weight:700;color:#1d2939;margin-bottom:6px;}
+.scheduleUserModalText{font-size:13px;color:#667085;margin-bottom:16px;}
+#scheduleUserNameInput{
+    width:100%;height:46px;border:1px solid #d0d5dd;border-radius:12px;
+    padding:0 14px;font-size:15px;outline:none;background:#f9fafb;
+}
+#scheduleUserNameInput:focus{border-color:#2f6bff;background:#fff;box-shadow:0 0 0 3px rgba(47,107,255,.10);}
+.scheduleUserModalActions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px;}
+.scheduleUserCancelBtn,.scheduleUserConfirmBtn{
+    border:0;border-radius:10px;padding:10px 17px;font-size:14px;
+    font-weight:600;cursor:pointer;
+}
+.scheduleUserCancelBtn{background:#f2f4f7;color:#475467;}
+.scheduleUserConfirmBtn{background:#2f6bff;color:#fff;}
+.scheduleUserConfirmBtn:hover{background:#2458d8;}
+
 </style>
 </head>
 
@@ -1536,9 +1654,9 @@ input[type=range]{
                 <p>Smart Home Dashboard</p>
             </div>
 
-            <button class="editBtn">
-                <i class="fa-solid fa-sliders"></i>
-                編輯模式
+            <button class="editBtn" type="button" onclick="openSettingsModal()">
+                <i class="fa-solid fa-gear"></i>
+                設定
             </button>
         </div>
 
@@ -1572,6 +1690,16 @@ input[type=range]{
 
         </div>
 
+        <!-- ===== 智慧用電分析入口 ===== -->
+        <div class="homeQuickActions">
+            <button type="button" class="tariffOpenBtn" onclick="openTariffPage()">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>智慧用電分析</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+
         <div class="tabs">
             <button class="active" onclick="switchHomeRoom(this,'living')">客廳</button>
             <button onclick="switchHomeRoom(this,'bedroom')">臥室</button>
@@ -1595,10 +1723,7 @@ input[type=range]{
                     <span>ILIFE A10s · API</span>
                 </div>
 
-                <button type="button" class="addDeviceCard" onclick="openDeviceModal(this)">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>新增裝置</span>
-                </button>
+                <button type="button" class="deviceInsertAnchor" aria-hidden="true" tabindex="-1"></button>
             </div>
 
             
@@ -1609,22 +1734,71 @@ input[type=range]{
             <h3>0 個裝置</h3>
 
             <div class="deviceGrid">
-                <button type="button" class="addDeviceCard" onclick="openDeviceModal(this)">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>新增裝置</span>
-                </button>
+                <button type="button" class="deviceInsertAnchor" aria-hidden="true" tabindex="-1"></button>
             </div>
         </div>
 
         
-        <!-- ===== 智慧用電分析入口 ===== -->
-        <div class="homeQuickActions">
-            <button type="button" class="tariffOpenBtn" onclick="openTariffPage()">
-                <i class="fa-solid fa-chart-column"></i>
-                <span>智慧用電分析</span>
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
+        <div class="robotScheduleSection homeScheduleSection">
+            <div class="robotScheduleHeader scheduleHeaderWithUsers">
+                <div>
+                    <h3><i class="fa-regular fa-clock"></i> 自動排程</h3>
+                    <p>新增的智慧家電會自動出現在這裡，可設定指定時間執行。</p>
+                </div>
+                <div class="scheduleUserBar">
+                    <span class="scheduleUserLabel">使用者</span>
+                    <div id="scheduleUserButtons" class="scheduleUserButtons"></div>
+                    <button type="button" class="scheduleAddUserBtn" onclick="addScheduleUser()">＋ 新增</button>
+                </div>
+            </div>
+            <div class="robotScheduleForm homeScheduleForm">
+                <div class="robotScheduleField">
+                    <label for="robotScheduleDevice">裝置</label>
+                    <select id="robotScheduleDevice"></select>
+                </div>
+                <div class="robotScheduleField">
+                    <label for="robotScheduleTime">執行時間</label>
+                    <input id="robotScheduleTime" type="time" value="22:30">
+                </div>
+                <div class="robotScheduleField">
+                    <label for="robotScheduleRepeat">重複</label>
+                    <select id="robotScheduleRepeat">
+                        <option value="daily">每天</option>
+                        <option value="weekdays">週一至週五</option>
+                        <option value="weekends">週六至週日</option>
+                        <option value="monday">星期一</option>
+                        <option value="tuesday">星期二</option>
+                        <option value="wednesday">星期三</option>
+                        <option value="thursday">星期四</option>
+                        <option value="friday">星期五</option>
+                        <option value="saturday">星期六</option>
+                        <option value="sunday">星期日</option>
+                        <option value="once">單次</option>
+                    </select>
+                </div>
+                <div class="robotScheduleField">
+                    <label for="robotScheduleAction">執行動作</label>
+                    <select id="robotScheduleAction"></select>
+                </div>
+                <button id="robotScheduleAddBtn" class="robotScheduleAddBtn" type="button">
+                    <i class="fa-solid fa-plus"></i> 新增排程
+                </button>
+            </div>
+            <div id="robotScheduleList" class="robotScheduleList"></div>
+            <div class="homeScheduleNote">
+                排程會保存在此瀏覽器；接上排程後端後，即使關閉網頁也能由系統自動執行。
+            </div>
         </div>
+
+        <div class="homeControlLogSection">
+            <div class="homeControlLogHeader">
+                <h3><i class="fa-solid fa-list"></i> 控制紀錄</h3>
+                <p>裝置操作與排程設定紀錄會顯示在這裡。</p>
+            </div>
+            <div id="robotLogBox" class="robotLog homeRobotLog">等待操作...</div>
+        </div>
+
+        
 
 
     </div>
@@ -1778,53 +1952,9 @@ input[type=range]{
             </button>
         </div>
 
-        <div class="robotScheduleSection">
-            <div class="robotScheduleHeader">
-                <div>
-                    <h3><i class="fa-regular fa-clock"></i> 自動排程</h3>
-                    <p>設定掃地機器人在指定時間自動執行。</p>
-                </div>
-            </div>
+        
 
-            <div class="robotScheduleForm">
-                <div class="robotScheduleField">
-                    <label for="robotScheduleTime">執行時間</label>
-                    <input id="robotScheduleTime" type="time" value="22:30">
-                </div>
 
-                <div class="robotScheduleField">
-                    <label for="robotScheduleRepeat">重複</label>
-                    <select id="robotScheduleRepeat">
-                        <option value="daily">每天</option>
-                        <option value="weekdays">週一至週五</option>
-                        <option value="weekends">週六、週日</option>
-                        <option value="once">單次</option>
-                    </select>
-                </div>
-
-                <div class="robotScheduleField">
-                    <label for="robotScheduleAction">執行動作</label>
-                    <select id="robotScheduleAction">
-                        <option value="start">開始清掃</option>
-                        <option value="pause">暫停</option>
-                        <option value="home">返回充電</option>
-                    </select>
-                </div>
-
-                <button id="robotScheduleAddBtn" class="robotScheduleAddBtn" type="button">
-                    <i class="fa-solid fa-plus"></i> 新增排程
-                </button>
-            </div>
-
-            <div id="robotScheduleList" class="robotScheduleList"></div>
-        </div>
-
-        <div class="robotBottomGrid robotLogOnly">
-            <div class="robotInfoBox">
-                <h3>控制紀錄</h3>
-                <div id="robotLogBox" class="robotLog">等待操作...</div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -2027,6 +2157,31 @@ input[type=range]{
     </div>
 </div>
 
+
+
+<!-- ================= 居家設定 ================= -->
+<div id="settingsModal" class="settingsOverlay">
+    <div class="settingsPanel">
+        <div class="settingsHeader">
+            <div>
+                <h2><i class="fa-solid fa-gear"></i> 設定</h2>
+                <p>管理智慧家庭裝置</p>
+            </div>
+            <button type="button" class="settingsClose" onclick="closeSettingsModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="settingsCard">
+            <h3>新增裝置</h3>
+            <p>選擇要新增裝置的房間。</p>
+            <label for="settingsRoomSelect">房間</label>
+            <select id="settingsRoomSelect"></select>
+            <button type="button" class="settingsAddBtn" onclick="openDeviceFromSettings()">
+                <i class="fa-solid fa-plus"></i> 新增裝置
+            </button>
+        </div>
+    </div>
+</div>
 
 <!-- ===== 新增裝置彈出視窗 ===== -->
 <div id="deviceModalOverlay" class="deviceModalOverlay">
@@ -2355,19 +2510,13 @@ roomModalAdd.addEventListener("click", function(){
     // 建立新房間內容，預設 0 個裝置
     const newPanel = document.createElement("div");
     newPanel.className = "homeRoomPanel";
+    newPanel.dataset.roomName = roomName;
     newPanel.innerHTML = `
         <h3>0 個裝置</h3>
         <div class="deviceGrid">
-            <button type="button" class="addDeviceCard">
-                <i class="fa-solid fa-plus"></i>
-                <span>新增裝置</span>
-            </button>
+            <button type="button" class="deviceInsertAnchor" aria-hidden="true" tabindex="-1"></button>
         </div>
     `;
-
-    newPanel.querySelector(".addDeviceCard").addEventListener("click", function(){
-        openDeviceModal(this);
-    });
 
     document.getElementById("bedroomPanel").insertAdjacentElement("afterend", newPanel);
 
@@ -2398,6 +2547,35 @@ newRoomName.addEventListener("keydown", function(event){
     }
 });
 
+
+
+function openSettingsModal(){
+    const select = document.getElementById("settingsRoomSelect");
+    select.innerHTML = "";
+    document.querySelectorAll("#homePage .homeRoomPanel").forEach(function(panel){
+        const option = document.createElement("option");
+        option.value = panel.id;
+        if(panel.id === "livingRoomPanel") option.textContent = "客廳";
+        else if(panel.id === "bedroomPanel") option.textContent = "臥室";
+        else option.textContent = panel.dataset.roomName || "新增房間";
+        select.appendChild(option);
+    });
+    document.getElementById("settingsModal").classList.add("show");
+}
+function closeSettingsModal(){
+    document.getElementById("settingsModal").classList.remove("show");
+}
+function openDeviceFromSettings(){
+    const panel = document.getElementById(document.getElementById("settingsRoomSelect").value);
+    if(!panel) return;
+    const anchor = panel.querySelector(".deviceInsertAnchor");
+    if(!anchor) return;
+    closeSettingsModal();
+    openDeviceModal(anchor);
+}
+document.getElementById("settingsModal").addEventListener("click",function(event){
+    if(event.target === this) closeSettingsModal();
+});
 
 /* ===== 新增裝置功能：智慧家電 / 傳統家電 ===== */
 const deviceModalOverlay = document.getElementById("deviceModalOverlay");
@@ -2557,6 +2735,13 @@ deviceModalAdd.addEventListener("click", function(){
 
     grid.insertBefore(newDevice, currentAddDeviceButton);
 
+    // 智慧家電新增成功後，自動加入首頁「自動排程」的裝置清單。
+    // 傳統家電維持一般裝置，不加入智慧排程。
+    if(selectedDeviceType === "smart"){
+        const scheduleDeviceId = registerScheduleDevice(deviceName,"switch");
+        newDevice.dataset.scheduleDeviceId = scheduleDeviceId;
+    }
+
     const countTitle = panel.querySelector("h3");
     const deviceCount = grid.querySelectorAll(".device").length;
     countTitle.textContent = deviceCount + " 個裝置";
@@ -2646,64 +2831,12 @@ async function loadTariffAnalysis(){
             throw new Error("API 回傳格式不正確");
         }
 
-        const data = json.data;
-        const metadata = data.metadata || {};
-        const comparison = data.scenarioComparison || {};
-        const standardHome = comparison.standardHome || {};
-        const timeOfUseHome = comparison.timeOfUseHome || {};
-        const savings = comparison.savings || {};
-        const schedule = data.scheduleCombinations || {};
-        const allIntervals = Array.isArray(schedule.allIntervals)
-            ? schedule.allIntervals
-            : [];
-
-        document.getElementById("tariffEnergy").textContent =
-            formatNumber(metadata.totalEnergyKwh) + " kWh";
-
-        document.getElementById("tariffMetadata").textContent =
-            formatNumber(metadata.powerKw) + " kW × " +
-            formatNumber(metadata.durationHours) + " 小時" +
-            (metadata.date ? "｜基準日 " + metadata.date : "");
-
-        document.getElementById("tariffStandardCost").textContent =
-            formatMoney(standardHome.cost) + " 元";
-
-        document.getElementById("tariffStandardRate").textContent =
-            standardHome.ratePerKwh || standardHome.modelName || "--";
-
-        document.getElementById("tariffBestPeriod").textContent =
-            timeOfUseHome.bestPeriod || "--";
-
-        document.getElementById("tariffBestCost").textContent =
-            "預估 " + formatMoney(timeOfUseHome.bestCost) + " 元";
-
-        document.getElementById("tariffWorstPeriod").textContent =
-            timeOfUseHome.worstPeriod || "--";
-
-        document.getElementById("tariffWorstCost").textContent =
-            "預估 " + formatMoney(timeOfUseHome.worstCost) + " 元";
-
-        document.getElementById("tariffSavedStandard").textContent =
-            savings.savedComparedToStandard || "--";
-
-        document.getElementById("tariffSavedWorst").textContent =
-            savings.savedComparedToWorstTOU || "--";
-
-        results.style.display = "block";
-
-        if(allIntervals.length > 0){
-            renderTariffChart(allIntervals);
-            status.textContent =
-                "分析完成，共比較 " + allIntervals.length + " 組連續運轉時段。";
-        }else{
-            status.textContent = "分析完成，但 API 沒有回傳時段圖表資料。";
-        }
+        renderTariffAnalysisData(json.data,false,status,results);
 
     }catch(error){
-        console.error("電價分析 API 連線失敗：",error);
-        status.textContent =
-            "電價分析載入失敗，請確認 ngrok 後端是否在線上。";
-        results.style.display = "none";
+        console.warn("電價分析後端無法使用，改用本機估算：",error);
+        const localData = buildLocalTariffAnalysis(duration,power);
+        renderTariffAnalysisData(localData,true,status,results);
 
     }finally{
         analyzeBtn.disabled = false;
@@ -2712,10 +2845,76 @@ async function loadTariffAnalysis(){
     }
 }
 
+
+function buildLocalTariffAnalysis(duration,power){
+    const energy = Number((duration * power).toFixed(3));
+    const standardRate = 3.0;
+    const offPeakRate = 2.06;
+    const peakRate = 5.16;
+    const standardCost = energy * standardRate;
+    const bestCost = energy * offPeakRate;
+    const worstCost = energy * peakRate;
+    const savedStandard = Math.max(0,standardCost-bestCost);
+    const savedWorst = Math.max(0,worstCost-bestCost);
+
+    const intervals = [];
+    for(let hour=0;hour<24;hour+=3){
+        const end = hour+3;
+        const rate = hour >= 9 ? peakRate : offPeakRate;
+        intervals.push({
+            timeRange:String(hour).padStart(2,"0")+":00 ~ "+String(end).padStart(2,"0")+":00",
+            cost:Number((energy*rate).toFixed(2))
+        });
+    }
+
+    return {
+        metadata:{durationHours:duration,powerKw:power,totalEnergyKwh:energy},
+        scenarioComparison:{
+            standardHome:{modelName:"一般家庭（本機估算）",ratePerKwh:"3 元/度",cost:Number(standardCost.toFixed(2))},
+            timeOfUseHome:{modelName:"時間電價（本機估算）",bestPeriod:"00:00 ~ 03:00",bestCost:Number(bestCost.toFixed(2)),worstPeriod:"21:00 ~ 24:00",worstCost:Number(worstCost.toFixed(2))},
+            savings:{
+                savedComparedToStandard:savedStandard.toFixed(2)+" 元 ("+(standardCost?savedStandard/standardCost*100:0).toFixed(1)+"%)",
+                savedComparedToWorstTOU:savedWorst.toFixed(2)+" 元 ("+(worstCost?savedWorst/worstCost*100:0).toFixed(1)+"%)"
+            }
+        },
+        scheduleCombinations:{allIntervals:intervals}
+    };
+}
+
+function renderTariffAnalysisData(data,isLocal,status,results){
+    const metadata=data.metadata||{};
+    const comparison=data.scenarioComparison||{};
+    const standardHome=comparison.standardHome||{};
+    const timeOfUseHome=comparison.timeOfUseHome||{};
+    const savings=comparison.savings||{};
+    const schedule=data.scheduleCombinations||{};
+    const allIntervals=Array.isArray(schedule.allIntervals)?schedule.allIntervals:[];
+
+    document.getElementById("tariffEnergy").textContent=formatNumber(metadata.totalEnergyKwh)+" kWh";
+    document.getElementById("tariffMetadata").textContent=
+        formatNumber(metadata.powerKw)+" kW × "+formatNumber(metadata.durationHours)+" 小時"+
+        (metadata.date?"｜基準日 "+metadata.date:"")+(isLocal?"｜本機估算":"");
+    document.getElementById("tariffStandardCost").textContent=formatMoney(standardHome.cost)+" 元";
+    document.getElementById("tariffStandardRate").textContent=standardHome.ratePerKwh||standardHome.modelName||"--";
+    document.getElementById("tariffBestPeriod").textContent=timeOfUseHome.bestPeriod||"--";
+    document.getElementById("tariffBestCost").textContent="預估 "+formatMoney(timeOfUseHome.bestCost)+" 元";
+    document.getElementById("tariffWorstPeriod").textContent=timeOfUseHome.worstPeriod||"--";
+    document.getElementById("tariffWorstCost").textContent="預估 "+formatMoney(timeOfUseHome.worstCost)+" 元";
+    document.getElementById("tariffSavedStandard").textContent=savings.savedComparedToStandard||"--";
+    document.getElementById("tariffSavedWorst").textContent=savings.savedComparedToWorstTOU||"--";
+    results.style.display="block";
+
+    if(allIntervals.length>0) renderTariffChart(allIntervals);
+    status.textContent=isLocal
+        ?"後端目前無法連線，已使用本機估算模式。"
+        :"分析完成，共比較 "+allIntervals.length+" 組連續運轉時段。";
+}
+
+
 function renderTariffChart(allIntervals){
     if(typeof Chart === "undefined"){
         document.getElementById("tariffStatus").textContent =
-            "資料取得成功，但 Chart.js 載入失敗。";
+            "分析結果已產生，但圖表元件目前無法載入。";
         return;
     }
 
@@ -3126,11 +3325,23 @@ let robotSchedules = [];
 
 // 後端 API 尚未接好前，先把使用者設定的排程存在瀏覽器。
 // 之後填入 ROBOT_API_BASE 後，程式會改成從後端讀取排程。
-const ROBOT_LOCAL_SCHEDULE_KEY = "smartctrlRobotSchedules";
+const ROBOT_LOCAL_SCHEDULE_KEY = "smartctrlHomeSchedules";
+const ROBOT_OLD_SCHEDULE_KEY = "smartctrlRobotSchedules";
 
 function loadLocalRobotSchedules(){
     try{
-        const saved = localStorage.getItem(ROBOT_LOCAL_SCHEDULE_KEY);
+        let saved = localStorage.getItem(ROBOT_LOCAL_SCHEDULE_KEY);
+        if(!saved){
+            const oldSaved = localStorage.getItem(ROBOT_OLD_SCHEDULE_KEY);
+            if(oldSaved){
+                const oldParsed = JSON.parse(oldSaved);
+                if(Array.isArray(oldParsed)){
+                    const migrated = oldParsed.map(item => Object.assign({device:"robot"},item));
+                    localStorage.setItem(ROBOT_LOCAL_SCHEDULE_KEY,JSON.stringify(migrated));
+                    return migrated;
+                }
+            }
+        }
         const parsed = saved ? JSON.parse(saved) : [];
         return Array.isArray(parsed) ? parsed : [];
     }catch(error){
@@ -3148,8 +3359,15 @@ function saveLocalRobotSchedules(){
 function robotRepeatLabel(value){
     const labels = {
         daily:"每天",
+        monday:"星期一",
+        tuesday:"星期二",
+        wednesday:"星期三",
+        thursday:"星期四",
+        friday:"星期五",
+        saturday:"星期六",
+        sunday:"星期日",
         weekdays:"週一至週五",
-        weekends:"週六、週日",
+        weekends:"週六至週日",
         once:"單次"
     };
     return labels[value] || value;
@@ -3163,6 +3381,124 @@ function robotActionLabel(value){
     };
     return labels[value] || value;
 }
+
+/* ===== 通用排程裝置清單 ===== */
+const SMARTCTRL_SCHEDULE_DEVICES_KEY = "smartctrlScheduleDevices";
+
+function getSavedScheduleDevices(){
+    try{
+        const saved = JSON.parse(localStorage.getItem(SMARTCTRL_SCHEDULE_DEVICES_KEY) || "[]");
+        return Array.isArray(saved) ? saved : [];
+    }catch(error){
+        return [];
+    }
+}
+
+function saveScheduleDevices(devices){
+    localStorage.setItem(SMARTCTRL_SCHEDULE_DEVICES_KEY,JSON.stringify(devices));
+}
+
+function getAllScheduleDevices(){
+    const fixed = [
+        {id:"lamp",name:"檯燈",type:"switch"},
+        {id:"robot",name:"掃地機器人",type:"robot"}
+    ];
+
+    const saved = getSavedScheduleDevices();
+    const merged = [...fixed];
+
+    saved.forEach(function(device){
+        if(!merged.some(item => item.id === device.id)){
+            merged.push(device);
+        }
+    });
+
+    return merged;
+}
+
+function refreshScheduleDeviceOptions(){
+    const select = document.getElementById("robotScheduleDevice");
+    if(!select) return;
+
+    const current = select.value;
+    select.innerHTML = "";
+
+    getAllScheduleDevices().forEach(function(device){
+        const option = document.createElement("option");
+        option.value = device.id;
+        option.textContent = device.name;
+        option.dataset.deviceType = device.type || "switch";
+        select.appendChild(option);
+    });
+
+    if(Array.from(select.options).some(option => option.value === current)){
+        select.value = current;
+    }
+
+    updateScheduleActionOptions();
+}
+
+function registerScheduleDevice(name,type){
+    const devices = getSavedScheduleDevices();
+
+    const id =
+        "device-" +
+        Date.now() +
+        "-" +
+        Math.random().toString(36).slice(2,7);
+
+    devices.push({
+        id:id,
+        name:name,
+        type:type || "switch"
+    });
+
+    saveScheduleDevices(devices);
+    refreshScheduleDeviceOptions();
+
+    return id;
+}
+
+function getScheduleDevice(value){
+    return getAllScheduleDevices().find(device => device.id === value);
+}
+
+function scheduleDeviceLabel(value){
+    const device = getScheduleDevice(value);
+    return device ? device.name : value;
+}
+function scheduleActionLabel(deviceId,value){
+    const device = getScheduleDevice(deviceId);
+    const type = device ? device.type : (deviceId === "robot" ? "robot" : "switch");
+
+    if(type === "robot"){
+        return robotActionLabel(value);
+    }
+
+    return value === "on" ? "開啟" :
+           value === "off" ? "關閉" :
+           value;
+}
+function updateScheduleActionOptions(){
+    const deviceSelect = document.getElementById("robotScheduleDevice");
+    const action = document.getElementById("robotScheduleAction");
+    if(!deviceSelect || !action) return;
+
+    const device = getScheduleDevice(deviceSelect.value);
+    const type = device ? device.type : "switch";
+
+    if(type === "robot"){
+        action.innerHTML =
+            '<option value="start">開始清掃</option>' +
+            '<option value="pause">暫停</option>' +
+            '<option value="home">返回充電</option>';
+    }else{
+        action.innerHTML =
+            '<option value="on">開啟</option>' +
+            '<option value="off">關閉</option>';
+    }
+}
+
 
 async function robotScheduleRequest(path,method,body){
     if(!ROBOT_API_BASE){
@@ -3214,7 +3550,64 @@ async function loadRobotSchedules(){
     }
 }
 
+
+const SMARTCTRL_SCHEDULE_USERS_KEY="smartctrlScheduleUsers";
+function getScheduleUsers(){
+    try{const x=JSON.parse(localStorage.getItem(SMARTCTRL_SCHEDULE_USERS_KEY)||"[]");return Array.isArray(x)&&x.length?x:["A","B"];}
+    catch(e){return ["A","B"];}
+}
+function saveScheduleUsers(x){localStorage.setItem(SMARTCTRL_SCHEDULE_USERS_KEY,JSON.stringify(x));}
+function selectScheduleUser(btn){
+    document.querySelectorAll(".scheduleUserBtn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+}
+function renderScheduleUsers(selected){
+    const box=document.getElementById("scheduleUserButtons"); if(!box)return;
+    const users=getScheduleUsers(); box.innerHTML="";
+    users.forEach((name,i)=>{
+        const b=document.createElement("button"); b.type="button";
+        b.className="scheduleUserBtn"+((selected===name||(!selected&&i===0))?" active":"");
+        b.dataset.user=name; b.textContent="使用者 "+name;
+        b.onclick=()=>selectScheduleUser(b); box.appendChild(b);
+    });
+}
+function addScheduleUser(){
+    const modal=document.getElementById("scheduleUserModal");
+    const input=document.getElementById("scheduleUserNameInput");
+    if(!modal||!input)return;
+    input.value="";
+    modal.classList.add("show");
+    setTimeout(()=>input.focus(),50);
+}
+function closeScheduleUserModal(){
+    const modal=document.getElementById("scheduleUserModal");
+    if(modal)modal.classList.remove("show");
+}
+function confirmAddScheduleUser(){
+    const input=document.getElementById("scheduleUserNameInput");
+    if(!input)return;
+    const name=input.value.trim();
+    if(!name){
+        input.focus();
+        return;
+    }
+    const users=getScheduleUsers();
+    if(users.includes(name)){
+        alert("這個使用者已經存在");
+        input.focus();
+        return;
+    }
+    users.push(name);
+    saveScheduleUsers(users);
+    renderScheduleUsers(name);
+    closeScheduleUserModal();
+    addRobotLog("已新增使用者："+name);
+}
+
 async function addRobotSchedule(){
+    const activeUserBtn=document.querySelector(".scheduleUserBtn.active");
+    const user=activeUserBtn?activeUserBtn.dataset.user:"A";
+    const device = document.getElementById("robotScheduleDevice").value;
     const time = document.getElementById("robotScheduleTime").value;
     const repeat = document.getElementById("robotScheduleRepeat").value;
     const action = document.getElementById("robotScheduleAction").value;
@@ -3228,6 +3621,8 @@ async function addRobotSchedule(){
     if(!ROBOT_API_BASE){
         robotSchedules.push({
             id:"local-" + Date.now(),
+            user:user,
+            device:device,
             time:time,
             repeat:repeat,
             action:action,
@@ -3238,10 +3633,11 @@ async function addRobotSchedule(){
         renderRobotSchedules();
 
         robotLog(
-            "已新增排程：" +
+            "已新增排程：使用者 " + user + "｜" +
+            scheduleDeviceLabel(device) + "｜" +
             robotRepeatLabel(repeat) + " " +
-            time + " " +
-            robotActionLabel(action)
+            time + "｜" +
+            scheduleActionLabel(device,action)
         );
         return;
     }
@@ -3251,6 +3647,8 @@ async function addRobotSchedule(){
 
     try{
         const json = await robotScheduleRequest("/schedules","POST",{
+            user:user,
+            device:device,
             time:time,
             repeat:repeat,
             action:action,
@@ -3262,10 +3660,11 @@ async function addRobotSchedule(){
         }
 
         robotLog(
-            "已新增排程：" +
+            "已新增排程：使用者 " + user + "｜" +
+            scheduleDeviceLabel(device) + "｜" +
             robotRepeatLabel(repeat) + " " +
-            time + " " +
-            robotActionLabel(action)
+            time + "｜" +
+            scheduleActionLabel(device,action)
         );
 
         await loadRobotSchedules();
@@ -3341,81 +3740,75 @@ async function deleteRobotSchedule(id){
 }
 
 function renderRobotSchedules(){
-    const list = document.getElementById("robotScheduleList");
-    list.innerHTML = "";
-
-    if(robotSchedules.length === 0){
-        const empty = document.createElement("div");
-        empty.className = "robotScheduleEmpty";
-        empty.textContent = "目前沒有設定任何排程。";
-        list.appendChild(empty);
-        return;
+    const list=document.getElementById("robotScheduleList");
+    list.innerHTML="";
+    if(robotSchedules.length===0){
+        const empty=document.createElement("div");
+        empty.className="robotScheduleEmpty";
+        empty.textContent="目前沒有設定任何排程。";
+        list.appendChild(empty); return;
     }
-
     robotSchedules.forEach(function(schedule,index){
-        const id =
-            schedule.id !== undefined
-            ? schedule.id
-            : index;
-
-        const enabled = schedule.enabled !== false;
-
-        const item = document.createElement("div");
-        item.className = "robotScheduleItem";
-
-        const main = document.createElement("div");
-        main.className = "robotScheduleMain";
-
-        const title = document.createElement("strong");
-        title.textContent =
-            (schedule.time || "--:--") +
-            "　" +
-            robotActionLabel(schedule.action || "start");
-
-        const detail = document.createElement("span");
-        detail.textContent =
-            robotRepeatLabel(schedule.repeat || "daily") +
-            " · " +
-            (enabled ? "已啟用" : "已停用");
-
-        main.appendChild(title);
-        main.appendChild(detail);
-
-        const actions = document.createElement("div");
-        actions.className = "robotScheduleActions";
-
-        const toggle = document.createElement("button");
-        toggle.type = "button";
-        toggle.className =
-            "robotScheduleToggle" +
-            (enabled ? "" : " disabled");
-        toggle.textContent = enabled ? "啟用中" : "已停用";
-        toggle.addEventListener("click",function(){
-            toggleRobotSchedule(id,enabled);
-        });
-
-        const remove = document.createElement("button");
-        remove.type = "button";
-        remove.className = "robotScheduleDelete";
-        remove.innerHTML = '<i class="fa-regular fa-trash-can"></i> 刪除';
-        remove.addEventListener("click",function(){
-            deleteRobotSchedule(id);
-        });
-
-        actions.appendChild(toggle);
-        actions.appendChild(remove);
-
-        item.appendChild(main);
-        item.appendChild(actions);
-        list.appendChild(item);
+        const id=schedule.id!==undefined?schedule.id:index;
+        const enabled=schedule.enabled!==false;
+        const device=schedule.device||"robot";
+        const item=document.createElement("div"); item.className="robotScheduleItem";
+        const main=document.createElement("div"); main.className="robotScheduleMain";
+        const title=document.createElement("strong");
+        title.textContent="使用者 "+(schedule.user||"A")+"　"+scheduleDeviceLabel(device)+"　"+(schedule.time||"--:--")+"　"+
+            scheduleActionLabel(
+                device,
+                schedule.action ||
+                ((getScheduleDevice(device)?.type === "robot") ? "start" : "on")
+            );
+        const detail=document.createElement("span");
+        detail.textContent=robotRepeatLabel(schedule.repeat||"daily")+" · "+(enabled?"已啟用":"已停用");
+        main.append(title,detail);
+        const actions=document.createElement("div"); actions.className="robotScheduleActions";
+        const toggle=document.createElement("button"); toggle.type="button";
+        toggle.className="robotScheduleToggle"+(enabled?"":" disabled");
+        toggle.textContent=enabled?"啟用中":"已停用";
+        toggle.onclick=()=>toggleRobotSchedule(id,enabled);
+        const remove=document.createElement("button"); remove.type="button";
+        remove.className="robotScheduleDelete";
+        remove.innerHTML='<i class="fa-regular fa-trash-can"></i> 刪除';
+        remove.onclick=()=>deleteRobotSchedule(id);
+        actions.append(toggle,remove); item.append(main,actions); list.appendChild(item);
     });
 }
 
-document.getElementById("robotScheduleAddBtn")
-    .addEventListener("click",addRobotSchedule);
 
-loadRobotSchedules();
 
+// 排程初始化：先載入固定裝置，再依選取裝置產生動作選項。
+document.addEventListener("DOMContentLoaded", function () {
+    const deviceSelect = document.getElementById("robotScheduleDevice");
+    const addBtn = document.getElementById("robotScheduleAddBtn");
+    if (deviceSelect) {
+        deviceSelect.addEventListener("change", updateScheduleActionOptions);
+        refreshScheduleDeviceOptions();
+    }
+    if (addBtn) addBtn.addEventListener("click", addRobotSchedule);
+    loadRobotSchedules();
+});
 </script>
+<script>
+window.addEventListener("load",function(){
+    renderScheduleUsers();
+});
+</script>
+
+<div id="scheduleUserModal" class="scheduleUserModal" onclick="if(event.target===this)closeScheduleUserModal()">
+    <div class="scheduleUserModalCard">
+        <div class="scheduleUserModalTitle">新增使用者</div>
+        <div class="scheduleUserModalText">輸入要加入排程的使用者名稱</div>
+        <input id="scheduleUserNameInput" type="text" maxlength="20" placeholder="輸入使用者名稱"
+               onkeydown="if(event.key==='Enter')confirmAddScheduleUser()">
+        <div class="scheduleUserModalActions">
+            <button type="button" class="scheduleUserCancelBtn" onclick="closeScheduleUserModal()">取消</button>
+            <button type="button" class="scheduleUserConfirmBtn" onclick="confirmAddScheduleUser()">新增</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
