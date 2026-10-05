@@ -3984,6 +3984,10 @@ window.addEventListener("load",function(){
     const page=document.getElementById(which+"Page");
     if(page) page.classList.add("activePage");
     setActiveTopNav(which);
+    ["tariffPage","robotControlPage"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.style.display="none";
+    });
 
     const home=document.getElementById("homePage");
     const hospital=document.getElementById("hospitalPage");
@@ -4000,8 +4004,9 @@ window.addEventListener("load",function(){
     window.__smartControlMode=mode;
     const home=document.getElementById("homePage");
     const hospital=document.getElementById("hospitalPage");
-    if(home) home.classList.toggle("smartControlVisible",mode==="home");
-    if(hospital) hospital.classList.toggle("smartControlVisible",mode==="hospital");
+    const controlActive=document.getElementById("controlPage")?.classList.contains("activePage");
+    if(home) home.classList.toggle("smartControlVisible",controlActive && mode==="home");
+    if(hospital) hospital.classList.toggle("smartControlVisible",controlActive && mode==="hospital");
     const hb=document.getElementById("controlHomeBtn");
     const pb=document.getElementById("controlHospitalBtn");
     if(hb) hb.classList.toggle("active",mode==="home");
@@ -4028,7 +4033,8 @@ window.addEventListener("load",function(){
   document.addEventListener("DOMContentLoaded",()=>{
     updateClock(); setInterval(updateClock,1000);
     syncMonitor(); setInterval(syncMonitor,1500);
-    showControlMode("home");
+    window.__smartControlMode = "home";
+    showSmartPage("main");
   });
 })();
 </script>
