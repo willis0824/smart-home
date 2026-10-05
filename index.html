@@ -1624,6 +1624,51 @@ input[type=range]{
 .scheduleUserConfirmBtn{background:#2f6bff;color:#fff;}
 .scheduleUserConfirmBtn:hover{background:#2458d8;}
 
+
+/* ===== SMARTCTRL 三大頁面：監控 / 主頁 / 控制板 ===== */
+.smartMainContainer{width:min(1180px,calc(100% - 40px));margin:0 auto;padding:42px 0 60px;}
+.smartHero{background:linear-gradient(135deg,#ffffff,#f3f7ff);border:1px solid #e4eaf4;border-radius:28px;padding:38px;box-shadow:0 12px 36px rgba(16,24,40,.07);display:flex;justify-content:space-between;gap:28px;align-items:center;}
+.smartHero h1{font-size:34px;margin-bottom:10px}.smartHero p{color:#667085;line-height:1.8}
+.smartClock{text-align:right;min-width:245px}.smartClockTime{font-size:34px;font-weight:700;color:#2d6cff}.smartClockDate{color:#667085;margin-top:5px}
+.smartSectionTitle{margin:32px 0 15px}.smartSectionTitle h2{font-size:22px}.smartSectionTitle p{color:#667085;font-size:13px;margin-top:4px}
+.smartEntryGrid,.monitorGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.smartEntryCard,.monitorCard{background:#fff;border:1px solid #e4e7ec;border-radius:22px;padding:24px;box-shadow:0 6px 20px rgba(16,24,40,.05)}
+.smartEntryIcon{width:48px;height:48px;border-radius:15px;background:#edf3ff;color:#2d6cff;display:flex;align-items:center;justify-content:center;font-size:21px;margin-bottom:16px}
+.smartEntryCard h3{margin-bottom:7px}.smartEntryCard p{color:#667085;font-size:13px;line-height:1.7;min-height:44px}
+.smartEntryActions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.smartPrimaryBtn,.smartSecondaryBtn{border:0;border-radius:12px;padding:11px 15px;font-weight:600;cursor:pointer}
+.smartPrimaryBtn{background:#2d6cff;color:#fff}.smartSecondaryBtn{background:#f2f4f7;color:#344054}
+.monitorGrid{grid-template-columns:repeat(3,1fr)}
+.monitorCard small{color:#667085}.monitorValue{font-size:27px;font-weight:700;margin:8px 0 3px}.monitorSub{font-size:12px;color:#98a2b3}
+.monitorStatus{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:6px 10px;border-radius:999px;background:#ecfdf3;color:#027a48;font-size:12px;font-weight:600}
+.monitorDot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.controlLanding{width:min(1180px,calc(100% - 40px));margin:0 auto;padding:38px 0 16px}
+.controlLanding h1{margin-bottom:5px}.controlLanding p{color:#667085}
+.controlModeTabs{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.controlModeBtn{border:1px solid #d0d5dd;background:#fff;color:#475467;border-radius:999px;padding:10px 16px;cursor:pointer;font-weight:600}
+.controlModeBtn.active{background:#2d6cff;border-color:#2d6cff;color:#fff}
+#homePage,#hospitalPage{display:none}
+#homePage.smartControlVisible,#hospitalPage.smartControlVisible{display:block}
+@media(max-width:850px){.smartHero{flex-direction:column;align-items:flex-start}.smartClock{text-align:left}.monitorGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.smartMainContainer,.controlLanding{width:calc(100% - 24px)}.smartEntryGrid,.monitorGrid{grid-template-columns:1fr}.smartHero{padding:25px}.smartHero h1{font-size:28px}}
+
+
+/* ===== 智慧習慣排程推薦 ===== */
+.smartScheduleRecommend{margin-top:20px;border:1px solid #dbe5ff;border-radius:20px;padding:20px;background:#f8faff;}
+.smartScheduleRecommendHead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px;}
+.smartScheduleRecommendHead h3{font-size:18px;margin-bottom:5px}.smartScheduleRecommendHead p{font-size:13px;color:#667085;line-height:1.6}
+.smartLearnBadge{padding:7px 11px;border-radius:999px;background:#edf3ff;color:#2d6cff;font-size:12px;font-weight:700;white-space:nowrap}
+.smartRecommendGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.smartRecommendCard{background:#fff;border:1px solid #e4e7ec;border-radius:16px;padding:16px}
+.smartRecommendTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.smartRecommendCard h4{font-size:15px;margin:0 0 4px}.smartRecommendCard p{font-size:12px;color:#667085;line-height:1.6}
+.smartConfidence{font-size:11px;color:#027a48;background:#ecfdf3;padding:5px 8px;border-radius:999px;white-space:nowrap}
+.smartRecommendActions{display:flex;gap:8px;margin-top:12px}
+.smartAcceptBtn,.smartDismissBtn{border:0;border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:600}
+.smartAcceptBtn{background:#2d6cff;color:#fff}.smartDismissBtn{background:#f2f4f7;color:#475467}
+.smartHabitInfo{margin-top:12px;font-size:12px;color:#667085;line-height:1.6}
+@media(max-width:700px){.smartRecommendGrid{grid-template-columns:1fr}.smartScheduleRecommendHead{flex-direction:column}}
+
 </style>
 </head>
 
@@ -1634,18 +1679,94 @@ input[type=range]{
     <div class="logo">SMARTCTRL</div>
 
     <div class="navMenu">
-        <button id="homeNav" class="navButton active" onclick="showPage('home')">
-            <i class="fa-solid fa-house"></i>居家控制
+        <button id="monitorNav" class="navButton" onclick="showSmartPage('monitor')">
+            <i class="fa-solid fa-display"></i>監控
         </button>
-
-        <button id="hospitalNav" class="navButton" onclick="showPage('hospital')">
-            <i class="fa-solid fa-hospital"></i>醫院病房
+        <button id="mainNav" class="navButton active" onclick="showSmartPage('main')">
+            <i class="fa-solid fa-house"></i>主頁
+        </button>
+        <button id="controlNav" class="navButton" onclick="showSmartPage('control')">
+            <i class="fa-solid fa-sliders"></i>控制板
         </button>
     </div>
 </div>
 
+
+<!-- ================= SMARTCTRL 主頁 ================= -->
+<div id="mainPage" class="page activePage">
+  <main class="smartMainContainer">
+    <section class="smartHero">
+      <div>
+        <div style="color:#2d6cff;font-weight:700;margin-bottom:8px;">SMARTCTRL</div>
+        <h1>智慧居家與病房管理平台</h1>
+        <p>整合即時監控、智慧家電控制、環境資訊與自動排程。先從主頁查看系統，再進入監控或控制板。</p>
+      </div>
+      <div class="smartClock">
+        <div id="smartClockTime" class="smartClockTime">--:--:--</div>
+        <div id="smartClockDate" class="smartClockDate">----/--/--</div>
+      </div>
+    </section>
+
+    <div class="smartSectionTitle"><h2>系統入口</h2><p>選擇要查看的系統與功能。</p></div>
+    <section class="smartEntryGrid">
+      <article class="smartEntryCard">
+        <div class="smartEntryIcon"><i class="fa-solid fa-house-signal"></i></div>
+        <h3>居家智慧系統</h3>
+        <p>查看居家電力、房間環境與裝置狀態，或進入控制板操作智慧家電。</p>
+        <div class="smartEntryActions">
+          <button class="smartPrimaryBtn" onclick="showSmartPage('monitor')">查看監控</button>
+          <button class="smartSecondaryBtn" onclick="showSmartPage('control');showControlMode('home')">進入控制板</button>
+        </div>
+      </article>
+      <article class="smartEntryCard">
+        <div class="smartEntryIcon"><i class="fa-solid fa-hospital-user"></i></div>
+        <h3>智慧病房系統</h3>
+        <p>查看病房生命徵象與環境摘要，並可進入控制板調整病房環境設備。</p>
+        <div class="smartEntryActions">
+          <button class="smartPrimaryBtn" onclick="showSmartPage('monitor')">查看監控</button>
+          <button class="smartSecondaryBtn" onclick="showSmartPage('control');showControlMode('hospital')">進入控制板</button>
+        </div>
+      </article>
+    </section>
+  </main>
+</div>
+
+<!-- ================= 監控頁 ================= -->
+<div id="monitorPage" class="page">
+  <main class="smartMainContainer">
+    <div class="smartSectionTitle" style="margin-top:0"><h2>即時監控</h2><p>集中查看居家與病房資訊；此頁以顯示狀態為主，不直接操作設備。</p></div>
+    <section class="monitorGrid">
+      <article class="monitorCard"><small>居家電壓</small><div id="monitorVoltage" class="monitorValue">-- V</div><div class="monitorSub">ESP32 / 電力模組</div><div class="monitorStatus"><span class="monitorDot"></span>監控中</div></article>
+      <article class="monitorCard"><small>居家電流</small><div id="monitorCurrent" class="monitorValue">-- A</div><div class="monitorSub">即時電流資訊</div><div class="monitorStatus"><span class="monitorDot"></span>監控中</div></article>
+      <article class="monitorCard"><small>居家功率</small><div id="monitorPower" class="monitorValue">-- W</div><div class="monitorSub">目前用電功率</div><div class="monitorStatus"><span class="monitorDot"></span>監控中</div></article>
+      <article class="monitorCard"><small>房間溫度</small><div id="monitorRoomTemp" class="monitorValue">26.0 °C</div><div class="monitorSub">展示資料，可再接溫度感測器</div></article>
+      <article class="monitorCard"><small>房間濕度</small><div id="monitorRoomHumidity" class="monitorValue">60 %</div><div class="monitorSub">展示資料，可再接濕度感測器</div></article>
+      <article class="monitorCard"><small>ESP32 狀態</small><div class="monitorValue" style="font-size:22px">裝置監控</div><div class="monitorSub">控制功能請到「控制板」</div><div class="monitorStatus"><span class="monitorDot"></span>系統待命</div></article>
+    </section>
+
+    <div class="smartSectionTitle"><h2>智慧病房摘要</h2><p>生命徵象詳細內容仍沿用你原本的病房資料與介面。</p></div>
+    <section class="monitorGrid">
+      <article class="monitorCard"><small>心率</small><div class="monitorValue">72 bpm</div><div class="monitorSub">展示值</div></article>
+      <article class="monitorCard"><small>血氧</small><div class="monitorValue">98 %</div><div class="monitorSub">展示值</div></article>
+      <article class="monitorCard"><small>病房環境</small><div class="monitorValue" style="font-size:22px">正常</div><div class="monitorSub">詳細控制請前往控制板</div></article>
+    </section>
+  </main>
+</div>
+
+<!-- ================= 控制板入口 ================= -->
+<div id="controlPage" class="page">
+  <div class="controlLanding">
+    <h1>控制板</h1>
+    <p>選擇居家或醫院病房。原本已完成的裝置、排程、用電分析與控制紀錄會保留在這裡。</p>
+    <div class="controlModeTabs">
+      <button id="controlHomeBtn" class="controlModeBtn active" onclick="showControlMode('home')"><i class="fa-solid fa-house"></i> 居家控制</button>
+      <button id="controlHospitalBtn" class="controlModeBtn" onclick="showControlMode('hospital')"><i class="fa-solid fa-hospital"></i> 醫院病房</button>
+    </div>
+  </div>
+</div>
+
 <!-- ================= 居家控制 ================= -->
-<div id="homePage" class="page activePage">
+<div id="homePage" class="page">
     <div class="container">
 
         <div class="header">
@@ -1739,6 +1860,24 @@ input[type=range]{
         </div>
 
         
+        <section class="smartScheduleRecommend">
+            <div class="smartScheduleRecommendHead">
+                <div>
+                    <h3><i class="fa-solid fa-wand-magic-sparkles"></i> 智慧排程推薦</h3>
+                    <p>預設情境：上班族屋主平日 08:00 外出、18:30 回家、23:00 就寢；週末 09:00 起床、10:00 外出。依已擁有裝置產生規則式 Demo 推薦。</p>
+                </div>
+                <span id="smartLearnBadge" class="smartLearnBadge">學習中</span>
+            </div>
+            <div id="demoInventory" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px"></div>
+            <p style="font-size:13px;color:#667085;margin-bottom:14px">勾選代表屋主擁有該裝置。取消勾選後會移除相關推薦；新增的裝置會同步列入。冷氣排程僅示範開關，尚未使用天氣或感測資料。</p>
+            <button type="button" id="demoAddAC" class="smartDismissBtn">＋ 加入冷氣示範裝置</button>
+            <button type="button" id="demoReset" class="smartDismissBtn">恢復略過的建議</button>
+            <div id="smartRecommendGrid" class="smartRecommendGrid"></div>
+            <div class="smartHabitInfo">
+                此為預設情境與裝置條件的規則式推薦，未訓練 AI，也不顯示虛構可信度。「套用建議」會填入裝置、時間、週期與動作，確認後請按原本的新增排程。離線 Demo 排程只儲存於瀏覽器，尚不會在關閉網頁後控制實體家電。
+            </div>
+        </section>
+
         <div class="robotScheduleSection homeScheduleSection">
             <div class="robotScheduleHeader scheduleHeaderWithUsers">
                 <div>
@@ -1790,6 +1929,7 @@ input[type=range]{
             </div>
         </div>
 
+
         <div class="homeControlLogSection">
             <div class="homeControlLogHeader">
                 <h3><i class="fa-solid fa-list"></i> 控制紀錄</h3>
@@ -1827,10 +1967,19 @@ input[type=range]{
                 </div>
             </div>
 
-            <div class="tariffInputGrid">
+            <div style="margin:16px 0;display:flex;gap:10px;flex-wrap:wrap" role="group" aria-label="用電分析模式">
+<button type="button" class="tariffModeBtn smartDismissBtn" data-mode="weekday" aria-pressed="true">🏢 平日模式</button>
+<button type="button" class="tariffModeBtn smartDismissBtn" data-mode="weekend" aria-pressed="false">🏖️ 週末假日</button>
+<button type="button" class="tariffModeBtn smartDismissBtn" data-mode="vacation" aria-pressed="false">✈️ 長假模式</button>
+</div>
+<label style="display:block;margin:12px 0"><input id="tariffDemoMode" type="checkbox" checked> Demo 模式（使用模擬功率與電價，不呼叫 API）</label>
+<p style="font-size:13px;color:#667085">Demo 預設功率 18.1 W（0.0181 kW），僅為展示假設，非即時量測。平日尖峰示範設為 09:00～24:00，離峰 00:00～09:00；實際電價以後端為準。</p>
+<p id="tariffModeInfo" style="color:#667085;font-size:13px">平日模式：由後端比較各時段電費。</p>
+<div id="tariffForbidden" style="margin:12px 0;color:#b42318" aria-live="polite"></div>
+<div class="tariffInputGrid">
                 <div class="tariffField">
-                    <label for="tariffPower">家電功率（kW）</label>
-                    <input id="tariffPower" type="number" min="0.01" step="0.01" value="1.0">
+                    <label for="tariffPower">手動功率（kW，留空使用 ESP32 實測）</label>
+                    <input id="tariffPower" type="number" min="0.000001" step="any" placeholder="自動讀取 MongoDB 實測功率">
                 </div>
 
                 <div class="tariffField">
@@ -1894,6 +2043,18 @@ input[type=range]{
                 </div>
             </div>
         </section>
+
+<section class="smartScheduleRecommend" aria-label="家庭用電大數據">
+<div class="smartScheduleRecommendHead"><h3>全家 30 天用電分析</h3><button id="householdRefresh" type="button" class="smartAcceptBtn">更新分析與情境</button></div>
+<p id="householdStatus" role="status"></p>
+<div id="householdOverview" class="smartHabitInfo"></div>
+<div class="smartRecommendGrid">
+<div class="smartRecommendCard"><h4>尖峰／離峰佔比</h4><div style="height:240px"><canvas id="householdRatioChart"></canvas></div><p id="householdRatioText"></p></div>
+<div class="smartRecommendCard"><h4>家電耗電排行榜</h4><div style="height:240px"><canvas id="householdRankingChart"></canvas></div><ol id="householdRankingList"></ol></div>
+</div>
+</section>
+<section class="smartScheduleRecommend"><h3>家庭成員情境推薦</h3><p id="scenarioStatus" role="status"></p><div id="scenarioCards" class="smartRecommendGrid"></div><p class="smartHabitInfo">情境僅提供建議，不會直接啟動裝置或新增排程。</p></section>
+
     </div>
 </div>
 
@@ -2782,103 +2943,88 @@ const TARIFF_API =
 
 let tariffChartInstance = null;
 
+let tariffMode = 'weekday';
+let tariffRequestId = 0;
+let tariffController;
 async function loadTariffAnalysis(){
-    const powerInput = document.getElementById("tariffPower");
-    const durationInput = document.getElementById("tariffDuration");
-    const analyzeBtn = document.getElementById("tariffAnalyzeBtn");
-    const status = document.getElementById("tariffStatus");
-    const results = document.getElementById("tariffResults");
-
-    const power = Number(powerInput.value);
-    const duration = Number(durationInput.value);
-
-    if(!Number.isFinite(power) || power <= 0){
-        status.textContent = "請輸入大於 0 的家電功率。";
-        return;
-    }
-
-    if(!Number.isFinite(duration) || duration <= 0 || duration > 24){
-        status.textContent = "運轉時間請輸入 1～24 小時。";
-        return;
-    }
-
-    analyzeBtn.disabled = true;
-    analyzeBtn.innerHTML =
-        '<i class="fa-solid fa-spinner fa-spin"></i> 分析中';
-
-    status.textContent = "正在向後端取得電價分析資料...";
-
-    try{
-        const url =
-            TARIFF_API +
-            "?duration=" + encodeURIComponent(duration) +
-            "&power=" + encodeURIComponent(power);
-
-        const res = await fetch(url,{
-            method:"GET",
-            headers:{
-                "ngrok-skip-browser-warning":"true"
-            }
-        });
-
-        if(!res.ok){
-            throw new Error("HTTP " + res.status);
-        }
-
-        const json = await res.json();
-
-        if(!json.success || !json.data){
-            throw new Error("API 回傳格式不正確");
-        }
-
-        renderTariffAnalysisData(json.data,false,status,results);
-
-    }catch(error){
-        console.warn("電價分析後端無法使用，改用本機估算：",error);
-        const localData = buildLocalTariffAnalysis(duration,power);
-        renderTariffAnalysisData(localData,true,status,results);
-
-    }finally{
-        analyzeBtn.disabled = false;
-        analyzeBtn.innerHTML =
-            '<i class="fa-solid fa-magnifying-glass-chart"></i> 開始分析';
-    }
+ const status=document.getElementById('tariffStatus'), results=document.getElementById('tariffResults'), button=document.getElementById('tariffAnalyzeBtn');
+ const powerText=document.getElementById('tariffPower').value.trim();
+ const duration=Number(document.getElementById('tariffDuration').value);
+ const requestId=++tariffRequestId;
+ tariffController?.abort();
+ results.style.display='none';
+ document.getElementById('tariffForbidden').textContent='';
+ if(tariffChartInstance){tariffChartInstance.destroy();tariffChartInstance=null;}
+ button.disabled=false;
+ if(powerText && (!Number.isFinite(Number(powerText))||Number(powerText)<=0)){status.textContent='手動功率必須大於 0（單位 kW）。';return;}
+ if(!Number.isFinite(duration)||duration<1||duration>24){status.textContent='運轉時間請輸入 1～24 小時。';return;}
+ const mode=tariffMode;
+ if(document.getElementById('tariffDemoMode').checked){
+  const data=buildLocalTariffAnalysis(duration,powerText?Number(powerText):0.0181,mode);
+  renderTariffAnalysisData(data,true,status,results);
+  document.getElementById('tariffForbidden').textContent=mode==='vacation'?'長假：僅允許整段運轉落在 00:00～06:00。禁止時段：'+data.scheduleCombinations.allIntervals.filter(x=>!x.allowed).map(x=>x.timeRange).join('、'):'';
+  status.textContent='Demo 模擬資料｜'+(powerText?'手動功率':'假設功率 18.1 W')+'｜未連接後端或實體裝置';
+  return;
+ }
+ const params=new URLSearchParams({mode,duration:String(duration)});
+ if(powerText)params.set('power',powerText);
+ tariffController=new AbortController();
+ const controller=tariffController;
+ const timeout=setTimeout(()=>controller.abort(),15000);
+ button.disabled=true;
+ status.textContent='正在取得後端分析資料…';
+ try{
+  const response=await fetch(TARIFF_API+'?'+params,{headers:{'ngrok-skip-browser-warning':'true'},signal:controller.signal});
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  const json=await response.json();
+  if(!json.success||!json.data||!Array.isArray(json.data.scheduleCombinations?.allIntervals))throw new Error('回傳欄位與原版不符，請提供新版 JSON 範例');
+  if(requestId!==tariffRequestId)return;
+  const data=json.data;
+  const rawIntervals=data.scheduleCombinations.allIntervals;
+  data.scheduleCombinations.allIntervals=(mode==='vacation'?rawIntervals.filter(item=>item.isAllowed===true):rawIntervals).map(item=>({...item,allowed:item.isAllowed!==false}));
+  renderTariffAnalysisData(data,false,status,results);
+  if(mode==='vacation'){
+   document.getElementById('tariffForbidden').textContent='長假限制：僅允許整段運轉落在 00:00～06:00。禁止時段：'+rawIntervals.filter(x=>x.isAllowed!==true).map(x=>x.timeRange||'未提供時段').join('、');
+   ['tariffBestPeriod','tariffBestCost','tariffWorstPeriod','tariffWorstCost','tariffSavedStandard','tariffSavedWorst'].forEach(id=>document.getElementById(id).textContent='請參閱允許時段圖表');
+  }
+  status.textContent+='｜'+(powerText?'手動功率':'功率由後端取得');
+ }catch(error){
+  if(requestId!==tariffRequestId)return;
+  status.textContent='無法取得後端分析：'+(error.name==='AbortError'?'連線逾時':error.message)+'。請確認 API、跨來源設定或回傳格式後重試。';
+ }finally{
+  clearTimeout(timeout);
+  if(requestId===tariffRequestId)button.disabled=false;
+ }
 }
 
 
-function buildLocalTariffAnalysis(duration,power){
-    const energy = Number((duration * power).toFixed(3));
-    const standardRate = 3.0;
-    const offPeakRate = 2.06;
-    const peakRate = 5.16;
-    const standardCost = energy * standardRate;
-    const bestCost = energy * offPeakRate;
-    const worstCost = energy * peakRate;
-    const savedStandard = Math.max(0,standardCost-bestCost);
-    const savedWorst = Math.max(0,worstCost-bestCost);
-
-    const intervals = [];
-    for(let hour=0;hour<24;hour+=3){
-        const end = hour+3;
-        const rate = hour >= 9 ? peakRate : offPeakRate;
-        intervals.push({
-            timeRange:String(hour).padStart(2,"0")+":00 ~ "+String(end).padStart(2,"0")+":00",
-            cost:Number((energy*rate).toFixed(2))
-        });
-    }
-
-    return {
-        metadata:{durationHours:duration,powerKw:power,totalEnergyKwh:energy},
-        scenarioComparison:{
-            standardHome:{modelName:"一般家庭（本機估算）",ratePerKwh:"3 元/度",cost:Number(standardCost.toFixed(2))},
-            timeOfUseHome:{modelName:"時間電價（本機估算）",bestPeriod:"00:00 ~ 03:00",bestCost:Number(bestCost.toFixed(2)),worstPeriod:"21:00 ~ 24:00",worstCost:Number(worstCost.toFixed(2))},
-            savings:{
-                savedComparedToStandard:savedStandard.toFixed(2)+" 元 ("+(standardCost?savedStandard/standardCost*100:0).toFixed(1)+"%)",
-                savedComparedToWorstTOU:savedWorst.toFixed(2)+" 元 ("+(worstCost?savedWorst/worstCost*100:0).toFixed(1)+"%)"
-            }
-        },
-        scheduleCombinations:{allIntervals:intervals}
-    };
+function buildLocalTariffAnalysis(duration,power,mode='weekday'){
+ const energy=duration*power;
+ const intervals=[];
+ const label=t=>{const mins=Math.round(t*60);return String(Math.floor(mins/60)).padStart(2,'0')+':'+String(mins%60).padStart(2,'0');};
+ for(let start=0;start<24;start++){
+  let cost=0;
+  // Integrate over each hour, including fractional duration and midnight crossing.
+  for(let t=start;t<start+duration;){
+   const end=Math.min(Math.floor(t)+1,start+duration);
+   const rate=mode==='weekday'&&(Math.floor(t)%24)>=9?5.16:2.06;
+   cost+=(end-t)*power*rate;t=end;
+  }
+  intervals.push({timeRange:label(start)+' ~ '+label(start+duration),cost,allowed:mode!=='vacation'||start+duration<=6});
+ }
+ const eligible=intervals.filter(x=>x.allowed);
+ const best=eligible.reduce((a,b)=>!a||b.cost<a.cost?b:a,null);
+ const worst=eligible.reduce((a,b)=>!a||b.cost>a.cost?b:a,null);
+ const standard=energy*3;
+ const savings=cost=>cost==null?'無可執行時段':Math.max(0,cost).toFixed(3)+' 元';
+ return {
+  metadata:{durationHours:duration,powerKw:power,totalEnergyKwh:energy},
+  scenarioComparison:{
+   standardHome:{modelName:'Demo 固定單價',ratePerKwh:'示範 3 元/度',cost:standard},
+   timeOfUseHome:{bestPeriod:best?.timeRange||'無可執行時段',bestCost:best?.cost,worstPeriod:worst?.timeRange||'無可執行時段',worstCost:worst?.cost},
+   savings:{savedComparedToStandard:savings(best?standard-best.cost:null),savedComparedToWorstTOU:savings(best?worst.cost-best.cost:null)}
+  },scheduleCombinations:{allIntervals:intervals}
+ };
 }
 
 function renderTariffAnalysisData(data,isLocal,status,results){
@@ -2893,7 +3039,7 @@ function renderTariffAnalysisData(data,isLocal,status,results){
     document.getElementById("tariffEnergy").textContent=formatNumber(metadata.totalEnergyKwh)+" kWh";
     document.getElementById("tariffMetadata").textContent=
         formatNumber(metadata.powerKw)+" kW × "+formatNumber(metadata.durationHours)+" 小時"+
-        (metadata.date?"｜基準日 "+metadata.date:"")+(isLocal?"｜本機估算":"");
+        (metadata.date?"｜基準日 "+metadata.date:"")+(isLocal?"｜Demo 模擬資料":"");
     document.getElementById("tariffStandardCost").textContent=formatMoney(standardHome.cost)+" 元";
     document.getElementById("tariffStandardRate").textContent=standardHome.ratePerKwh||standardHome.modelName||"--";
     document.getElementById("tariffBestPeriod").textContent=timeOfUseHome.bestPeriod||"--";
@@ -2905,8 +3051,9 @@ function renderTariffAnalysisData(data,isLocal,status,results){
     results.style.display="block";
 
     if(allIntervals.length>0) renderTariffChart(allIntervals);
+    else {if(tariffChartInstance){tariffChartInstance.destroy();tariffChartInstance=null;}document.getElementById('tariffForbidden').textContent='目前沒有允許執行的時段。';}
     status.textContent=isLocal
-        ?"後端目前無法連線，已使用本機估算模式。"
+        ?"Demo 模擬資料，未連接後端。"
         :"分析完成，共比較 "+allIntervals.length+" 組連續運轉時段。";
 }
 
@@ -2919,18 +3066,16 @@ function renderTariffChart(allIntervals){
     }
 
     const labels = allIntervals.map(function(item){
-        return item.timeRange;
+        return item.timeRange + (item.allowed===false ? "（禁止）" : "");
     });
 
     const costs = allIntervals.map(function(item){
-        return Number(item.cost);
+        return item.allowed===false || item.cost==null ? null : Number(item.cost);
     });
 
     const validCosts = costs.filter(Number.isFinite);
 
-    if(validCosts.length === 0){
-        return;
-    }
+
 
     const minCost = Math.min(...validCosts);
     const maxCost = Math.max(...validCosts);
@@ -2983,6 +3128,7 @@ function renderTariffChart(allIntervals){
                 tooltip:{
                     callbacks:{
                         label:function(context){
+                            if(allIntervals[context.dataIndex]?.allowed===false)return "此時段禁止執行";
                             return "預估電費：" +
                                 formatMoney(context.parsed.y) + " 元";
                         }
@@ -3013,7 +3159,7 @@ function renderTariffChart(allIntervals){
 }
 
 function formatNumber(value){
-    const number = Number(value);
+    const number = value == null ? NaN : Number(value);
 
     if(!Number.isFinite(number)){
         return "--";
@@ -3025,13 +3171,13 @@ function formatNumber(value){
 }
 
 function formatMoney(value){
-    const number = Number(value);
+    const number = value == null ? NaN : Number(value);
 
     if(!Number.isFinite(number)){
         return "--";
     }
 
-    return number.toFixed(2).replace(/\.?0+$/,"");
+    return number.toFixed(4).replace(/\.?0+$/,"");
 }
 
 document.getElementById("tariffAnalyzeBtn")
@@ -3051,7 +3197,14 @@ document.getElementById("tariffDuration")
         }
     });
 
-// 網頁開啟時先用預設值 1 kW / 3 小時分析一次
+document.getElementById('tariffDemoMode').addEventListener('change',loadTariffAnalysis);
+document.querySelectorAll('.tariffModeBtn').forEach(button=>button.addEventListener('click',()=>{
+ tariffMode=button.dataset.mode;
+ document.querySelectorAll('.tariffModeBtn').forEach(b=>{const active=b===button;b.setAttribute('aria-pressed',String(active));b.style.background=active?'#dbeafe':'#f2f4f7';});
+ document.getElementById('tariffModeInfo').textContent=tariffMode==='vacation'?'長假：僅 00:00～06:00 允許保全／掃除排程。此分析頁不會直接變更已儲存排程。':tariffMode==='weekend'?'週末：由後端回傳全日離峰電價。':'平日：由後端依季節回傳尖峰與離峰電價。';
+ loadTariffAnalysis();
+}));
+// 預設平日模式，省略 power 以使用後端實測功率
 loadTariffAnalysis();
 
 
@@ -3809,6 +3962,199 @@ window.addEventListener("load",function(){
         </div>
     </div>
 </div>
+
+
+<script>
+(function(){
+  const smartPages = ["mainPage","monitorPage","controlPage"];
+  function setActiveTopNav(which){
+    ["monitorNav","mainNav","controlNav"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.remove("active");
+    });
+    const target=document.getElementById(which+"Nav");
+    if(target) target.classList.add("active");
+  }
+
+  window.showSmartPage = function(which){
+    smartPages.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.remove("activePage");
+    });
+    const page=document.getElementById(which+"Page");
+    if(page) page.classList.add("activePage");
+    setActiveTopNav(which);
+
+    const home=document.getElementById("homePage");
+    const hospital=document.getElementById("hospitalPage");
+    if(which!=="control"){
+      if(home) home.classList.remove("smartControlVisible");
+      if(hospital) hospital.classList.remove("smartControlVisible");
+    }else{
+      showControlMode(window.__smartControlMode || "home");
+    }
+    window.scrollTo({top:0,behavior:"smooth"});
+  };
+
+  window.showControlMode = function(mode){
+    window.__smartControlMode=mode;
+    const home=document.getElementById("homePage");
+    const hospital=document.getElementById("hospitalPage");
+    if(home) home.classList.toggle("smartControlVisible",mode==="home");
+    if(hospital) hospital.classList.toggle("smartControlVisible",mode==="hospital");
+    const hb=document.getElementById("controlHomeBtn");
+    const pb=document.getElementById("controlHospitalBtn");
+    if(hb) hb.classList.toggle("active",mode==="home");
+    if(pb) pb.classList.toggle("active",mode==="hospital");
+  };
+
+  function updateClock(){
+    const now=new Date();
+    const days=["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+    const t=document.getElementById("smartClockTime");
+    const d=document.getElementById("smartClockDate");
+    if(t) t.textContent=now.toLocaleTimeString("zh-TW",{hour12:false});
+    if(d) d.textContent=`${now.getFullYear()} 年 ${now.getMonth()+1} 月 ${now.getDate()} 日　${days[now.getDay()]}`;
+  }
+
+  function syncMonitor(){
+    const pairs=[["voltage","monitorVoltage"],["current","monitorCurrent"],["power","monitorPower"]];
+    pairs.forEach(([source,target])=>{
+      const s=document.getElementById(source), t=document.getElementById(target);
+      if(s&&t) t.textContent=s.textContent;
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    updateClock(); setInterval(updateClock,1000);
+    syncMonitor(); setInterval(syncMonitor,1500);
+    showControlMode("home");
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+ const KEY='smartctrlDemoInventoryV2', SKIP='smartctrlDemoSkippedV2';
+ const read=(key,fallback)=>{try{const v=JSON.parse(localStorage.getItem(key));return v===null?fallback:v;}catch(e){return fallback;}};
+ const write=(key,value)=>localStorage.setItem(key,JSON.stringify(value));
+ let config=read(KEY,{}), skipped=read(SKIP,[]), signature='';
+ function kind(d){return d.type==='robot'?'robot':/冷氣|空調|air|ac/i.test(d.name)?'ac':/燈|照明|light|lamp/i.test(d.name)?'light':'other';}
+ function recommendations(devices){
+  const result=[];
+  function push(d,repeat,time,action,reason){result.push({id:[d.id,repeat,time,action].join('|'),device:d.id,name:d.name,repeat,time,action,reason});}
+  devices.filter(d=>config[d.id]?.enabled!==false).forEach(d=>{
+   const type=config[d.id]?.kind||kind(d);
+   if(type==='robot') {push(d,'weekdays','08:30','start','屋主 08:00 外出後清掃，減少干擾。');push(d,'weekends','10:30','start','週末 10:00 外出後進行清掃。');}
+   if(type==='light') {push(d,'weekdays','18:30','on','配合屋主回家時間開啟照明。');push(d,'weekdays','23:00','off','配合就寢時間關閉照明。');push(d,'weekends','09:00','on','配合週末起床時間開啟照明。');}
+   if(type==='ac') {push(d,'weekdays','18:15','on','在屋主回家前 15 分鐘開啟冷氣（示範假設）。');push(d,'weekdays','08:00','off','屋主外出時關閉冷氣。');}
+  });
+  return result;
+ }
+ function apply(rec){
+  if(!getScheduleDevice(rec.device)||config[rec.device]?.enabled===false){alert('此裝置已移除，請重新選擇推薦。');render();return;}
+  refreshScheduleDeviceOptions();
+  document.getElementById('robotScheduleDevice').value=rec.device;
+  updateScheduleActionOptions();
+  const action=document.getElementById('robotScheduleAction');
+  if(![...action.options].some(o=>o.value===rec.action)){alert('此裝置不支援推薦動作。');return;}
+  action.value=rec.action;
+  document.getElementById('robotScheduleTime').value=rec.time;
+  document.getElementById('robotScheduleRepeat').value=rec.repeat;
+  document.querySelector('.homeScheduleForm')?.scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('smartLearnBadge').textContent='已填入建議，請確認並新增排程';
+ }
+ function render(){
+  const devices=getAllScheduleDevices();
+  const inventory=document.getElementById('demoInventory'), box=document.getElementById('smartRecommendGrid');
+  if(!box)return;
+  inventory.replaceChildren();
+  devices.forEach(d=>{
+   const row=document.createElement('label'); row.style.cssText='display:flex;align-items:center;gap:6px;background:white;padding:8px;border-radius:8px';
+   const check=document.createElement('input');check.type='checkbox';check.checked=config[d.id]?.enabled!==false;
+   check.onchange=()=>{config[d.id]={...config[d.id],enabled:check.checked};write(KEY,config);render();};
+   const name=document.createElement('span');name.textContent=d.name;
+   row.append(check,name);
+   if(d.type!=='robot'){
+    const select=document.createElement('select');
+    [['light','照明'],['ac','冷氣'],['other','其他（不推薦）']].forEach(([value,label])=>{const o=document.createElement('option');o.value=value;o.textContent=label;select.append(o);});
+    select.value=config[d.id]?.kind||kind(d);select.onchange=()=>{config[d.id]={...config[d.id],kind:select.value};write(KEY,config);render();};row.append(select);
+   }
+   inventory.append(row);
+  });
+  const recs=recommendations(devices).filter(r=>!skipped.includes(r.id));
+  document.getElementById('smartLearnBadge').textContent='情境 Demo · '+recs.length+' 項建議';
+  box.replaceChildren();
+  recs.forEach(rec=>{
+   const card=document.createElement('article');card.className='smartRecommendCard';
+   const title=document.createElement('h4');title.textContent=rec.name+' · '+scheduleActionLabel(rec.device,rec.action);
+   const detail=document.createElement('p');detail.textContent=(rec.repeat==='weekdays'?'平日':'週末')+' '+rec.time+'｜'+rec.reason;
+   const tag=document.createElement('p');tag.textContent='來源：預設屋主情境 + 目前裝置';
+   const actions=document.createElement('div');actions.className='smartRecommendActions';
+   const accept=document.createElement('button');accept.type='button';accept.className='smartAcceptBtn';accept.textContent='套用建議';accept.onclick=()=>apply(rec);
+   const skip=document.createElement('button');skip.type='button';skip.className='smartDismissBtn';skip.textContent='略過';skip.onclick=()=>{skipped.push(rec.id);write(SKIP,skipped);render();};
+   actions.append(accept,skip);card.append(title,detail,tag,actions);box.append(card);
+  });
+  if(!recs.length){const p=document.createElement('p');p.textContent='沒有可推薦的排程。請勾選裝置、選擇類型，或恢復略過的建議。';box.append(p);}
+  signature=JSON.stringify(devices);
+ }
+ document.addEventListener('DOMContentLoaded',()=>{
+  render();
+  document.getElementById('demoAddAC').onclick=()=>{if(!getAllScheduleDevices().some(d=>kind(d)==='ac'))registerScheduleDevice('客廳冷氣','switch');render();};
+  document.getElementById('demoReset').onclick=()=>{skipped=[];write(SKIP,skipped);render();};
+  setInterval(()=>{if(JSON.stringify(getAllScheduleDevices())!==signature)render();},500);
+ });
+ window.smartctrlDemoRecommendations=recommendations;
+})();
+</script>
+
+<script>
+(function(){
+ const BASE='https://ascent-disperser-groove.ngrok-free.dev';
+ let revision=0, charts=[];
+ const demoHousehold={overview:{peakRatio:0.36,offPeakRatio:0.64,habitVerdict:'Demo：用電多集中於晚間，建議將可延後的清掃與充電移至離峰。',costComparison:{'一般電價（元）':540,'時間電價（元）':468,'示範省下（元）':72}},applianceRanking:[{name:'冷氣',totalEnergyKwh:96},{name:'冰箱',totalEnergyKwh:36},{name:'掃地機器人',totalEnergyKwh:4.8},{name:'智慧插座',totalEnergyKwh:1.6}]};
+ const demoScenarios=[{name:'媽媽上班（掃地機）',behavior:'媽媽平日 08:00 出門',recommendedPeriod:'08:30～09:00',estimatedCost:0.04,savedRatio:0.2},{name:'夜間深谷（智慧充電）',behavior:'家人在睡前插上充電器',recommendedPeriod:'00:00～06:00',estimatedCost:0.12,savedRatio:0.6},{name:'下班前預冷（冷氣）',behavior:'屋主 18:30 到家',recommendedPeriod:'18:15～18:30',estimatedCost:1.29,savedRatio:0}];
+ const text=(v)=>v==null?'未提供':typeof v==='object'?Object.entries(v).map(([k,x])=>k+'：'+text(x)).join('；'):String(v);
+ const pct=v=>{if(v==null||v==='')return null;const n=Number(String(v).replace('%',''));return Number.isFinite(n)?String(v).includes('%')||n>1?n:n*100:null;};
+ function node(tag,value){const e=document.createElement(tag);e.textContent=value;return e;}
+ function renderHousehold(data,demo){
+  if(!data.overview||!Array.isArray(data.applianceRanking))throw new Error('缺少 overview 或 applianceRanking');
+  const overview=data.overview, peak=pct(overview.peakRatio), off=pct(overview.offPeakRatio);
+  document.getElementById('householdOverview').replaceChildren(node('p','習慣診斷：'+text(overview.habitVerdict)),node('p','30 天電費比較：'+text(overview.costComparison)));
+  document.getElementById('householdRatioText').textContent='尖峰 '+(peak==null?'未提供':peak.toFixed(1)+'%')+'／離峰 '+(off==null?'未提供':off.toFixed(1)+'%');
+  const ranking=[...data.applianceRanking].sort((a,b)=>Number(b.totalEnergyKwh)-Number(a.totalEnergyKwh));
+  document.getElementById('householdRankingList').replaceChildren(...ranking.map(x=>node('li',text(x.name)+'：'+text(x.totalEnergyKwh)+' kWh')));
+  if(typeof Chart!=='undefined'){
+   if(peak!=null&&off!=null&&peak>=0&&off>=0&&peak+off>0)charts.push(new Chart(document.getElementById('householdRatioChart'),{type:'doughnut',data:{labels:['尖峰','離峰'],datasets:[{data:[peak,off],backgroundColor:['#f97316','#22c55e']}]},options:{responsive:true,maintainAspectRatio:false}}));
+   charts.push(new Chart(document.getElementById('householdRankingChart'),{type:'bar',data:{labels:ranking.map(x=>text(x.name)),datasets:[{label:'30 天耗電量（kWh）',data:ranking.map(x=>x.totalEnergyKwh==null?null:Number(x.totalEnergyKwh)),backgroundColor:'#3b82f6'}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}}));
+  }
+  document.getElementById('householdStatus').textContent=demo?'Demo 模擬統計，非真實歷史紀錄。':'後端資料已更新。';
+ }
+ function renderScenarios(data,demo){
+  const list=Array.isArray(data)?data:data.scenarios;
+  if(!Array.isArray(list))throw new Error('預期情境陣列或 scenarios 欄位，請提供 JSON 範例');
+  const box=document.getElementById('scenarioCards');box.replaceChildren();
+  list.forEach(item=>{
+   const card=document.createElement('article');card.className='smartRecommendCard';
+   const saved=pct(item.savedRatio);
+   card.append(node('h4',text(item.name??item.title)),node('p','成員／行為：'+text(item.behavior??item.description??item.member)),node('p','建議時段：'+text(item.recommendedPeriod)),node('p','預估電費：'+text(item.estimatedCost)+' 元'),node('p','省錢幅度：'+(saved==null?'未提供':saved.toFixed(1)+'%')));
+   box.append(card);
+  });
+  if(!list.length)box.append(node('p','目前沒有情境建議。'));
+  document.getElementById('scenarioStatus').textContent=demo?'Demo 預設情境，非真實成員紀錄。':'後端情境已更新。';
+ }
+ async function get(path){const c=new AbortController(), timer=setTimeout(()=>c.abort(),15000);try{const r=await fetch(BASE+path,{headers:{'ngrok-skip-browser-warning':'true'},signal:c.signal});if(!r.ok)throw new Error('HTTP '+r.status);const j=await r.json();if(j.success===false)throw new Error('API 回報失敗');return j.data??j;}finally{clearTimeout(timer);}}
+ async function load(){
+  const current=++revision,demo=document.getElementById('tariffDemoMode').checked;
+  charts.forEach(c=>c.destroy());charts=[];
+  document.getElementById('householdOverview').replaceChildren();document.getElementById('householdRankingList').replaceChildren();document.getElementById('householdRatioText').textContent='';document.getElementById('scenarioCards').replaceChildren();
+  const jobs=[['householdStatus','/api/analytics/household',demoHousehold,renderHousehold],['scenarioStatus','/api/smart-scenarios',demoScenarios,renderScenarios]];
+  await Promise.allSettled(jobs.map(async([id,path,mock,render])=>{document.getElementById(id).textContent='載入中…';try{const data=demo?mock:await get(path);if(current===revision)render(data,demo);}catch(error){if(current===revision)document.getElementById(id).textContent='無法取得資料：'+(error.name==='AbortError'?'連線逾時':error.message);}}));
+ }
+ document.addEventListener('DOMContentLoaded',()=>{document.getElementById('householdRefresh').onclick=load;document.getElementById('tariffDemoMode').addEventListener('change',load);load();});
+})();
+</script>
 
 </body>
 </html>
