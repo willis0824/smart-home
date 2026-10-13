@@ -45,7 +45,7 @@ body{
     color:#101828;
 }
 
-.navMenu{
+.navMenu{flex-wrap:wrap;
     display:flex;
     gap:8px;
     align-items:center;
@@ -227,7 +227,7 @@ input[type=range]{
     line-height:1.8;
 }
 
-/* ===== 醫院病房 ===== */
+/* ===== 醫療院所 ===== */
 .hospitalContainer{
     width:970px;
     max-width:94%;
@@ -1679,9 +1679,10 @@ input[type=range]{
     <div class="logo">SMARTCTRL</div>
 
     <div class="navMenu">
-        <button id="monitorNav" class="navButton" onclick="showSmartPage('monitor')">
-            <i class="fa-solid fa-display"></i>監控
+        <button id="monitorNav" class="navButton" onclick="showSmartPage('monitor');showMonitorMode('home')">
+            <i class="fa-solid fa-house-signal"></i>居家監控
         </button>
+        <button id="medicalMonitorNav" class="navButton" onclick="showSmartPage('monitor');showMonitorMode('hospital')"><i class="fa-solid fa-hospital"></i>醫療院所監控</button>
         <button id="mainNav" class="navButton active" onclick="showSmartPage('main')">
             <i class="fa-solid fa-house"></i>主頁
         </button>
@@ -1699,7 +1700,7 @@ input[type=range]{
       <div>
         <div style="color:#2d6cff;font-weight:700;margin-bottom:8px;">SMARTCTRL</div>
         <h1>智慧居家與病房管理平台</h1>
-        <p>整合即時監控、智慧家電控制、環境資訊與自動排程。先從主頁查看系統，再進入監控或控制板。</p>
+        <p>整合居家／醫療院所環境監控、歷史數據與智慧家電排程。先從主頁查看系統，再進入監控或控制板。</p>
       </div>
       <div class="smartClock">
         <div id="smartClockTime" class="smartClockTime">--:--:--</div>
@@ -1714,16 +1715,16 @@ input[type=range]{
         <h3>居家智慧系統</h3>
         <p>查看居家電力、房間環境與裝置狀態，或進入控制板操作智慧家電。</p>
         <div class="smartEntryActions">
-          <button class="smartPrimaryBtn" onclick="showSmartPage('monitor')">查看監控</button>
+          <button class="smartPrimaryBtn" onclick="showSmartPage('monitor');showMonitorMode('home')">查看居家監控</button>
           <button class="smartSecondaryBtn" onclick="showSmartPage('control');showControlMode('home')">進入控制板</button>
         </div>
       </article>
       <article class="smartEntryCard">
         <div class="smartEntryIcon"><i class="fa-solid fa-hospital-user"></i></div>
-        <h3>智慧病房系統</h3>
-        <p>查看病房生命徵象與環境摘要，並可進入控制板調整病房環境設備。</p>
+        <h3>醫療院所環境系統</h3>
+        <p>查看院所溫濕度與環境摘要，並可進入控制板調整病房環境設備。</p>
         <div class="smartEntryActions">
-          <button class="smartPrimaryBtn" onclick="showSmartPage('monitor')">查看監控</button>
+          <button class="smartPrimaryBtn" onclick="showSmartPage('monitor');showMonitorMode('hospital')">查看院所監控</button>
           <button class="smartSecondaryBtn" onclick="showSmartPage('control');showControlMode('hospital')">進入控制板</button>
         </div>
       </article>
@@ -1731,36 +1732,39 @@ input[type=range]{
   </main>
 </div>
 
-<!-- ================= 監控頁 ================= -->
-<div id="monitorPage" class="page">
-  <main class="smartMainContainer">
-    <div class="smartSectionTitle" style="margin-top:0"><h2>即時監控</h2><p>集中查看居家與病房資訊；此頁以顯示狀態為主，不直接操作設備。</p></div>
-    <section class="monitorGrid">
-      <article class="monitorCard"><small>居家電壓</small><div id="monitorVoltage" class="monitorValue">-- V</div><div class="monitorSub">ESP32 / 電力模組</div><div class="monitorStatus"><span class="monitorDot"></span>監控中</div></article>
-      <article class="monitorCard"><small>居家電流</small><div id="monitorCurrent" class="monitorValue">-- A</div><div class="monitorSub">即時電流資訊</div><div class="monitorStatus"><span class="monitorDot"></span>監控中</div></article>
-      <article class="monitorCard"><small>居家功率</small><div id="monitorPower" class="monitorValue">-- W</div><div class="monitorSub">目前用電功率</div><div class="monitorStatus"><span class="monitorDot"></span>監控中</div></article>
-      <article class="monitorCard"><small>房間溫度</small><div id="monitorRoomTemp" class="monitorValue">26.0 °C</div><div class="monitorSub">展示資料，可再接溫度感測器</div></article>
-      <article class="monitorCard"><small>房間濕度</small><div id="monitorRoomHumidity" class="monitorValue">60 %</div><div class="monitorSub">展示資料，可再接濕度感測器</div></article>
-      <article class="monitorCard"><small>ESP32 狀態</small><div class="monitorValue" style="font-size:22px">裝置監控</div><div class="monitorSub">控制功能請到「控制板」</div><div class="monitorStatus"><span class="monitorDot"></span>系統待命</div></article>
-    </section>
-
-    <div class="smartSectionTitle"><h2>智慧病房摘要</h2><p>生命徵象詳細內容仍沿用你原本的病房資料與介面。</p></div>
-    <section class="monitorGrid">
-      <article class="monitorCard"><small>心率</small><div class="monitorValue">72 bpm</div><div class="monitorSub">展示值</div></article>
-      <article class="monitorCard"><small>血氧</small><div class="monitorValue">98 %</div><div class="monitorSub">展示值</div></article>
-      <article class="monitorCard"><small>病房環境</small><div class="monitorValue" style="font-size:22px">正常</div><div class="monitorSub">詳細控制請前往控制板</div></article>
-    </section>
-  </main>
-</div>
+<!-- ================= 分開的環境監控 ================= -->
+<div id="monitorPage" class="page"><main class="smartMainContainer">
+<div class="smartSectionTitle"><h2 id="monitorHeading">居家監控</h2><p>居家與院所分開查看；環境資料不代表病患生命徵象。</p></div>
+<div class="controlModeTabs" style="margin-bottom:20px"><button id="monitorHomeBtn" class="controlModeBtn active" onclick="showMonitorMode('home')">居家監控</button><button id="monitorHospitalBtn" class="controlModeBtn" onclick="showMonitorMode('hospital')">醫療院所監控</button></div>
+<section id="homeMonitorPanel" class="monitorGrid">
+<article class="monitorCard"><small>居家電壓</small><div id="monitorVoltage" class="monitorValue">-- V</div><div id="monitorVoltageSource" class="monitorSub">ESP32 電力資訊</div></article>
+<article class="monitorCard"><small>居家電流</small><div id="monitorCurrent" class="monitorValue">-- A</div><div id="monitorCurrentSource" class="monitorSub">ESP32 電力資訊</div></article>
+<article class="monitorCard"><small>居家功率</small><div id="monitorPower" class="monitorValue">-- W</div><div id="monitorPowerSource" class="monitorSub">ESP32 電力資訊</div></article>
+<article class="monitorCard"><small>室內溫度</small><div id="monitorRoomTemp" class="monitorValue">26.0 °C</div><div id="monitorRoomTempSource" class="monitorSub">Demo 初始資料；取得感測值後標示來源</div></article>
+<article class="monitorCard"><small>室內濕度</small><div id="monitorRoomHumidity" class="monitorValue">60 %</div><div id="monitorRoomHumiditySource" class="monitorSub">Demo 初始資料；取得感測值後標示來源</div></article>
+<article class="monitorCard"><small>室外溫度</small><div id="monitorOutdoorTemp" class="monitorValue">29.0 °C</div><div id="monitorOutdoorTempSource" class="monitorSub">Demo 模擬資料，尚無室外 API</div></article>
+<article class="monitorCard"><small>室外濕度</small><div id="monitorOutdoorHumidity" class="monitorValue">70 %</div><div id="monitorOutdoorHumiditySource" class="monitorSub">Demo 模擬資料，尚無室外 API</div></article>
+</section><section id="homeHistorySection" style="margin-top:24px"><h2>📊📈 居家設備歷史數據</h2><div class="history-container smartRecommendCard" style="margin-top:20px">
+<label><input id="historyDemo" type="checkbox" checked> Demo 模式（不連後端）</label><button id="historyRefresh" type="button" class="smartAcceptBtn" style="margin-left:12px">更新最近 50 筆</button>
+<p id="historyStatus" role="status" style="margin:16px 0"></p><h3>📈 最近 50 筆趨勢</h3>
+<div style="height:350px;margin-bottom:30px"><canvas id="historyChart"></canvas></div>
+<h3>📋 歷史詳細紀錄</h3><div style="max-height:320px;overflow:auto;margin-top:15px">
+<table style="width:100%;min-width:680px;border-collapse:collapse;text-align:center"><thead style="background:#f1f5f9;position:sticky;top:0"><tr><th>時間</th><th>電壓 (V)</th><th>電流 (A)</th><th>功率 (W)</th><th>溫度 (°C)</th><th>濕度 (%)</th><th>繼電器</th></tr></thead><tbody id="history-table-body"></tbody></table>
+</div></div></section><section id="hospitalMonitorPanel" class="monitorGrid" style="display:none">
+<article class="monitorCard"><small>院所室內溫度</small><div id="medicalMonitorTemp" class="monitorValue">24.0 °C</div><div class="monitorSub">Demo 院所環境資料</div></article>
+<article class="monitorCard"><small>院所室內濕度</small><div id="medicalMonitorHumi" class="monitorValue">55 %</div><div class="monitorSub">Demo 院所環境資料</div></article>
+<article class="monitorCard"><small>室外溫度</small><div class="monitorValue">28.0 °C</div><div class="monitorSub">Demo 模擬資料</div></article>
+<article class="monitorCard"><small>室外濕度</small><div class="monitorValue">68 %</div><div class="monitorSub">Demo 模擬資料</div></article>
+</section></main></div>
 
 <!-- ================= 控制板入口 ================= -->
 <div id="controlPage" class="page">
   <div class="controlLanding">
     <h1>控制板</h1>
-    <p>選擇居家或醫院病房。原本已完成的裝置、排程、用電分析與控制紀錄會保留在這裡。</p>
+    <p>選擇居家或醫療院所。原本已完成的裝置、排程、用電分析與控制紀錄會保留在這裡。</p>
     <div class="controlModeTabs">
       <button id="controlHomeBtn" class="controlModeBtn active" onclick="showControlMode('home')"><i class="fa-solid fa-house"></i> 居家控制</button>
-      <button id="controlHospitalBtn" class="controlModeBtn" onclick="showControlMode('hospital')"><i class="fa-solid fa-hospital"></i> 醫院病房</button>
+      <button id="controlHospitalBtn" class="controlModeBtn" onclick="showControlMode('hospital')"><i class="fa-solid fa-hospital"></i> 醫療院所</button>
     </div>
   </div>
 </div>
@@ -2119,14 +2123,14 @@ input[type=range]{
     </div>
 </div>
 
-<!-- ================= 醫院病房 ================= -->
+<!-- ================= 醫療院所 ================= -->
 <div id="hospitalPage" class="page">
     <div class="hospitalContainer">
 
         <div class="hospitalHeader">
             <div>
-                <h1>醫院病房監控</h1>
-                <p>Hospital Ward Dashboard</p>
+                <h1>醫療院所環境控制</h1>
+                <p>Medical Facility Environment</p>
             </div>
 
             <div class="hospitalActions">
@@ -2150,74 +2154,11 @@ input[type=range]{
         </div>
 
         <div class="healthGrid">
-
-            <div class="healthCard heart">
-                <div class="healthTop">
-                    <div class="healthIcon"><i class="fa-regular fa-heart"></i></div>
-                    <div class="healthStatus">正常</div>
-                </div>
-                <div class="healthValue">
-                    <span id="heartRate">72</span>
-                    <small>bpm</small>
-                </div>
-                <h4>心率</h4>
-                <div class="healthEnglish">Heart Rate</div>
-            </div>
-
-            <div class="healthCard pressure">
-                <div class="healthTop">
-                    <div class="healthIcon"><i class="fa-solid fa-wave-square"></i></div>
-                    <div class="healthStatus">正常</div>
-                </div>
-                <div class="healthValue">
-                    <span id="bloodPressure">116/75</span>
-                    <small>mmHg</small>
-                </div>
-                <h4>血壓</h4>
-                <div class="healthEnglish">Blood Pressure</div>
-            </div>
-
-            <div class="healthCard oxygen">
-                <div class="healthTop">
-                    <div class="healthIcon"><i class="fa-solid fa-droplet"></i></div>
-                    <div class="healthStatus">正常</div>
-                </div>
-                <div class="healthValue">
-                    <span id="oxygen">98.2</span>
-                    <small>%</small>
-                </div>
-                <h4>血氧</h4>
-                <div class="healthEnglish">SpO₂</div>
-            </div>
-
-            <div class="healthCard patientTemp">
-                <div class="healthTop">
-                    <div class="healthIcon"><i class="fa-solid fa-temperature-three-quarters"></i></div>
-                    <div class="healthStatus">正常</div>
-                </div>
-                <div class="healthValue">
-                    <span id="bodyTemperature">36.7</span>
-                    <small>°C</small>
-                </div>
-                <h4>體溫</h4>
-                <div class="healthEnglish">Temperature</div>
-            </div>
-
-            <div class="healthCard respiration">
-                <div class="healthTop">
-                    <div class="healthIcon"><i class="fa-solid fa-wind"></i></div>
-                    <div class="healthStatus">正常</div>
-                </div>
-                <div class="healthValue">
-                    <span id="respRate">16</span>
-                    <small>/min</small>
-                </div>
-                <h4>呼吸率</h4>
-                <div class="healthEnglish">Resp. Rate</div>
-            </div>
-
-        </div>
-
+<div class="healthCard"><div class="healthValue"><span id="medicalRoomTemp">24.0</span><small>°C</small></div><h4>室內溫度</h4><p>Demo 院所環境資料</p></div>
+<div class="healthCard"><div class="healthValue"><span id="medicalRoomHumi">55</span><small>%</small></div><h4>室內濕度</h4><p>Demo 院所環境資料</p></div>
+<div class="healthCard"><div class="healthValue">28.0 <small>°C</small></div><h4>室外溫度</h4><p>Demo 模擬資料</p></div>
+<div class="healthCard"><div class="healthValue">68 <small>%</small></div><h4>室外濕度</h4><p>Demo 模擬資料</p></div>
+</div>
         <div class="environmentCard">
 
             <div class="environmentTitle">
@@ -2408,16 +2349,9 @@ function openTariffPage(){
 }
 
 function closeTariffPage(){
-    document.getElementById("tariffPage").style.display = "none";
-    document.getElementById("homePage").style.display = "";
-    document.getElementById("hospitalPage").style.display = "";
-
-    document.getElementById("hospitalPage").classList.remove("activePage");
-    document.getElementById("homePage").classList.add("activePage");
-    document.getElementById("hospitalNav").classList.remove("active");
-    document.getElementById("homeNav").classList.add("active");
-
-    window.scrollTo({top:0,behavior:"smooth"});
+ document.getElementById('tariffPage').style.display='none';document.getElementById('robotControlPage').style.display='none';
+ document.getElementById('homePage').style.display='';document.getElementById('hospitalPage').style.display='';
+ showSmartPage('control');showControlMode('home');
 }
 
 function showPage(page){
@@ -2472,6 +2406,9 @@ async function getData(){
 
         if(json.success){
             let d=json.data;
+            [['temp','monitorRoomTemp','°C'],['humi','monitorRoomHumidity','%']].forEach(([key,id,unit])=>{
+             if(d[key]!=null && Number.isFinite(Number(d[key]))){document.getElementById(id).textContent=Number(d[key])+' '+unit;document.getElementById(id+'Source').textContent='ESP32 即時環境感測';}
+            });
 
             document.getElementById("voltage").innerHTML=d.voltage+"V";
             document.getElementById("current").innerHTML=d.current+"A";
@@ -2547,47 +2484,16 @@ hospitalTemperatureSlider.oninput=function(){
     this.value+"°C";
 };
 
-/* ===== 醫院病房示範資料 ===== */
-const roomData={
-    "201":{
-        heart:"72",
-        pressure:"116/75",
-        oxygen:"98.2",
-        temperature:"36.7",
-        resp:"16"
-    },
-    "202":{
-        heart:"78",
-        pressure:"120/78",
-        oxygen:"97.8",
-        temperature:"36.5",
-        resp:"18"
-    },
-    "203":{
-        heart:"69",
-        pressure:"113/72",
-        oxygen:"99.1",
-        temperature:"36.8",
-        resp:"15"
-    }
-};
-
+/* ===== 醫療院所示範資料 ===== */
+const roomData={"201":{temperature:24.0,humidity:55},"202":{temperature:25.2,humidity:58},"203":{temperature:23.8,humidity:52}};
 function changeRoom(button,room){
-    document.querySelectorAll(".roomButton").forEach(function(btn){
-        btn.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    const data=roomData[room];
-
-    document.getElementById("heartRate").innerHTML=data.heart;
-    document.getElementById("bloodPressure").innerHTML=data.pressure;
-    document.getElementById("oxygen").innerHTML=data.oxygen;
-    document.getElementById("bodyTemperature").innerHTML=data.temperature;
-    document.getElementById("respRate").innerHTML=data.resp;
+ document.querySelectorAll('#hospitalPage .roomButton').forEach(btn=>btn.classList.remove('active'));
+ button.classList.add('active');const data=roomData[room];if(!data)return;
+ document.getElementById('medicalRoomTemp').textContent=data.temperature.toFixed(1);
+ document.getElementById('medicalRoomHumi').textContent=data.humidity;
+ document.getElementById('medicalMonitorTemp').textContent=data.temperature.toFixed(1)+' °C';
+ document.getElementById('medicalMonitorHumi').textContent=data.humidity+' %';
 }
-
 /* 示範互動 */
 function callNurse(){
     alert("已送出呼叫護士示範訊息");
@@ -3320,20 +3226,9 @@ function openRobotControlPage(){
 }
 
 function closeRobotControlPage(){
-    document.getElementById("robotControlPage").style.display = "none";
-
-    // 清除掃地機器人頁面留下的 inline display，
-    // 交回 .page / .activePage 控制，避免醫院頁之後打不開。
-    document.getElementById("homePage").style.display = "";
-    document.getElementById("hospitalPage").style.display = "";
-
-    document.getElementById("hospitalPage").classList.remove("activePage");
-    document.getElementById("homePage").classList.add("activePage");
-
-    document.getElementById("hospitalNav").classList.remove("active");
-    document.getElementById("homeNav").classList.add("active");
-
-    stopRobotStatusTimer();
+ document.getElementById('tariffPage').style.display='none';document.getElementById('robotControlPage').style.display='none';
+ document.getElementById('homePage').style.display='';document.getElementById('hospitalPage').style.display='';
+ showSmartPage('control');showControlMode('home');
 }
 
 function robotLog(message){
@@ -3968,7 +3863,7 @@ window.addEventListener("load",function(){
 (function(){
   const smartPages = ["mainPage","monitorPage","controlPage"];
   function setActiveTopNav(which){
-    ["monitorNav","mainNav","controlNav"].forEach(id=>{
+    ["monitorNav","medicalMonitorNav","mainNav","controlNav"].forEach(id=>{
       const el=document.getElementById(id);
       if(el) el.classList.remove("active");
     });
@@ -3997,6 +3892,7 @@ window.addEventListener("load",function(){
     }else{
       showControlMode(window.__smartControlMode || "home");
     }
+    if(which==="monitor") showMonitorMode(window.__monitorMode||"home");
     window.scrollTo({top:0,behavior:"smooth"});
   };
 
@@ -4013,6 +3909,19 @@ window.addEventListener("load",function(){
     if(pb) pb.classList.toggle("active",mode==="hospital");
   };
 
+  window.showMonitorMode=function(mode){
+   window.__monitorMode=mode;
+   document.getElementById('homeHistorySection').style.display=mode==='home'?'block':'none';
+   if(mode==='home' && window.loadHistoryData) window.loadHistoryData();
+   document.getElementById('homeMonitorPanel').style.display=mode==='home'?'grid':'none';
+   document.getElementById('hospitalMonitorPanel').style.display=mode==='hospital'?'grid':'none';
+   document.getElementById('monitorHeading').textContent=mode==='home'?'居家監控':'醫療院所環境監控';
+   ['monitorHomeBtn','monitorHospitalBtn'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',(mode==='home')===(i===0)));
+   if(document.getElementById('monitorPage').classList.contains('activePage')){
+    document.getElementById('monitorNav').classList.toggle('active',mode==='home');
+    document.getElementById('medicalMonitorNav').classList.toggle('active',mode==='hospital');
+   }
+  };
   function updateClock(){
     const now=new Date();
     const days=["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
@@ -4159,6 +4068,40 @@ window.addEventListener("load",function(){
   await Promise.allSettled(jobs.map(async([id,path,mock,render])=>{document.getElementById(id).textContent='載入中…';try{const data=demo?mock:await get(path);if(current===revision)render(data,demo);}catch(error){if(current===revision)document.getElementById(id).textContent='無法取得資料：'+(error.name==='AbortError'?'連線逾時':error.message);}}));
  }
  document.addEventListener('DOMContentLoaded',()=>{document.getElementById('householdRefresh').onclick=load;document.getElementById('tariffDemoMode').addEventListener('change',load);load();});
+})();
+</script>
+
+
+<script>
+(function(){
+ let historyChart=null,requestId=0,controller=null;
+ const numeric=v=>v==null||v===''?null:Number.isFinite(Number(v))?Number(v):null;
+ const text=v=>v==null||v===''?'--':String(v);
+ function demoRows(){const now=Date.now();return Array.from({length:50},(_,i)=>{
+  const power=18.1+Math.sin(i*.5)*2;
+  return {time:new Date(now-(49-i)*60000).toLocaleString('zh-TW',{hour12:false}),voltage:110.2,current:Number((power/110.2).toFixed(3)),power:Number(power.toFixed(2)),temp:Number((26+Math.sin(i*.2)*.6).toFixed(1)),humi:Math.round(60+Math.cos(i*.2)*3),relay:'ON'};
+ });}
+ function clear(message){if(historyChart){historyChart.destroy();historyChart=null;}const row=document.createElement('tr'),cell=document.createElement('td');cell.colSpan=7;cell.textContent=message;row.append(cell);document.getElementById('history-table-body').replaceChildren(row);}
+ function render(rows,demo){
+  const sorted=[...rows].slice(0,50);const fullDates=sorted.every(x=>Number.isFinite(Date.parse(x.time)));
+  if(fullDates)sorted.sort((a,b)=>Date.parse(a.time)-Date.parse(b.time));
+  const body=document.getElementById('history-table-body');body.replaceChildren();
+  [...sorted].reverse().forEach(item=>{const tr=document.createElement('tr');['time','voltage','current','power','temp','humi','relay'].forEach(key=>{const td=document.createElement('td');td.style.cssText='padding:8px;border-bottom:1px solid #e2e8f0';td.textContent=text(item[key]);if(key==='relay')td.style.color=String(item[key]).toUpperCase()==='ON'?'green':'gray';tr.append(td);});body.append(tr);});
+  if(typeof Chart!=='undefined')historyChart=new Chart(document.getElementById('historyChart'),{type:'line',data:{labels:sorted.map(x=>text(x.time)),datasets:[{label:'功率 (W)',data:sorted.map(x=>numeric(x.power)),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,yAxisID:'power',tension:.3},{label:'溫度 (°C)',data:sorted.map(x=>numeric(x.temp)),borderColor:'#ef4444',borderDash:[5,5],yAxisID:'temp',tension:.3},{label:'濕度 (%)',data:sorted.map(x=>numeric(x.humi)),borderColor:'#10b981',yAxisID:'humi',tension:.3}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{maxRotation:45,maxTicksLimit:10}},power:{type:'linear',position:'left',title:{display:true,text:'功率 W'}},temp:{type:'linear',position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'溫度 °C'}},humi:{type:'linear',position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'濕度 %'},min:0,max:100}}}});
+  document.getElementById('historyStatus').textContent=(demo?'Demo 模擬資料':'後端歷史資料')+'｜'+'居家設備'+'｜'+sorted.length+' 筆'+(typeof Chart==='undefined'?'｜圖表元件未載入，仍可查看表格。':'');
+ }
+ window.loadHistoryData=async function(){
+  const id=++requestId;controller?.abort();clear('資料載入中…');const status=document.getElementById('historyStatus'),demo=document.getElementById('historyDemo').checked;
+  if(demo){render(demoRows(),true);return;}
+  status.textContent='正在讀取後端歷史資料…';controller=new AbortController();const currentController=controller,timer=setTimeout(()=>currentController.abort(),15000);
+  try{
+   const res=await fetch('https://ascent-disperser-groove.ngrok-free.dev/api/history?limit=50',{headers:{'ngrok-skip-browser-warning':'true'},signal:currentController.signal});if(!res.ok)throw new Error('HTTP '+res.status);
+   const result=await res.json();if(!result.success||!Array.isArray(result.data))throw new Error('回傳格式不符：需要 success 與 data 陣列');if(id!==requestId)return;
+   if(!result.data.length){clear('目前沒有歷史紀錄');status.textContent='後端目前沒有歷史紀錄。';return;}render(result.data,false);
+  }catch(error){if(id!==requestId)return;const message='載入歷史數據失敗：'+(error.name==='AbortError'?'連線逾時':error.message);clear(message);status.textContent=message;}
+  finally{clearTimeout(timer);}
+ };
+ document.addEventListener('DOMContentLoaded',()=>{document.getElementById('historyRefresh').onclick=loadHistoryData;document.getElementById('historyDemo').addEventListener('change',loadHistoryData);});
 })();
 </script>
 
