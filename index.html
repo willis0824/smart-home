@@ -1746,11 +1746,18 @@ input[type=range]{
 <article class="monitorCard"><small>室外濕度</small><div id="monitorOutdoorHumidity" class="monitorValue">70 %</div><div id="monitorOutdoorHumiditySource" class="monitorSub">Demo 模擬資料，尚無室外 API</div></article>
 </section><section id="homeHistorySection" style="margin-top:24px"><h2>📊📈 居家設備歷史數據</h2><div class="history-container smartRecommendCard" style="margin-top:20px">
 <label><input id="historyDemo" type="checkbox" checked> Demo 模式（不連後端）</label><button id="historyRefresh" type="button" class="smartAcceptBtn" style="margin-left:12px">更新最近 50 筆</button>
+<section class="smartRecommendCard" style="margin-top:20px;margin-bottom:20px">
+<h3>📊 每日／每週彙整</h3><p class="smartHabitInfo">以台灣時間分日，每週為星期一至星期日。用電量依功率與時間估算；間隔超過 60 分鐘不補算。平均值按有效量測時長加權。</p>
+<div class="controlModeTabs"><button id="aggregateDay" class="controlModeBtn active" type="button">每日一筆</button><button id="aggregateWeek" class="controlModeBtn" type="button">每週一筆</button></div>
+<p id="aggregateStatus" role="status" class="smartHabitInfo">進入居家監控後載入。</p>
+<div style="height:300px;margin-top:15px"><canvas id="aggregateChart"></canvas></div>
+<details id="aggregateDetails" style="margin-top:16px"><summary style="cursor:pointer;font-weight:700;color:#344054">📋 每日／每週詳細資料（點此展開／收合）</summary><div style="overflow-x:auto;margin-top:12px"><table style="width:100%;min-width:760px;text-align:center;border-collapse:collapse"><thead><tr><th>日期／週起日</th><th>估算用電量 (kWh)</th><th>平均功率 (W)</th><th>平均溫度 (°C)</th><th>平均濕度 (%)</th><th>有效用電時長</th><th>涵蓋狀態</th></tr></thead><tbody id="aggregateBody"></tbody></table></div>
+</details></section>
 <p id="historyStatus" role="status" style="margin:16px 0"></p><h3>📈 最近 50 筆趨勢</h3>
 <div style="height:350px;margin-bottom:30px"><canvas id="historyChart"></canvas></div>
-<h3>📋 歷史詳細紀錄</h3><div style="max-height:320px;overflow:auto;margin-top:15px">
+<details id="historyRecordDetails" style="margin-top:18px;border:1px solid #e2e8f0;border-radius:12px;padding:14px"><summary style="cursor:pointer;font-weight:700;color:#344054">📋 最近 50 筆詳細紀錄（點此展開／收合）</summary><div style="max-height:320px;overflow:auto;margin-top:15px">
 <table style="width:100%;min-width:680px;border-collapse:collapse;text-align:center"><thead style="background:#f1f5f9;position:sticky;top:0"><tr><th>時間</th><th>電壓 (V)</th><th>電流 (A)</th><th>功率 (W)</th><th>溫度 (°C)</th><th>濕度 (%)</th><th>繼電器</th></tr></thead><tbody id="history-table-body"></tbody></table>
-</div></div></section><section id="hospitalMonitorPanel" class="monitorGrid" style="display:none">
+</div></details></div></section><section id="hospitalMonitorPanel" class="monitorGrid" style="display:none">
 <article class="monitorCard"><small>院所室內溫度</small><div id="medicalMonitorTemp" class="monitorValue">24.0 °C</div><div class="monitorSub">Demo 院所環境資料</div></article>
 <article class="monitorCard"><small>院所室內濕度</small><div id="medicalMonitorHumi" class="monitorValue">55 %</div><div class="monitorSub">Demo 院所環境資料</div></article>
 <article class="monitorCard"><small>室外溫度</small><div class="monitorValue">28.0 °C</div><div class="monitorSub">Demo 模擬資料</div></article>
@@ -4081,8 +4088,9 @@ window.addEventListener("load",function(){
   const power=18.1+Math.sin(i*.5)*2;
   return {time:new Date(now-(49-i)*60000).toLocaleString('zh-TW',{hour12:false}),voltage:110.2,current:Number((power/110.2).toFixed(3)),power:Number(power.toFixed(2)),temp:Number((26+Math.sin(i*.2)*.6).toFixed(1)),humi:Math.round(60+Math.cos(i*.2)*3),relay:'ON'};
  });}
- function clear(message){if(historyChart){historyChart.destroy();historyChart=null;}const row=document.createElement('tr'),cell=document.createElement('td');cell.colSpan=7;cell.textContent=message;row.append(cell);document.getElementById('history-table-body').replaceChildren(row);}
+ function clear(message){if(window.clearHistorySummary)window.clearHistorySummary(message);if(historyChart){historyChart.destroy();historyChart=null;}const row=document.createElement('tr'),cell=document.createElement('td');cell.colSpan=7;cell.textContent=message;row.append(cell);document.getElementById('history-table-body').replaceChildren(row);}
  function render(rows,demo){
+  if(window.updateHistorySummary)window.updateHistorySummary(rows,demo);
   const sorted=[...rows].slice(0,50);const fullDates=sorted.every(x=>Number.isFinite(Date.parse(x.time)));
   if(fullDates)sorted.sort((a,b)=>Date.parse(a.time)-Date.parse(b.time));
   const body=document.getElementById('history-table-body');body.replaceChildren();
@@ -4102,6 +4110,62 @@ window.addEventListener("load",function(){
   finally{clearTimeout(timer);}
  };
  document.addEventListener('DOMContentLoaded',()=>{document.getElementById('historyRefresh').onclick=loadHistoryData;document.getElementById('historyDemo').addEventListener('change',loadHistoryData);});
+})();
+</script>
+
+
+<script>
+(function(){
+ const HOUR=3600000,DAY=24*HOUR,OFFSET=8*HOUR,MAX_GAP=HOUR;
+ let mode='day', daily=[], isDemo=false,chart=null;
+ const valid=v=>v!==null&&v!==undefined&&v!==''&&Number.isFinite(Number(v));
+ function parseTime(value){
+  if(typeof value==='number')return Number.isFinite(value)?value:NaN;
+  const text=String(value??'').trim();
+  // Require a date: a time-of-day alone cannot identify a calendar day.
+  if(!/^\d{4}[-/]\d{1,2}[-/]\d{1,2}/.test(text))return NaN;
+  if(/(?:Z|[+-]\d{2}:?\d{2})$/i.test(text))return Date.parse(text);
+  const m=text.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:[T\s]+(?:上午|下午)?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
+  if(!m)return NaN;let hour=Number(m[4]||0);if(text.includes('下午')&&hour<12)hour+=12;if(text.includes('上午')&&hour===12)hour=0;
+  return Date.UTC(Number(m[1]),Number(m[2])-1,Number(m[3]),hour,Number(m[5]||0),Number(m[6]||0))-OFFSET;
+ }
+ const dayStart=t=>Math.floor((t+OFFSET)/DAY)*DAY-OFFSET;
+ const label=t=>new Date(t+OFFSET).toISOString().slice(0,10);
+ function aggregate(rows){
+  const byTime=new Map();rows.forEach(r=>{const t=parseTime(r.time);if(Number.isFinite(t))byTime.set(t,{...r,t});});
+  const ordered=[...byTime.values()].sort((a,b)=>a.t-b.t),groups=new Map();
+  for(let i=0;i<ordered.length-1;i++){
+   const a=ordered[i],b=ordered[i+1],gap=b.t-a.t;if(gap<=0||gap>MAX_GAP)continue;
+   for(let t=a.t;t<b.t;){const start=dayStart(t),end=Math.min(b.t,start+DAY),dt=(end-t)/HOUR;
+    let g=groups.get(start);if(!g){g={start,energy:0,powerSum:0,powerHours:0,tempSum:0,tempHours:0,humiSum:0,humiHours:0};groups.set(start,g);}
+    [['power','powerSum','powerHours'],['temp','tempSum','tempHours'],['humi','humiSum','humiHours']].forEach(([key,sum,hours])=>{
+     if(!valid(a[key])||!valid(b[key]))return;
+     if(key==='power'&&(Number(a[key])<0||Number(b[key])<0))return;
+     const first=Number(a[key]),delta=Number(b[key])-first;
+     const mean=first+delta*((t-a.t)+(end-a.t))/(2*gap);
+     g[sum]+=mean*dt;g[hours]+=dt;if(key==='power')g.energy+=mean*dt/1000;
+    });t=end;
+   }
+  }
+  return [...groups.values()].sort((a,b)=>a.start-b.start);
+ }
+ function weekStart(start){const weekday=new Date(start+OFFSET).getUTCDay();return start-((weekday+6)%7)*DAY;}
+ function weekly(groups){const weeks=new Map();groups.forEach(g=>{const start=weekStart(g.start);let w=weeks.get(start);if(!w){w={start,energy:0,powerSum:0,powerHours:0,tempSum:0,tempHours:0,humiSum:0,humiHours:0};weeks.set(start,w);}for(const key of ['energy','powerSum','powerHours','tempSum','tempHours','humiSum','humiHours'])w[key]+=g[key];});return [...weeks.values()].sort((a,b)=>a.start-b.start);}
+ function demo(){const end=dayStart(Date.now()),start=end-28*DAY;return Array.from({length:28*48+1},(_,i)=>{const t=start+i*HOUR/2,h=new Date(t+OFFSET).getUTCHours();return {time:new Date(t).toISOString(),power:80+(h>=18&&h<23?220:0)+15*Math.sin(i*.2),temp:26+2*Math.sin(i*Math.PI/24),humi:60+5*Math.cos(i*Math.PI/24)};});}
+ function draw(){
+  if(chart){chart.destroy();chart=null;}const rows=mode==='day'?daily:weekly(daily),body=document.getElementById('aggregateBody');body.replaceChildren();
+  const format=(sum,hours)=>hours>0?(sum/hours).toFixed(2):'--';
+  rows.forEach(g=>{const tr=document.createElement('tr');const expected=mode==='day'?24:168,complete=g.powerHours>=expected-.00001;
+   [label(g.start)+(mode==='week'?' 起':''),g.powerHours?g.energy.toFixed(4):'--',format(g.powerSum,g.powerHours),format(g.tempSum,g.tempHours),format(g.humiSum,g.humiHours),g.powerHours.toFixed(2)+' 小時',complete?'完整時段（估算）':'部分紀錄，非整'+(mode==='day'?'日':'週')+'總量'].forEach(v=>{const td=document.createElement('td');td.textContent=v;td.style.cssText='padding:10px;border-bottom:1px solid #e2e8f0';tr.append(td);});body.append(tr);
+  });
+  document.getElementById('aggregateStatus').textContent=(isDemo?'Demo：28 天模擬量測資料':'後端最近 50 筆紀錄：僅依已取得的資料彙整，未涵蓋的時段不補零、不推算全天')+'｜'+rows.length+' 筆'+(!rows.length?'｜缺少含日期的時間或有效連續量測，無法彙整。':'');
+  if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.textContent='目前沒有可彙整資料';tr.append(td);body.append(tr);}
+  if(typeof Chart!=='undefined'&&rows.length)chart=new Chart(document.getElementById('aggregateChart'),{type:'bar',data:{labels:rows.map(g=>label(g.start)),datasets:[{label:(isDemo?'Demo ':'')+'已涵蓋時段估算用電量 (kWh)',data:rows.map(g=>g.powerHours?g.energy:null),backgroundColor:'#3b82f6',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,title:{display:true,text:'kWh（度）'}}}}});
+ }
+ window.clearHistorySummary=function(message){daily=[];if(chart){chart.destroy();chart=null;}document.getElementById('aggregateBody').replaceChildren();document.getElementById('aggregateStatus').textContent=message;};
+ window.updateHistorySummary=function(rows,demoMode){isDemo=demoMode;daily=aggregate(demoMode?demo():rows);draw();};
+ document.addEventListener('DOMContentLoaded',()=>{[['aggregateDay','day'],['aggregateWeek','week']].forEach(([id,value])=>document.getElementById(id).onclick=()=>{mode=value;document.getElementById('aggregateDay').classList.toggle('active',value==='day');document.getElementById('aggregateWeek').classList.toggle('active',value==='week');draw();});});
+ window.smartctrlAggregateHistory={aggregate,weekly,parseTime};
 })();
 </script>
 
