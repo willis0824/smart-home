@@ -1753,11 +1753,19 @@ input[type=range]{
 <div style="height:300px;margin-top:15px"><canvas id="aggregateChart"></canvas></div>
 <details id="aggregateDetails" style="margin-top:16px"><summary style="cursor:pointer;font-weight:700;color:#344054">📋 每日／每週詳細資料（點此展開／收合）</summary><div style="overflow-x:auto;margin-top:12px"><table style="width:100%;min-width:760px;text-align:center;border-collapse:collapse"><thead><tr><th>日期／週起日</th><th>估算用電量 (kWh)</th><th>平均功率 (W)</th><th>平均溫度 (°C)</th><th>平均濕度 (%)</th><th>有效用電時長</th><th>涵蓋狀態</th></tr></thead><tbody id="aggregateBody"></tbody></table></div>
 </details></section>
+<section class="smartRecommendCard" style="margin:20px 0">
+<h3>📈 每日／每週歷史折線圖</h3>
+<p class="smartHabitInfo">選擇每日或每週，每個點代表該時段一筆彙整資料；每日以台灣時間計算，每週從星期一開始。</p>
+<div class="controlModeTabs"><button id="historyLineDay" type="button" class="controlModeBtn active" aria-pressed="true">每日</button><button id="historyLineWeek" type="button" class="controlModeBtn" aria-pressed="false">每週</button>
+<label style="display:flex;gap:8px;align-items:center">顯示項目 <select id="historyLineMetric" style="padding:8px;border:1px solid #d0d5dd;border-radius:8px"><option value="power">平均功率（W）</option><option value="temp">平均溫度（°C）</option><option value="humi">平均濕度（%）</option><option value="energy">估算用電量（kWh）</option></select></label></div>
+<p id="historyLineStatus" role="status" class="smartHabitInfo">準備資料中…</p><div style="height:320px;width:100%;margin-top:12px"><canvas id="historyLineCanvas" role="img" aria-label="每日或每週歷史數據折線圖"></canvas></div>
+<details style="margin-top:16px"><summary style="cursor:pointer;font-weight:700;color:#344054">📋 每日／每週折線圖資料表（點此展開／收合）</summary><div style="max-height:320px;overflow:auto;margin-top:12px"><table style="width:100%;min-width:680px;text-align:center;border-collapse:collapse"><thead><tr><th>日期／週起日</th><th>估算用電量（kWh）</th><th>平均功率（W）</th><th>平均溫度（°C）</th><th>平均濕度（%）</th><th>涵蓋狀態</th></tr></thead><tbody id="historyLineTable"></tbody></table></div></details>
+</section>
 <p id="historyStatus" role="status" style="margin:16px 0"></p><h3>📈 最近 50 筆趨勢</h3>
 <div style="height:350px;margin-bottom:30px"><canvas id="historyChart"></canvas></div>
 <details id="historyRecordDetails" style="margin-top:18px;border:1px solid #e2e8f0;border-radius:12px;padding:14px"><summary style="cursor:pointer;font-weight:700;color:#344054">📋 最近 50 筆詳細紀錄（點此展開／收合）</summary><div style="max-height:320px;overflow:auto;margin-top:15px">
 <table style="width:100%;min-width:680px;border-collapse:collapse;text-align:center"><thead style="background:#f1f5f9;position:sticky;top:0"><tr><th>時間</th><th>電壓 (V)</th><th>電流 (A)</th><th>功率 (W)</th><th>溫度 (°C)</th><th>濕度 (%)</th><th>繼電器</th></tr></thead><tbody id="history-table-body"></tbody></table>
-</div></details></div></section><section id="hospitalMonitorPanel" class="monitorGrid" style="display:none">
+</div></details></div></section><section id="hospitalMonitorPanel" class="monitorGrid" style="display:none"><div id="wardMonitorPicker" style="grid-column:1/-1"></div>
 <article class="monitorCard"><small>院所室內溫度</small><div id="medicalMonitorTemp" class="monitorValue">24.0 °C</div><div class="monitorSub">Demo 院所環境資料</div></article>
 <article class="monitorCard"><small>院所室內濕度</small><div id="medicalMonitorHumi" class="monitorValue">55 %</div><div class="monitorSub">Demo 院所環境資料</div></article>
 <article class="monitorCard"><small>室外溫度</small><div class="monitorValue">28.0 °C</div><div class="monitorSub">Demo 模擬資料</div></article>
@@ -2141,9 +2149,9 @@ input[type=range]{
             </div>
 
             <div class="hospitalActions">
-                <button class="hospitalAction">
+                <button class="hospitalAction" type="button" onclick="wardBeginAdd()">
                     <i class="fa-solid fa-sliders"></i>
-                    編輯模式
+                    新增房間
                 </button>
 
                 <button class="hospitalAction" onclick="callNurse()">
@@ -2153,16 +2161,14 @@ input[type=range]{
             </div>
         </div>
 
-        <div class="roomTabs">
-            <button class="roomButton active" onclick="changeRoom(this,'201')">201 號病房</button>
-            <button class="roomButton" onclick="changeRoom(this,'202')">202 號病房</button>
-            <button class="roomButton" onclick="changeRoom(this,'203')">203 號病房</button>
-            <button class="roomButton" onclick="addRoom()">＋ 新增病房</button>
-        </div>
+        <section class="smartRecommendCard" style="margin:20px 0">
+<div id="wardControlPicker"></div>
+</section>
 
+<div id="wardSelectedInfo" style="margin:16px 0;font-weight:700"></div>
         <div class="healthGrid">
-<div class="healthCard"><div class="healthValue"><span id="medicalRoomTemp">24.0</span><small>°C</small></div><h4>室內溫度</h4><p>Demo 院所環境資料</p></div>
-<div class="healthCard"><div class="healthValue"><span id="medicalRoomHumi">55</span><small>%</small></div><h4>室內濕度</h4><p>Demo 院所環境資料</p></div>
+<div class="healthCard"><div class="healthValue"><span id="medicalRoomTemp">24.0</span><small>°C</small></div><h4>室內溫度</h4><p class="wardReadingSource">Demo 院所環境資料</p></div>
+<div class="healthCard"><div class="healthValue"><span id="medicalRoomHumi">55</span><small>%</small></div><h4>室內濕度</h4><p class="wardReadingSource">Demo 院所環境資料</p></div>
 <div class="healthCard"><div class="healthValue">28.0 <small>°C</small></div><h4>室外溫度</h4><p>Demo 模擬資料</p></div>
 <div class="healthCard"><div class="healthValue">68 <small>%</small></div><h4>室外濕度</h4><p>Demo 模擬資料</p></div>
 </div>
@@ -2174,7 +2180,7 @@ input[type=range]{
                 </div>
                 <div>
                     <h3>環境控制</h3>
-                    <p>Room Environment</p>
+                    <p>示範模式：設定會依房間保存在此瀏覽器，尚未控制實體設備。</p>
                 </div>
             </div>
 
@@ -2201,7 +2207,7 @@ input[type=range]{
                     冷氣電源
                 </div>
                 <label class="switch">
-                    <input type="checkbox" checked>
+                    <input id="wardAirSwitch" type="checkbox" checked>
                     <span class="switchSlider"></span>
                 </label>
             </div>
@@ -2212,7 +2218,7 @@ input[type=range]{
                     窗簾
                 </div>
                 <label class="switch">
-                    <input type="checkbox">
+                    <input id="wardCurtainSwitch" type="checkbox">
                     <span class="switchSlider"></span>
                 </label>
             </div>
@@ -2223,7 +2229,7 @@ input[type=range]{
                     主燈
                 </div>
                 <label class="switch">
-                    <input type="checkbox" checked>
+                    <input id="wardLightSwitch" type="checkbox" checked>
                     <span class="switchSlider"></span>
                 </label>
             </div>
@@ -2234,7 +2240,7 @@ input[type=range]{
                     病房隔離模式
                 </div>
                 <label class="switch">
-                    <input type="checkbox">
+                    <input id="wardIsolationSwitch" type="checkbox">
                     <span class="switchSlider"></span>
                 </label>
             </div>
@@ -2492,23 +2498,12 @@ hospitalTemperatureSlider.oninput=function(){
 };
 
 /* ===== 醫療院所示範資料 ===== */
-const roomData={"201":{temperature:24.0,humidity:55},"202":{temperature:25.2,humidity:58},"203":{temperature:23.8,humidity:52}};
-function changeRoom(button,room){
- document.querySelectorAll('#hospitalPage .roomButton').forEach(btn=>btn.classList.remove('active'));
- button.classList.add('active');const data=roomData[room];if(!data)return;
- document.getElementById('medicalRoomTemp').textContent=data.temperature.toFixed(1);
- document.getElementById('medicalRoomHumi').textContent=data.humidity;
- document.getElementById('medicalMonitorTemp').textContent=data.temperature.toFixed(1)+' °C';
- document.getElementById('medicalMonitorHumi').textContent=data.humidity+' %';
-}
 /* 示範互動 */
 function callNurse(){
     alert("已送出呼叫護士示範訊息");
 }
 
-function addRoom(){
-    alert("新增病房功能目前為介面示範");
-}
+
 
 
 /* ===== 居家房間切換 ===== */
@@ -4100,13 +4095,14 @@ window.addEventListener("load",function(){
  }
  window.loadHistoryData=async function(){
   const id=++requestId;controller?.abort();clear('資料載入中…');const status=document.getElementById('historyStatus'),demo=document.getElementById('historyDemo').checked;
+  window.historyFallbackDemo=false;
   if(demo){render(demoRows(),true);return;}
   status.textContent='正在讀取後端歷史資料…';controller=new AbortController();const currentController=controller,timer=setTimeout(()=>currentController.abort(),15000);
   try{
    const res=await fetch('https://ascent-disperser-groove.ngrok-free.dev/api/history?limit=50',{headers:{'ngrok-skip-browser-warning':'true'},signal:currentController.signal});if(!res.ok)throw new Error('HTTP '+res.status);
    const result=await res.json();if(!result.success||!Array.isArray(result.data))throw new Error('回傳格式不符：需要 success 與 data 陣列');if(id!==requestId)return;
    if(!result.data.length){clear('目前沒有歷史紀錄');status.textContent='後端目前沒有歷史紀錄。';return;}render(result.data,false);
-  }catch(error){if(id!==requestId)return;const message='載入歷史數據失敗：'+(error.name==='AbortError'?'連線逾時':error.message);clear(message);status.textContent=message;}
+  }catch(error){if(id!==requestId)return;window.historyFallbackDemo=true;render(demoRows(),true);status.textContent='後端無法連線或讀取失敗，現顯示 Demo 模擬資料；並非實測數據。可按更新重試。';}
   finally{clearTimeout(timer);}
  };
  document.addEventListener('DOMContentLoaded',()=>{document.getElementById('historyRefresh').onclick=loadHistoryData;document.getElementById('historyDemo').addEventListener('change',loadHistoryData);});
@@ -4162,10 +4158,120 @@ window.addEventListener("load",function(){
   if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.textContent='目前沒有可彙整資料';tr.append(td);body.append(tr);}
   if(typeof Chart!=='undefined'&&rows.length)chart=new Chart(document.getElementById('aggregateChart'),{type:'bar',data:{labels:rows.map(g=>label(g.start)),datasets:[{label:(isDemo?'Demo ':'')+'已涵蓋時段估算用電量 (kWh)',data:rows.map(g=>g.powerHours?g.energy:null),backgroundColor:'#3b82f6',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,title:{display:true,text:'kWh（度）'}}}}});
  }
- window.clearHistorySummary=function(message){daily=[];if(chart){chart.destroy();chart=null;}document.getElementById('aggregateBody').replaceChildren();document.getElementById('aggregateStatus').textContent=message;};
- window.updateHistorySummary=function(rows,demoMode){isDemo=demoMode;daily=aggregate(demoMode?demo():rows);draw();};
+ window.clearHistorySummary=function(message){if(window.clearDailyWeeklyLine)window.clearDailyWeeklyLine(message);daily=[];if(chart){chart.destroy();chart=null;}document.getElementById('aggregateBody').replaceChildren();document.getElementById('aggregateStatus').textContent=message;};
+ window.updateHistorySummary=function(rows,demoMode){isDemo=demoMode;daily=aggregate(demoMode?demo():rows);draw();if(window.setDailyWeeklyLineData)window.setDailyWeeklyLineData(daily,demoMode,window.historyFallbackDemo);};
  document.addEventListener('DOMContentLoaded',()=>{[['aggregateDay','day'],['aggregateWeek','week']].forEach(([id,value])=>document.getElementById(id).onclick=()=>{mode=value;document.getElementById('aggregateDay').classList.toggle('active',value==='day');document.getElementById('aggregateWeek').classList.toggle('active',value==='week');draw();});});
  window.smartctrlAggregateHistory={aggregate,weekly,parseTime};
+})();
+</script>
+
+
+<script>
+(function(){
+ const KEY='smartctrlWardRoomsV1';
+ const defaults=[{id:'ward201',name:'201 號病房',people:1,temp:24,humi:55},{id:'ward202',name:'202 號病房',people:2,temp:25.2,humi:58},{id:'ward203',name:'203 號病房',people:4,temp:23.8,humi:52}];
+ const valid=r=>r&&typeof r.id==='string'&&typeof r.name==='string'&&r.name.trim().length>0&&r.name.length<=30&&Number.isInteger(r.people)&&r.people>=1&&r.people<=99;
+ let rooms=defaults.map(x=>({...x})),group='1',selected='ward201',editing=null,message='',lastDeleted=null;
+ const groupOf=r=>r.people<=4?String(r.people):'many';
+ try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Array.isArray(saved.rooms)&&saved.rooms.every(valid)&&new Set(saved.rooms.map(x=>x.id)).size===saved.rooms.length){rooms=saved.rooms;selected=saved.selected;const current=rooms.find(r=>r.id===selected);group=saved.mode==='rooms'&&current?groupOf(current):(['1','2','3','4','many'].includes(saved.group)?saved.group:'1');}}catch(e){}
+ function save(){try{localStorage.setItem(KEY,JSON.stringify({rooms,mode:'people',group,selected}));return true;}catch(e){message='瀏覽器無法儲存，本次設定只在目前頁面有效。';return false;}}
+ function el(tag,text){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;return e;}
+ function button(text,fn,active=false){const b=el('button',text);b.type='button';b.className='controlModeBtn'+(active?' active':'');b.setAttribute('aria-pressed',String(active));b.onclick=fn;return b;}
+ function textInput(value,placeholder){const i=el('input');i.type='text';i.value=value;i.maxLength=30;i.placeholder=placeholder;i.style.cssText='padding:10px;border:1px solid #d0d5dd;border-radius:8px;min-width:180px';return i;}
+ function countInput(value,min,max){const i=el('input');i.type='number';i.value=String(value);i.min=String(min);i.max=String(max);i.step='1';i.style.cssText='padding:10px;border:1px solid #d0d5dd;border-radius:8px;width:90px';return i;}
+ const candidates=()=>rooms.filter(r=>groupOf(r)===group);
+ function selectedRoom(){return rooms.find(r=>r.id===selected);}
+ function validNew(name,people,except){if(!name||name.length>30)return '請輸入 1～30 字的房間名稱。';if(!Number.isInteger(people)||people<1||people>99)return '請輸入 1～99 的整數人數。';if(rooms.some(r=>r.id!==except&&r.name.toLocaleLowerCase()===name.toLocaleLowerCase()))return '這個房間名稱已存在。';return '';}
+ function selectGroup(value){group=value;const list=candidates();selected=list.find(r=>r.id===selected)?.id||list[0]?.id||null;editing=null;message='';save();render();}
+ function remove(r){lastDeleted={room:r,index:rooms.findIndex(x=>x.id===r.id)};rooms=rooms.filter(x=>x.id!==r.id);if(selected===r.id)selected=candidates()[0]?.id||null;editing=null;message='已刪除「'+r.name+'」，可按復原。';save();render();}
+ function undo(){if(!lastDeleted)return;const r=lastDeleted.room;if(rooms.some(x=>x.name.toLocaleLowerCase()===r.name.toLocaleLowerCase())){message='同名房間已存在，無法復原。';render();return;}rooms.splice(Math.max(0,lastDeleted.index),0,r);selected=r.id;group=groupOf(r);lastDeleted=null;message='已復原「'+r.name+'」。';save();render();}
+ function add(name,people){const error=validNew(name,people,null);if(error){message=error;return false;}if(groupOf({people})!==group){message='請輸入符合目前分組的人數。';return false;}const r={id:'ward-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),name,people,temp:null,humi:null};rooms.push(r);selected=r.id;editing=null;message='已新增「'+name+'」，顯示於下方房間清單。';save();render();return true;}
+ function update(r,name,people){const error=validNew(name,people,r.id);if(error){message=error;return false;}r.name=name;r.people=people;selected=r.id;group=groupOf(r);editing=null;message='已更新「'+name+'」。';save();render();return true;}
+ function renderPicker(host){
+  host.replaceChildren();host.append(el('h3','依常用人數選擇病房'));const version=el('p','病房房間操作版 v2');version.style.cssText='font-size:12px;color:#667085';host.append(version);const tabs=el('div');tabs.className='controlModeTabs';
+  [['1','單人'],['2','雙人'],...(rooms.some(r=>r.people===3)?[['3','三人']]:[]),['4','四人'],['many','多人（5 人以上）']].forEach(([value,label])=>tabs.append(button(label+' · '+rooms.filter(r=>groupOf(r)===value).length+' 間',()=>selectGroup(value),group===value)));host.append(tabs);
+  const form=el('div');form.className='wardInlineForm';form.style.cssText='display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0';const name=textInput('','輸入新房間名稱');name.setAttribute('aria-label','新房間名稱');form.append(name);
+  let peopleInput=null;if(group==='many'){peopleInput=countInput(5,5,99);peopleInput.setAttribute('aria-label','多人房人數');form.append(peopleInput,el('span','人'));}
+  const submit=el('button','＋ 新增房間');submit.type='button';submit.className='smartAcceptBtn';form.append(submit);host.append(form);
+  const notice=el('p',message);notice.setAttribute('role','status');notice.style.cssText='color:#475467;min-height:1em';host.append(notice);
+  function submitRoom(){const n=name.value.trim(),people=group==='many'?Number(peopleInput.value):Number(group);if(!add(n,people))notice.textContent=message;}
+  submit.onclick=submitRoom;name.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitRoom();}});if(peopleInput)peopleInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitRoom();}});
+  if(lastDeleted)host.append(button('↩ 復原上次刪除',undo));
+  host.append(el('h4','此分組房間'));const list=el('div');list.style.cssText='display:grid;gap:8px;margin-top:10px';
+  candidates().forEach(r=>{
+   const row=el('div');row.style.cssText='display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px;background:#f8faff;border-radius:10px';
+   if(editing===r.id){
+    const editName=textInput(r.name,'房間名稱'),editPeople=countInput(r.people,1,99),error=el('span');error.setAttribute('role','status');
+    const saveButton=button('儲存',()=>{if(!update(r,editName.value.trim(),Number(editPeople.value)))error.textContent=message;});
+    row.append(editName,editPeople,el('span','人'),saveButton,button('取消',()=>{editing=null;message='';render();}),error);
+   }else{
+    const pick=button(r.name+'｜'+r.people+' 人',()=>{selected=r.id;message='已選擇「'+r.name+'」。';save();render();},r.id===selected);
+    row.append(pick,button('編輯',()=>{editing=r.id;message='';render();}),button('刪除',()=>remove(r)));
+   }
+   list.append(row);
+  });
+  if(!candidates().length)list.append(el('p','目前沒有房間，請在上方輸入名稱新增。'));host.append(list);
+  const room=selectedRoom();host.append(el('p',room?'目前選擇：'+room.name+'（'+room.people+' 人）':'目前沒有選擇房間。'));
+ }
+ function render(){
+  if(!candidates().some(r=>r.id===selected))selected=candidates()[0]?.id||null;
+  renderPicker(document.getElementById('wardControlPicker'));renderPicker(document.getElementById('wardMonitorPicker'));
+  const r=selectedRoom(),hasTemp=Number.isFinite(r?.temp),hasHumi=Number.isFinite(r?.humi);
+  document.getElementById('wardSelectedInfo').textContent=r?r.name+'｜常用 '+r.people+' 人｜環境資訊':'請先新增或選取房間';
+  document.getElementById('medicalRoomTemp').textContent=hasTemp?r.temp.toFixed(1):'--';document.getElementById('medicalRoomHumi').textContent=hasHumi?r.humi:'--';
+  document.getElementById('medicalMonitorTemp').textContent=hasTemp?r.temp.toFixed(1)+' °C':'-- °C';document.getElementById('medicalMonitorHumi').textContent=hasHumi?r.humi+' %':'-- %';
+  document.querySelectorAll('.wardReadingSource').forEach(n=>n.textContent=hasTemp||hasHumi?'Demo 院所環境資料':'尚無此房間感測資料');
+  ['medicalMonitorTemp','medicalMonitorHumi'].forEach((id,i)=>{document.getElementById(id).nextElementSibling.textContent=(i===0?hasTemp:hasHumi)?'Demo 院所環境資料':'尚無此房間感測資料';});
+  const controls={wardAirSwitch:'air',wardCurtainSwitch:'curtain',wardLightSwitch:'light',wardIsolationSwitch:'isolation'},settings=r?.environment||{};
+  Object.entries(controls).forEach(([id,key])=>{const input=document.getElementById(id);input.disabled=!r;input.checked=typeof settings[key]==='boolean'?settings[key]:(key==='air'||key==='light');});
+  const slider=document.getElementById('hospitalTemperatureSlider');slider.disabled=!r;slider.value=Number.isInteger(settings.targetTemp)&&settings.targetTemp>=16&&settings.targetTemp<=30?settings.targetTemp:24;document.getElementById('hospitalTempValue').textContent=slider.value+'°C';
+ }
+ window.wardBeginAdd=()=>{const form=document.querySelector('#wardControlPicker .wardInlineForm input');if(form){form.scrollIntoView({behavior:'smooth',block:'center'});form.focus();}};
+ document.addEventListener('DOMContentLoaded',()=>{
+  const controls={wardAirSwitch:'air',wardCurtainSwitch:'curtain',wardLightSwitch:'light',wardIsolationSwitch:'isolation'};
+  Object.entries(controls).forEach(([id,key])=>document.getElementById(id).addEventListener('change',event=>{const r=selectedRoom();if(!r)return;r.environment={...r.environment,[key]:event.target.checked};save();}));
+  document.getElementById('hospitalTemperatureSlider').addEventListener('input',event=>{const r=selectedRoom();if(!r)return;r.environment={...r.environment,targetTemp:Number(event.target.value)};document.getElementById('hospitalTempValue').textContent=event.target.value+'°C';save();});render();
+ });
+})();
+</script>
+
+
+<script>
+(function(){
+ let days=[],demo=false,fallback=false,mode='day',metric='power';
+ const DAY=86400000,OFFSET=28800000,keys=['energy','powerSum','powerHours','tempSum','tempHours','humiSum','humiHours'];
+ const unit={energy:'kWh',power:'W',temp:'°C',humi:'%'};
+ const date=t=>new Date(t+OFFSET).toISOString().slice(0,10);
+ function weekStart(t){return t-((new Date(t+OFFSET).getUTCDay()+6)%7)*DAY;}
+ function weeks(){const map=new Map();days.forEach(d=>{const start=weekStart(d.start);let w=map.get(start);if(!w){w={start};keys.forEach(k=>w[k]=0);map.set(start,w);}keys.forEach(k=>w[k]+=d[k]);});return [...map.values()].sort((a,b)=>a.start-b.start);}
+ function val(r,key){if(key==='energy')return r.powerHours>0?r.energy:null;const h=r[key+'Hours'];return h>0?r[key+'Sum']/h:null;}
+ function render(){
+  const rows=mode==='day'?days:weeks(),body=document.getElementById('historyLineTable');body.replaceChildren();
+  rows.forEach(r=>{const tr=document.createElement('tr'),hours=mode==='day'?24:168,complete=r.powerHours>=hours-0.00001;
+   [date(r.start)+(mode==='week'?' 起':''),val(r,'energy')===null?'--':val(r,'energy').toFixed(4),...['power','temp','humi'].map(k=>val(r,k)===null?'--':val(r,k).toFixed(2)),complete?'完整時段（估算）':'部分資料'].forEach(x=>{const td=document.createElement('td');td.textContent=x;td.style.cssText='padding:9px;border-bottom:1px solid #e2e8f0';tr.append(td);});body.append(tr);
+  });
+  if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.textContent='目前沒有可彙整資料';tr.append(td);body.append(tr);}
+  document.getElementById('historyLineStatus').textContent=(demo?(fallback?'後端無法連線，顯示 Demo 模擬資料':'Demo 模擬資料'):'後端最近 50 筆彙整，可能只有部分時段')+'｜'+(mode==='day'?'每日':'每週')+' '+rows.length+' 筆；表格與圖表使用同一份資料。';
+  plot(rows);
+ }
+ function plot(rows){
+  const canvas=document.getElementById('historyLineCanvas'),ctx=canvas.getContext('2d');if(!ctx)return;
+  const rect=canvas.getBoundingClientRect(),width=Math.max(320,Math.floor(rect.width||canvas.parentElement.clientWidth||600)),height=320,ratio=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=width*ratio;canvas.height=height*ratio;canvas.style.width='100%';canvas.style.height=height+'px';ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,width,height);
+  const points=rows.map(r=>val(r,metric)),valid=points.filter(v=>v!==null&&Number.isFinite(v));ctx.fillStyle='#667085';ctx.font='12px sans-serif';
+  if(!valid.length){ctx.fillText('目前沒有可繪製的資料',20,40);return;}
+  const left=60,right=20,top=24,bottom=55,plotW=width-left-right,plotH=height-top-bottom;let min=Math.min(...valid),max=Math.max(...valid);const pad=(max-min)*.15||Math.max(Math.abs(max)*.1,.1);min-=pad;max+=pad;if(metric==='energy'||metric==='power')min=Math.max(0,min);
+  ctx.strokeStyle='#e4e7ec';ctx.lineWidth=1;for(let i=0;i<=4;i++){const y=top+plotH*i/4;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(width-right,y);ctx.stroke();ctx.fillStyle='#667085';ctx.textAlign='right';ctx.fillText((max-(max-min)*i/4).toFixed(metric==='energy'?2:1),left-7,y+4);}
+  const x=i=>left+(rows.length===1?plotW/2:i*plotW/(rows.length-1)),y=v=>top+(max-v)*plotH/(max-min);ctx.strokeStyle='#2d6cff';ctx.lineWidth=2;ctx.beginPath();let segment=false;points.forEach((v,i)=>{if(v===null||!Number.isFinite(v)){segment=false;return;}if(!segment){ctx.moveTo(x(i),y(v));segment=true;}else ctx.lineTo(x(i),y(v));});ctx.stroke();ctx.fillStyle='#2d6cff';points.forEach((v,i)=>{if(v===null||!Number.isFinite(v))return;ctx.beginPath();ctx.arc(x(i),y(v),3,0,Math.PI*2);ctx.fill();});
+  ctx.fillStyle='#667085';ctx.textAlign='center';let step=Math.max(1,Math.ceil(rows.length/6));rows.forEach((r,i)=>{if(i%step===0||i===rows.length-1)ctx.fillText(date(r.start).slice(5),x(i),height-25);});ctx.textAlign='left';ctx.fillText(unit[metric],5,13);
+ }
+ window.setDailyWeeklyLineData=(d,isDemo,isFallback)=>{days=d;demo=isDemo;fallback=!!isFallback;render();};
+ window.clearDailyWeeklyLine=(message)=>{days=[];const ctx=document.getElementById('historyLineCanvas').getContext('2d');if(ctx)ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);document.getElementById('historyLineTable').replaceChildren();document.getElementById('historyLineStatus').textContent=message;};
+ document.addEventListener('DOMContentLoaded',()=>{
+  [['historyLineDay','day'],['historyLineWeek','week']].forEach(([id,value])=>document.getElementById(id).onclick=()=>{mode=value;document.getElementById('historyLineDay').classList.toggle('active',value==='day');document.getElementById('historyLineWeek').classList.toggle('active',value==='week');document.getElementById('historyLineDay').setAttribute('aria-pressed',String(value==='day'));document.getElementById('historyLineWeek').setAttribute('aria-pressed',String(value==='week'));render();});
+  document.getElementById('historyLineMetric').addEventListener('change',e=>{metric=e.target.value;render();});
+  let timer;window.addEventListener('resize',()=>{clearTimeout(timer);timer=setTimeout(()=>{if(days.length)render();},100);});
+ });
 })();
 </script>
 
