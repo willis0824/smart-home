@@ -1740,12 +1740,12 @@ input[type=range]{
 <article class="monitorCard"><small>居家電壓</small><div id="monitorVoltage" class="monitorValue">-- V</div><div id="monitorVoltageSource" class="monitorSub">ESP32 電力資訊</div></article>
 <article class="monitorCard"><small>居家電流</small><div id="monitorCurrent" class="monitorValue">-- A</div><div id="monitorCurrentSource" class="monitorSub">ESP32 電力資訊</div></article>
 <article class="monitorCard"><small>居家功率</small><div id="monitorPower" class="monitorValue">-- W</div><div id="monitorPowerSource" class="monitorSub">ESP32 電力資訊</div></article>
-<article class="monitorCard"><small>室內溫度</small><div id="monitorRoomTemp" class="monitorValue">26.0 °C</div><div id="monitorRoomTempSource" class="monitorSub">Demo 初始資料；取得感測值後標示來源</div></article>
-<article class="monitorCard"><small>室內濕度</small><div id="monitorRoomHumidity" class="monitorValue">60 %</div><div id="monitorRoomHumiditySource" class="monitorSub">Demo 初始資料；取得感測值後標示來源</div></article>
-<article class="monitorCard"><small>室外溫度</small><div id="monitorOutdoorTemp" class="monitorValue">29.0 °C</div><div id="monitorOutdoorTempSource" class="monitorSub">Demo 模擬資料，尚無室外 API</div></article>
-<article class="monitorCard"><small>室外濕度</small><div id="monitorOutdoorHumidity" class="monitorValue">70 %</div><div id="monitorOutdoorHumiditySource" class="monitorSub">Demo 模擬資料，尚無室外 API</div></article>
+<article class="monitorCard"><small>室內溫度</small><div id="monitorRoomTemp" class="monitorValue">-- °C</div><div id="monitorRoomTempSource" class="monitorSub">尚無感測資料</div></article>
+<article class="monitorCard"><small>室內濕度</small><div id="monitorRoomHumidity" class="monitorValue">-- %</div><div id="monitorRoomHumiditySource" class="monitorSub">尚無感測資料</div></article>
+<article class="monitorCard"><small>室外溫度</small><div id="monitorOutdoorTemp" class="monitorValue">-- °C</div><div id="monitorOutdoorTempSource" class="monitorSub">尚無室外感測資料</div></article>
+<article class="monitorCard"><small>室外濕度</small><div id="monitorOutdoorHumidity" class="monitorValue">-- %</div><div id="monitorOutdoorHumiditySource" class="monitorSub">尚無室外感測資料</div></article>
 </section><section id="homeHistorySection" style="margin-top:24px"><h2>📊📈 居家設備歷史數據</h2><div class="history-container smartRecommendCard" style="margin-top:20px">
-<label><input id="historyDemo" type="checkbox" checked> Demo 模式（不連後端）</label><button id="historyRefresh" type="button" class="smartAcceptBtn" style="margin-left:12px">更新最近 50 筆</button>
+<input id="historyDemo" type="checkbox" hidden aria-hidden="true"><span>僅顯示後端真實歷史資料。</span><button id="historyRefresh" type="button" class="smartAcceptBtn" style="margin-left:12px">更新最近 50 筆</button>
 <section class="smartRecommendCard" style="margin-top:20px;margin-bottom:20px">
 <h3>📊 每日／每週彙整</h3><p class="smartHabitInfo">以台灣時間分日，每週為星期一至星期日。用電量依功率與時間估算；間隔超過 60 分鐘不補算。平均值按有效量測時長加權。</p>
 <div class="controlModeTabs"><button id="aggregateDay" class="controlModeBtn active" type="button">每日一筆</button><button id="aggregateWeek" class="controlModeBtn" type="button">每週一筆</button></div>
@@ -1766,10 +1766,10 @@ input[type=range]{
 <details id="historyRecordDetails" style="margin-top:18px;border:1px solid #e2e8f0;border-radius:12px;padding:14px"><summary style="cursor:pointer;font-weight:700;color:#344054">📋 最近 50 筆詳細紀錄（點此展開／收合）</summary><div style="max-height:320px;overflow:auto;margin-top:15px">
 <table style="width:100%;min-width:680px;border-collapse:collapse;text-align:center"><thead style="background:#f1f5f9;position:sticky;top:0"><tr><th>時間</th><th>電壓 (V)</th><th>電流 (A)</th><th>功率 (W)</th><th>溫度 (°C)</th><th>濕度 (%)</th><th>繼電器</th></tr></thead><tbody id="history-table-body"></tbody></table>
 </div></details></div></section><section id="hospitalMonitorPanel" class="monitorGrid" style="display:none"><div id="wardMonitorPicker" style="grid-column:1/-1"></div>
-<article class="monitorCard"><small>院所室內溫度</small><div id="medicalMonitorTemp" class="monitorValue">24.0 °C</div><div class="monitorSub">Demo 院所環境資料</div></article>
-<article class="monitorCard"><small>院所室內濕度</small><div id="medicalMonitorHumi" class="monitorValue">55 %</div><div class="monitorSub">Demo 院所環境資料</div></article>
-<article class="monitorCard"><small>室外溫度</small><div class="monitorValue">28.0 °C</div><div class="monitorSub">Demo 模擬資料</div></article>
-<article class="monitorCard"><small>室外濕度</small><div class="monitorValue">68 %</div><div class="monitorSub">Demo 模擬資料</div></article>
+<article class="monitorCard"><small>院所室內溫度</small><div id="medicalMonitorTemp" class="monitorValue">-- °C</div><div class="monitorSub">尚無感測資料</div></article>
+<article class="monitorCard"><small>院所室內濕度</small><div id="medicalMonitorHumi" class="monitorValue">-- %</div><div class="monitorSub">尚無感測資料</div></article>
+<article class="monitorCard"><small>室外溫度</small><div class="monitorValue">-- °C</div><div class="monitorSub">尚無感測資料</div></article>
+<article class="monitorCard"><small>室外濕度</small><div class="monitorValue">-- %</div><div class="monitorSub">尚無感測資料</div></article>
 </section></main></div>
 
 <!-- ================= 控制板入口 ================= -->
@@ -1800,6 +1800,7 @@ input[type=range]{
             </button>
         </div>
 
+        <section class="smartRecommendCard" style="margin:18px 0"><h3>智慧家電連線</h3><p class="smartHabitInfo">ESP32 智慧插座透過後端 API 取得資料。電腦與插座需能連上後端；不同品牌家電仍需要對應的 API。</p><button id="plugCheckBtn" type="button" class="smartAcceptBtn">檢查插座 API 連線</button><p id="plugCheckStatus" role="status" class="smartHabitInfo">尚未確認插座狀態。</p></section>
         <div class="summary">
 
             <div class="infoCard">
@@ -1991,8 +1992,7 @@ input[type=range]{
 <button type="button" class="tariffModeBtn smartDismissBtn" data-mode="weekend" aria-pressed="false">🏖️ 週末假日</button>
 <button type="button" class="tariffModeBtn smartDismissBtn" data-mode="vacation" aria-pressed="false">✈️ 長假模式</button>
 </div>
-<label style="display:block;margin:12px 0"><input id="tariffDemoMode" type="checkbox" checked> Demo 模式（使用模擬功率與電價，不呼叫 API）</label>
-<p style="font-size:13px;color:#667085">Demo 預設功率 18.1 W（0.0181 kW），僅為展示假設，非即時量測。平日尖峰示範設為 09:00～24:00，離峰 00:00～09:00；實際電價以後端為準。</p>
+<input id="tariffDemoMode" type="checkbox" hidden aria-hidden="true"><p style="font-size:13px;color:#667085">連接插座後取得實測功率；未連線時不顯示模擬數據。</p>
 <p id="tariffModeInfo" style="color:#667085;font-size:13px">平日模式：由後端比較各時段電費。</p>
 <div id="tariffForbidden" style="margin:12px 0;color:#b42318" aria-live="polite"></div>
 <div class="tariffInputGrid">
@@ -2165,12 +2165,12 @@ input[type=range]{
 <div id="wardControlPicker"></div>
 </section>
 
-<div id="wardSelectedInfo" style="margin:16px 0;font-weight:700"></div>
+<div id="wardSelectedInfo" style="margin:16px 0;font-weight:700"></div><section id="wardBedPanel" class="smartRecommendCard" style="margin:18px 0;display:none"><h3 id="wardBedHeading">病房床頭設備</h3><p class="smartHabitInfo">以下是依人數假設的設備配置，不代表已安裝或連線。各床的藍牙裝置分開選擇；床頭燈與插座僅為示範設定，不會控制實體設備。</p><div id="wardBedCards" class="smartRecommendGrid"></div></section>
         <div class="healthGrid">
-<div class="healthCard"><div class="healthValue"><span id="medicalRoomTemp">24.0</span><small>°C</small></div><h4>室內溫度</h4><p class="wardReadingSource">Demo 院所環境資料</p></div>
-<div class="healthCard"><div class="healthValue"><span id="medicalRoomHumi">55</span><small>%</small></div><h4>室內濕度</h4><p class="wardReadingSource">Demo 院所環境資料</p></div>
-<div class="healthCard"><div class="healthValue">28.0 <small>°C</small></div><h4>室外溫度</h4><p>Demo 模擬資料</p></div>
-<div class="healthCard"><div class="healthValue">68 <small>%</small></div><h4>室外濕度</h4><p>Demo 模擬資料</p></div>
+<div class="healthCard"><div class="healthValue"><span id="medicalRoomTemp">--</span><small>°C</small></div><h4>室內溫度</h4><p class="wardReadingSource">Demo 院所環境資料</p></div>
+<div class="healthCard"><div class="healthValue"><span id="medicalRoomHumi">--</span><small>%</small></div><h4>室內濕度</h4><p class="wardReadingSource">Demo 院所環境資料</p></div>
+<div class="healthCard"><div class="healthValue">-- <small>°C</small></div><h4>室外溫度</h4><p>尚無感測資料</p></div>
+<div class="healthCard"><div class="healthValue">-- <small>%</small></div><h4>室外濕度</h4><p>尚無感測資料</p></div>
 </div>
         <div class="environmentCard">
 
@@ -2401,80 +2401,42 @@ const CONTROL_API="https://ascent-disperser-groove.ngrok-free.dev/api/control";
 
 let relayState="OFF";
 let lightControlBusy=false;
-
-async function getData(){
-    try{
-        let res = await fetch(API,{
-            method:"GET",
-            headers:{
-                "ngrok-skip-browser-warning":"true"
-            }
-        });
-
-        if(!res.ok){
-            throw new Error("HTTP " + res.status);
-        }
-
-        let json=await res.json();
-
-        if(json.success){
-            let d=json.data;
-            [['temp','monitorRoomTemp','°C'],['humi','monitorRoomHumidity','%']].forEach(([key,id,unit])=>{
-             if(d[key]!=null && Number.isFinite(Number(d[key]))){document.getElementById(id).textContent=Number(d[key])+' '+unit;document.getElementById(id+'Source').textContent='ESP32 即時環境感測';}
-            });
-
-            document.getElementById("voltage").innerHTML=d.voltage+"V";
-            document.getElementById("current").innerHTML=d.current+"A";
-            document.getElementById("power").innerHTML=d.power+"W";
-
-            document.getElementById("deviceID").innerHTML=
-            "設備："+d.id;
-
-            document.getElementById("voltage").innerHTML=
-            "電壓："+d.voltage+"V";
-
-            document.getElementById("current").innerHTML=
-            "電流："+d.current+"A";
-
-            document.getElementById("powerStatus").innerHTML=
-            "功率："+d.power+"W";
-
-            document.getElementById("time").innerHTML=
-            "更新時間："+d.time;
-
-            document.getElementById("alert").innerHTML=
-            "狀態："+d.alert;
-
-            // Relay同步燈光
-            let light=document.getElementById("light");
-
-            relayState = String(d.relay).toUpperCase();
-
-            if(relayState==="ON"){
-                light.classList.add("active");
-            }else{
-                light.classList.remove("active");
-            }
-
-            // 如果頁面上有門鎖才同步，避免找不到元素造成 JS 中斷
-            let lock=document.getElementById("lock");
-
-            if(lock){
-                if(d.lock){
-                    lock.classList.add("active");
-                }else{
-                    lock.classList.remove("active");
-                }
-            }
-        }
-
-    }catch(e){
-
-        console.log(e);
-    }
+window.plugConnected=false;
+function plugTime(value){
+ if(typeof value==='number'){return value<1e12?value*1000:value;}
+ if(!value)return NaN;
+ const v=String(value).trim();if(/^\d{4}[-/]\d{1,2}[-/]\d{1,2}[ T]/.test(v)&&!/(Z|[+-]\d{2}:?\d{2})$/i.test(v)){return Date.parse(v.replace(/\//g,'-').replace(' ','T')+'+08:00');}
+ return Date.parse(v);
 }
-
-// 每5秒更新
+function plugOffline(message){
+ const wasConnected=window.plugConnected;window.plugConnected=false;document.getElementById('plugCheckStatus').textContent=message;
+ if(wasConnected){
+  if(tariffController)tariffController.abort();tariffRequestId++;
+  document.getElementById('tariffResults').style.display='none';document.getElementById('tariffStatus').textContent='插座未連線，無法顯示即時用電分析。';
+  if(window.clearHouseholdOnDisconnect)window.clearHouseholdOnDisconnect();
+ }
+ [['voltage','-- V'],['current','-- A'],['power','-- W'],['monitorVoltage','-- V'],['monitorCurrent','-- A'],['monitorPower','-- W'],['monitorRoomTemp','-- °C'],['monitorRoomHumidity','-- %']].forEach(([id,value])=>{const node=document.getElementById(id);if(node)node.textContent=value;});
+ ['monitorRoomTempSource','monitorRoomHumiditySource'].forEach(id=>document.getElementById(id).textContent='插座未連線，尚無感測資料');
+ document.getElementById('light').classList.remove('active');document.getElementById('deviceID').textContent='設備：未連線';document.getElementById('powerStatus').textContent='功率：--';document.getElementById('time').textContent='更新時間：--';document.getElementById('alert').textContent='狀態：未連線或未確認';
+}
+async function getData(){
+ try{
+  const response=await fetch(API,{headers:{'ngrok-skip-browser-warning':'true'},signal:AbortSignal.timeout(5000)});if(!response.ok)throw new Error('HTTP '+response.status);
+  const json=await response.json(),d=json.data;if(!json.success||!d)throw new Error('未取得設備資料');
+  const stamp=plugTime(d.timestamp??d.updatedAt??d.time),explicitOnline=d.online===true||d.connected===true||d.isOnline===true;
+  const fresh=Number.isFinite(stamp)&&Date.now()-stamp>=-30000&&Date.now()-stamp<=60000;
+  if(d.online===false||d.connected===false||d.isOnline===false||(!fresh&&!explicitOnline)){plugOffline('後端有回應，但插座未確認在線或資料已過期。');return;}
+  const wasConnected=window.plugConnected;window.plugConnected=true;
+  document.getElementById('plugCheckStatus').textContent='已取得在線插座資料'+(d.time?'｜更新時間：'+d.time:'');
+  [['voltage','voltage','V'],['current','current','A'],['power','power','W']].forEach(([field,id,unit])=>{const value=d[field];document.getElementById(id).textContent=value!==null&&value!==undefined&&value!==''&&Number.isFinite(Number(value))?Number(value)+' '+unit:'-- '+unit;});
+  [['temp','monitorRoomTemp','°C'],['humi','monitorRoomHumidity','%']].forEach(([key,id,unit])=>{const value=d[key],ok=value!==null&&value!==undefined&&value!==''&&Number.isFinite(Number(value));document.getElementById(id).textContent=ok?Number(value)+' '+unit:'-- '+unit;document.getElementById(id+'Source').textContent=ok?'ESP32 感測資料':'尚無感測資料';});
+  document.getElementById('deviceID').textContent='設備：'+(d.id||'ESP32');document.getElementById('powerStatus').textContent='功率：'+document.getElementById('power').textContent;document.getElementById('time').textContent='更新時間：'+(d.time||d.updatedAt||'--');document.getElementById('alert').textContent='狀態：'+(d.alert||'已連線');
+  if(d.relay==='ON'||d.relay==='OFF'){relayState=d.relay;if(!lightControlBusy)document.getElementById('light').classList.toggle('active',relayState==='ON');}
+  if(!wasConnected){document.getElementById('plugCheckStatus').textContent+='｜可重新載入用電分析';}
+ }catch(error){plugOffline('插座或後端未連線；請確認電源、網路與 API。');}
+}
+// 檢查插座連線與最新資料
+document.getElementById('plugCheckBtn').addEventListener('click',getData);
 getData();
 setInterval(getData,5000);
 
@@ -2867,6 +2829,7 @@ async function loadTariffAnalysis(){
  if(powerText && (!Number.isFinite(Number(powerText))||Number(powerText)<=0)){status.textContent='手動功率必須大於 0（單位 kW）。';return;}
  if(!Number.isFinite(duration)||duration<1||duration>24){status.textContent='運轉時間請輸入 1～24 小時。';return;}
  const mode=tariffMode;
+ if(!window.plugConnected){status.textContent='插座尚未連線或狀態未確認，無法進行用電分析。';return;}
  if(document.getElementById('tariffDemoMode').checked){
   const data=buildLocalTariffAnalysis(duration,powerText?Number(powerText):0.0181,mode);
   renderTariffAnalysisData(data,true,status,results);
@@ -2886,7 +2849,7 @@ async function loadTariffAnalysis(){
   if(!response.ok)throw new Error('HTTP '+response.status);
   const json=await response.json();
   if(!json.success||!json.data||!Array.isArray(json.data.scheduleCombinations?.allIntervals))throw new Error('回傳欄位與原版不符，請提供新版 JSON 範例');
-  if(requestId!==tariffRequestId)return;
+  if(requestId!==tariffRequestId||!window.plugConnected)return;
   const data=json.data;
   const rawIntervals=data.scheduleCombinations.allIntervals;
   data.scheduleCombinations.allIntervals=(mode==='vacation'?rawIntervals.filter(item=>item.isAllowed===true):rawIntervals).map(item=>({...item,allowed:item.isAllowed!==false}));
@@ -3118,6 +3081,7 @@ loadTariffAnalysis();
 
 /* ===== 客廳檯燈：POST /api/control 真實控制 ESP32 Relay ===== */
 async function controlLivingRoomLight(){
+    if(!window.plugConnected){document.getElementById("plugCheckStatus").textContent="插座未連線，無法控制檯燈。";return;}
     if(lightControlBusy){
         return;
     }
@@ -4066,9 +4030,11 @@ window.addEventListener("load",function(){
   const current=++revision,demo=document.getElementById('tariffDemoMode').checked;
   charts.forEach(c=>c.destroy());charts=[];
   document.getElementById('householdOverview').replaceChildren();document.getElementById('householdRankingList').replaceChildren();document.getElementById('householdRatioText').textContent='';document.getElementById('scenarioCards').replaceChildren();
+  if(!window.plugConnected){document.getElementById('householdStatus').textContent='插座尚未連線或狀態未確認，暫無用電資料。';document.getElementById('scenarioStatus').textContent='插座尚未連線或狀態未確認，暫無後端情境資料。';return;}
   const jobs=[['householdStatus','/api/analytics/household',demoHousehold,renderHousehold],['scenarioStatus','/api/smart-scenarios',demoScenarios,renderScenarios]];
-  await Promise.allSettled(jobs.map(async([id,path,mock,render])=>{document.getElementById(id).textContent='載入中…';try{const data=demo?mock:await get(path);if(current===revision)render(data,demo);}catch(error){if(current===revision)document.getElementById(id).textContent='無法取得資料：'+(error.name==='AbortError'?'連線逾時':error.message);}}));
+  await Promise.allSettled(jobs.map(async([id,path,mock,render])=>{document.getElementById(id).textContent='載入中…';try{const data=demo?mock:await get(path);if(current===revision&&window.plugConnected)render(data,demo);}catch(error){if(current===revision)document.getElementById(id).textContent='無法取得資料：'+(error.name==='AbortError'?'連線逾時':error.message);}}));
  }
+ window.clearHouseholdOnDisconnect=()=>{revision++;charts.forEach(c=>c.destroy());charts=[];document.getElementById('householdOverview').replaceChildren();document.getElementById('householdRankingList').replaceChildren();document.getElementById('householdRatioText').textContent='';document.getElementById('scenarioCards').replaceChildren();document.getElementById('householdStatus').textContent='插座未連線，無用電分析資料。';document.getElementById('scenarioStatus').textContent='插座未連線，無情境資料。';};
  document.addEventListener('DOMContentLoaded',()=>{document.getElementById('householdRefresh').onclick=load;document.getElementById('tariffDemoMode').addEventListener('change',load);load();});
 })();
 </script>
@@ -4102,7 +4068,7 @@ window.addEventListener("load",function(){
    const res=await fetch('https://ascent-disperser-groove.ngrok-free.dev/api/history?limit=50',{headers:{'ngrok-skip-browser-warning':'true'},signal:currentController.signal});if(!res.ok)throw new Error('HTTP '+res.status);
    const result=await res.json();if(!result.success||!Array.isArray(result.data))throw new Error('回傳格式不符：需要 success 與 data 陣列');if(id!==requestId)return;
    if(!result.data.length){clear('目前沒有歷史紀錄');status.textContent='後端目前沒有歷史紀錄。';return;}render(result.data,false);
-  }catch(error){if(id!==requestId)return;window.historyFallbackDemo=true;render(demoRows(),true);status.textContent='後端無法連線或讀取失敗，現顯示 Demo 模擬資料；並非實測數據。可按更新重試。';}
+  }catch(error){if(id!==requestId)return;clear('未連線或無法讀取歷史資料');status.textContent='後端未連線，無法讀取歷史資料。';}
   finally{clearTimeout(timer);}
  };
  document.addEventListener('DOMContentLoaded',()=>{document.getElementById('historyRefresh').onclick=loadHistoryData;document.getElementById('historyDemo').addEventListener('change',loadHistoryData);});
@@ -4169,7 +4135,7 @@ window.addEventListener("load",function(){
 <script>
 (function(){
  const KEY='smartctrlWardRoomsV1';
- const defaults=[{id:'ward201',name:'201 號病房',people:1,temp:24,humi:55},{id:'ward202',name:'202 號病房',people:2,temp:25.2,humi:58},{id:'ward203',name:'203 號病房',people:4,temp:23.8,humi:52}];
+ const defaults=[{id:'ward201',name:'201 號病房',people:1,temp:null,humi:null},{id:'ward202',name:'202 號病房',people:2,temp:null,humi:null},{id:'ward203',name:'203 號病房',people:4,temp:null,humi:null}];
  const valid=r=>r&&typeof r.id==='string'&&typeof r.name==='string'&&r.name.trim().length>0&&r.name.length<=30&&Number.isInteger(r.people)&&r.people>=1&&r.people<=99;
  let rooms=defaults.map(x=>({...x})),group='1',selected='ward201',editing=null,message='',lastDeleted=null;
  const groupOf=r=>r.people<=4?String(r.people):'many';
@@ -4190,6 +4156,15 @@ window.addEventListener("load",function(){
  function renderPicker(host){
   host.replaceChildren();host.append(el('h3','依常用人數選擇病房'));const version=el('p','病房房間操作版 v2');version.style.cssText='font-size:12px;color:#667085';host.append(version);const tabs=el('div');tabs.className='controlModeTabs';
   [['1','單人'],['2','雙人'],...(rooms.some(r=>r.people===3)?[['3','三人']]:[]),['4','四人'],['many','多人（5 人以上）']].forEach(([value,label])=>tabs.append(button(label+' · '+rooms.filter(r=>groupOf(r)===value).length+' 間',()=>selectGroup(value),group===value)));host.append(tabs);
+  const assumed=el('div');assumed.className='smartRecommendCard';assumed.style.cssText='margin:14px 0;padding:14px';
+  const selectedForPreset=selectedRoom();const count=selectedForPreset?.people||(group==='many'?5:Number(group));
+  const presetLabel=group==='many'?(selectedForPreset?count+' 人多人病房':'多人病房（以 5 床為例）'):(group+' 人病房');
+  assumed.append(el('h4','假設設備配置｜'+presetLabel),el('p','每床假設：床頭燈、床頭智慧插座、呼叫鈴、可選藍牙設備各 1 組，共 '+count+' 組。'),el('p','病房共用假設：空調、主燈、溫濕度感測器各 1 組。'),el('p','以上僅為假設，實際配置與連線狀態依設備為準。'));
+  host.append(assumed);
+  if(host.id==='wardMonitorPicker'){
+   const view=el('div');view.className='controlModeTabs';candidates().forEach(r=>view.append(button(r.name+'｜'+r.people+' 人',()=>{selected=r.id;save();render();},r.id===selected)));
+   if(!candidates().length)view.append(el('p','此分組尚無房間。'));host.append(view);const r=selectedRoom();host.append(el('p',r?'目前顯示：'+r.name+'｜'+r.people+' 人':'尚未選取房間'));return;
+  }
   const form=el('div');form.className='wardInlineForm';form.style.cssText='display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0';const name=textInput('','輸入新房間名稱');name.setAttribute('aria-label','新房間名稱');form.append(name);
   let peopleInput=null;if(group==='many'){peopleInput=countInput(5,5,99);peopleInput.setAttribute('aria-label','多人房人數');form.append(peopleInput,el('span','人'));}
   const submit=el('button','＋ 新增房間');submit.type='button';submit.className='smartAcceptBtn';form.append(submit);host.append(form);
@@ -4216,15 +4191,41 @@ window.addEventListener("load",function(){
  function render(){
   if(!candidates().some(r=>r.id===selected))selected=candidates()[0]?.id||null;
   renderPicker(document.getElementById('wardControlPicker'));renderPicker(document.getElementById('wardMonitorPicker'));
-  const r=selectedRoom(),hasTemp=Number.isFinite(r?.temp),hasHumi=Number.isFinite(r?.humi);
+  const r=selectedRoom(),hasTemp=false,hasHumi=false;
   document.getElementById('wardSelectedInfo').textContent=r?r.name+'｜常用 '+r.people+' 人｜環境資訊':'請先新增或選取房間';
   document.getElementById('medicalRoomTemp').textContent=hasTemp?r.temp.toFixed(1):'--';document.getElementById('medicalRoomHumi').textContent=hasHumi?r.humi:'--';
   document.getElementById('medicalMonitorTemp').textContent=hasTemp?r.temp.toFixed(1)+' °C':'-- °C';document.getElementById('medicalMonitorHumi').textContent=hasHumi?r.humi+' %':'-- %';
   document.querySelectorAll('.wardReadingSource').forEach(n=>n.textContent=hasTemp||hasHumi?'Demo 院所環境資料':'尚無此房間感測資料');
   ['medicalMonitorTemp','medicalMonitorHumi'].forEach((id,i)=>{document.getElementById(id).nextElementSibling.textContent=(i===0?hasTemp:hasHumi)?'Demo 院所環境資料':'尚無此房間感測資料';});
+  renderBeds(r);
   const controls={wardAirSwitch:'air',wardCurtainSwitch:'curtain',wardLightSwitch:'light',wardIsolationSwitch:'isolation'},settings=r?.environment||{};
   Object.entries(controls).forEach(([id,key])=>{const input=document.getElementById(id);input.disabled=!r;input.checked=typeof settings[key]==='boolean'?settings[key]:(key==='air'||key==='light');});
   const slider=document.getElementById('hospitalTemperatureSlider');slider.disabled=!r;slider.value=Number.isInteger(settings.targetTemp)&&settings.targetTemp>=16&&settings.targetTemp<=30?settings.targetTemp:24;document.getElementById('hospitalTempValue').textContent=slider.value+'°C';
+ }
+ const bedConnections=new Map();
+ function renderBeds(r){
+  const panel=document.getElementById('wardBedPanel'),box=document.getElementById('wardBedCards');panel.style.display=r?'block':'none';box.replaceChildren();if(!r)return;
+  document.getElementById('wardBedHeading').textContent=r.name+'・假設 '+r.people+' 床的床頭設備';
+  Array.from({length:r.people},(_,i)=>i+1).forEach(n=>{
+   const key=r.id+':'+n,connection=bedConnections.get(key),bed=r.beds?.[n]||{},card=el('article');card.className='smartRecommendCard';
+   card.append(el('h4',n+' 號床'),el('p','假設配置：床頭燈、智慧插座、呼叫鈴、可選藍牙設備'),el('p','藍牙設備：'+(connection?.gatt?.connected?(connection.name||'未命名設備')+'（已建立連線）':'尚未連線')));
+   const status=el('p',connection?.gatt?.connected?'未讀取醫療數據；需設備通訊規格。':'請選擇該床的藍牙低功耗設備。');status.setAttribute('role','status');card.append(status);
+   const pair=button('選擇並連線藍牙',async()=>{
+    if(!window.isSecureContext||!navigator.bluetooth){status.textContent='請使用 HTTPS 網站與支援 Web Bluetooth 的瀏覽器，並開啟電腦藍牙。';return;}
+    pair.disabled=true;
+    try{
+     const device=await navigator.bluetooth.requestDevice({acceptAllDevices:true});
+     if([...bedConnections.entries()].some(([other,d])=>other!==key&&d.id===device.id&&d.gatt?.connected)){status.textContent='此設備已連到另一床，請選擇不同設備。';return;}
+     if(!device.gatt){status.textContent='此設備不提供可用的藍牙低功耗連線。';return;}
+     await device.gatt.connect();const previous=bedConnections.get(key);if(previous&&previous!==device&&previous.gatt?.connected)previous.gatt.disconnect();bedConnections.set(key,device);
+     device.addEventListener('gattserverdisconnected',()=>{if(bedConnections.get(key)===device){bedConnections.delete(key);render();}});render();
+    }catch(err){status.textContent=err.name==='NotFoundError'?'未選擇設備。':'藍牙連線失敗：'+err.message;}finally{pair.disabled=false;}
+   });card.append(pair);
+   if(connection?.gatt?.connected)card.append(button('中斷連線',()=>{connection.gatt.disconnect();bedConnections.delete(key);render();}));
+   const controls=el('div');controls.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin-top:12px';
+   [['lamp','床頭燈'],['socket','床頭插座']].forEach(([field,label])=>{const toggle=button(label+'（示範）：'+(bed[field]?'開':'關'),()=>{r.beds=r.beds||{};r.beds[n]={...r.beds[n],[field]:!r.beds[n]?.[field]};save();render();},!!bed[field]);controls.append(toggle);});
+   card.append(controls,el('p','示範操作只保存在瀏覽器，不會控制實際設備。'));box.append(card);
+  });
  }
  window.wardBeginAdd=()=>{const form=document.querySelector('#wardControlPicker .wardInlineForm input');if(form){form.scrollIntoView({behavior:'smooth',block:'center'});form.focus();}};
  document.addEventListener('DOMContentLoaded',()=>{
