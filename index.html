@@ -1679,10 +1679,10 @@ input[type=range]{
     <div class="logo">SMARTCTRL</div>
 
     <div class="navMenu">
-        <button id="monitorNav" class="navButton" onclick="showSmartPage('monitor');showMonitorMode('home')">
+        <button id="monitorNav" class="navButton" onclick="showSmartPage('monitor','home')">
             <i class="fa-solid fa-house-signal"></i>居家監控
         </button>
-        <button id="medicalMonitorNav" class="navButton" onclick="showSmartPage('monitor');showMonitorMode('hospital')"><i class="fa-solid fa-hospital"></i>醫療院所監控</button>
+        <button id="medicalMonitorNav" class="navButton" onclick="showSmartPage('monitor','hospital')"><i class="fa-solid fa-hospital"></i>醫療院所監控</button>
         <button id="mainNav" class="navButton active" onclick="showSmartPage('main')">
             <i class="fa-solid fa-house"></i>主頁
         </button>
@@ -1715,7 +1715,7 @@ input[type=range]{
         <h3>居家智慧系統</h3>
         <p>查看居家電力、房間環境與裝置狀態，或進入控制板操作智慧家電。</p>
         <div class="smartEntryActions">
-          <button class="smartPrimaryBtn" onclick="showSmartPage('monitor');showMonitorMode('home')">查看居家監控</button>
+          <button class="smartPrimaryBtn" onclick="showSmartPage('monitor','home')">查看居家監控</button>
           <button class="smartSecondaryBtn" onclick="showSmartPage('control');showControlMode('home')">進入控制板</button>
         </div>
       </article>
@@ -1724,7 +1724,7 @@ input[type=range]{
         <h3>醫療院所環境系統</h3>
         <p>查看病患生命徵象與醫療設備用電摘要，並可進入控制板查看病房設備。</p>
         <div class="smartEntryActions">
-          <button class="smartPrimaryBtn" onclick="showSmartPage('monitor');showMonitorMode('hospital')">查看院所監控</button>
+          <button class="smartPrimaryBtn" onclick="showSmartPage('monitor','hospital')">查看院所監控</button>
           <button class="smartSecondaryBtn" onclick="showSmartPage('control');showControlMode('hospital')">進入控制板</button>
         </div>
       </article>
@@ -3910,7 +3910,7 @@ window.addEventListener("load",function(){
     if(target) target.classList.add("active");
   }
 
-  window.showSmartPage = function(which){
+  window.showSmartPage = function(which, requestedMode){
     smartPages.forEach(id=>{
       const el=document.getElementById(id);
       if(el) el.classList.remove("activePage");
@@ -3931,7 +3931,7 @@ window.addEventListener("load",function(){
     }else{
       showControlMode(window.__smartControlMode || "home");
     }
-    if(which==="monitor") showMonitorMode(window.__monitorMode||"home");
+    if(which==="monitor") showMonitorMode(requestedMode || window.__monitorMode || "home");
     window.scrollTo({top:0,behavior:"smooth"});
   };
 
