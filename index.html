@@ -1736,7 +1736,7 @@ input[type=range]{
 <div id="monitorPage" class="page"><main class="smartMainContainer">
 <div class="smartSectionTitle"><h2 id="monitorHeading">居家監控</h2><p>居家與院所分開查看；環境資料不代表病患生命徵象。</p></div>
 <div class="controlModeTabs" style="margin-bottom:20px"><button id="monitorHomeBtn" class="controlModeBtn active" onclick="showMonitorMode('home')">居家監控</button><button id="monitorHospitalBtn" class="controlModeBtn" onclick="showMonitorMode('hospital')">醫療院所監控</button></div>
-<section id="homeMonitorPanel" class="monitorGrid">
+<section id="homeMonitorPanel" class="monitorGrid" style="display:none">
 <p id="homeMonitorEmptyNote" class="smartHabitInfo" style="grid-column:1/-1;margin:0">尚未接收到 ESP32 真實量測資料；監控卡片仍會保留顯示，收到實測數據後自動更新。</p>
 <article id="homeVoltageCard" class="monitorCard"><small>居家電壓</small><div id="monitorVoltage" class="monitorValue">-- V</div><div id="monitorVoltageSource" class="monitorSub">尚無真實資料</div></article>
 <article id="homeCurrentCard" class="monitorCard"><small>居家電流</small><div id="monitorCurrent" class="monitorValue">-- A</div><div id="monitorCurrentSource" class="monitorSub">尚無真實資料</div></article>
@@ -3911,6 +3911,15 @@ window.addEventListener("load",function(){
   }
 
   window.showSmartPage = function(which, requestedMode){
+    // 先在監控主頁尚未顯示前，決定要顯示哪一種監控面板。
+    // 避免 monitorPage 初次打開時，預設的居家面板先露出來。
+    const targetMonitorMode = requestedMode === "hospital"
+      ? "hospital"
+      : requestedMode === "home"
+        ? "home"
+        : (window.__monitorMode === "hospital" ? "hospital" : "home");
+    if(which === "monitor") showMonitorMode(targetMonitorMode);
+
     smartPages.forEach(id=>{
       const el=document.getElementById(id);
       if(el) el.classList.remove("activePage");
@@ -3918,6 +3927,13 @@ window.addEventListener("load",function(){
     const page=document.getElementById(which+"Page");
     if(page) page.classList.add("activePage");
     setActiveTopNav(which);
+    if(which === "monitor"){
+      // setActiveTopNav("monitor") 會先亮起居家監控，這裡立即依目標模式校正。
+      const homeNav=document.getElementById("monitorNav");
+      const hospitalNav=document.getElementById("medicalMonitorNav");
+      if(homeNav) homeNav.classList.toggle("active", targetMonitorMode === "home");
+      if(hospitalNav) hospitalNav.classList.toggle("active", targetMonitorMode === "hospital");
+    }
     ["tariffPage","robotControlPage"].forEach(id=>{
       const el=document.getElementById(id);
       if(el) el.style.display="none";
@@ -3931,7 +3947,6 @@ window.addEventListener("load",function(){
     }else{
       showControlMode(window.__smartControlMode || "home");
     }
-    if(which==="monitor") showMonitorMode(requestedMode || window.__monitorMode || "home");
     window.scrollTo({top:0,behavior:"smooth"});
   };
 
@@ -3949,16 +3964,33 @@ window.addEventListener("load",function(){
   };
 
   window.showMonitorMode=function(mode){
+   // 僅接受兩種明確模式；未知值一律回到居家監控。
+   mode = mode === 'hospital' ? 'hospital' : 'home';
    window.__monitorMode=mode;
-   document.getElementById('homeHistorySection').style.display=mode==='home'?'block':'none';
-   if(mode==='home' && window.loadHistoryData) window.loadHistoryData();
-   document.getElementById('homeMonitorPanel').style.display=mode==='home'?'grid':'none';
-   document.getElementById('hospitalMonitorPanel').style.display=mode==='hospital'?'grid':'none';
-   document.getElementById('monitorHeading').textContent=mode==='home'?'居家監控':'醫療院所環境監控';
-   ['monitorHomeBtn','monitorHospitalBtn'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',(mode==='home')===(i===0)));
+   const homePanel=document.getElementById('homeMonitorPanel');
+   const hospitalPanel=document.getElementById('hospitalMonitorPanel');
+   const historyPanel=document.getElementById('homeHistorySection');
+   // 先全部隱藏，再只打開目標面板，避免兩個面板在首次載入時同時出現。
+   if(homePanel) homePanel.style.display='none';
+   if(hospitalPanel) hospitalPanel.style.display='none';
+   if(historyPanel) historyPanel.style.display=mode==='home'?'block':'none';
+   if(mode==='home'){
+     if(homePanel) homePanel.style.display='grid';
+     if(window.loadHistoryData) window.loadHistoryData();
+   }else{
+     if(hospitalPanel) hospitalPanel.style.display='grid';
+   }
+   const heading=document.getElementById('monitorHeading');
+   if(heading) heading.textContent=mode==='home'?'居家監控':'醫療院所環境監控';
+   ['monitorHomeBtn','monitorHospitalBtn'].forEach((id,i)=>{
+     const button=document.getElementById(id);
+     if(button) button.classList.toggle('active',(mode==='home')===(i===0));
+   });
    if(document.getElementById('monitorPage').classList.contains('activePage')){
-    document.getElementById('monitorNav').classList.toggle('active',mode==='home');
-    document.getElementById('medicalMonitorNav').classList.toggle('active',mode==='hospital');
+    const homeNav=document.getElementById('monitorNav');
+    const hospitalNav=document.getElementById('medicalMonitorNav');
+    if(homeNav) homeNav.classList.toggle('active',mode==='home');
+    if(hospitalNav) hospitalNav.classList.toggle('active',mode==='hospital');
    }
   };
   function updateClock(){
