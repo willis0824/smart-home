@@ -1906,7 +1906,7 @@ input[type=range]{
 <article id="homeOutdoorTempCard" class="monitorCard"><small>室外溫度</small><div id="monitorOutdoorTemp" class="monitorValue">-- °C</div><div id="monitorOutdoorTempSource" class="monitorSub">尚無真實資料</div></article>
 <article id="homeOutdoorHumidityCard" class="monitorCard"><small>室外濕度</small><div id="monitorOutdoorHumidity" class="monitorValue">-- %</div><div id="monitorOutdoorHumiditySource" class="monitorSub">尚無真實資料</div></article>
 </section><section id="homeHistorySection" style="display:block;margin-top:24px"><h2>📊📈 居家設備歷史數據</h2><div class="history-container smartRecommendCard" style="margin-top:20px">
-<input id="historyDemo" type="checkbox" hidden aria-hidden="true"><span>僅顯示後端真實歷史資料。</span><button id="historyRefresh" type="button" class="smartAcceptBtn" style="margin-left:12px">更新最近 50 筆</button>
+<input id="historyDemo" type="checkbox" hidden aria-hidden="true"><span>僅顯示後端真實歷史資料。</span><button id="historyRefresh" type="button" class="smartAcceptBtn" style="margin-left:12px">更新最近 50 筆（每 5 分鐘一筆）</button>
 <section class="smartRecommendCard" style="margin-top:20px;margin-bottom:20px">
 <h3>📊 每日／每週彙整</h3><p class="smartHabitInfo">以台灣時間分日，每週為星期一至星期日。用電量依功率與時間估算；間隔超過 60 分鐘不補算。平均值按有效量測時長加權。</p>
 <div class="controlModeTabs"><button id="aggregateDay" class="controlModeBtn active" type="button">每日一筆</button><button id="aggregateWeek" class="controlModeBtn" type="button">每週一筆</button></div>
@@ -1922,10 +1922,10 @@ input[type=range]{
 <p id="historyLineStatus" role="status" class="smartHabitInfo">準備資料中…</p><div style="height:320px;width:100%;margin-top:12px"><canvas id="historyLineCanvas" role="img" aria-label="每日或每週歷史數據折線圖"></canvas></div>
 <details style="margin-top:16px"><summary style="cursor:pointer;font-weight:700;color:#344054">📋 每日／每週折線圖資料表（點此展開／收合）</summary><div style="max-height:320px;overflow:auto;margin-top:12px"><table style="width:100%;min-width:680px;text-align:center;border-collapse:collapse"><thead><tr><th>日期／週起日</th><th>估算用電量（kWh）</th><th>平均功率（W）</th><th>平均溫度（°C）</th><th>平均濕度（%）</th><th>涵蓋狀態</th></tr></thead><tbody id="historyLineTable"></tbody></table></div></details>
 </section>
-<p id="historyStatus" role="status" style="margin:16px 0"></p><h3>📈 最近 50 筆趨勢</h3>
+<p id="historyStatus" role="status" style="margin:16px 0"></p><h3>📈 最近 50 筆趨勢（每 5 分鐘平均一筆）</h3>
 <div style="height:350px;margin-bottom:30px;position:relative"><canvas id="historyChart"></canvas><p id="historyChartEmpty" class="smartHabitInfo" style="position:absolute;inset:45% 0 auto;text-align:center;margin:0;pointer-events:none">尚無真實歷史資料，取得紀錄後會顯示趨勢圖。</p></div>
-<details id="historyRecordDetails" style="margin-top:18px;border:1px solid #e2e8f0;border-radius:12px;padding:14px"><summary style="cursor:pointer;font-weight:700;color:#344054">📋 最近 50 筆詳細紀錄（點此展開／收合）</summary><div style="max-height:320px;overflow:auto;margin-top:15px">
-<table style="width:100%;min-width:680px;border-collapse:collapse;text-align:center"><thead style="background:#f1f5f9;position:sticky;top:0"><tr><th>時間</th><th>電壓 (V)</th><th>電流 (A)</th><th>功率 (W)</th><th>溫度 (°C)</th><th>濕度 (%)</th><th>繼電器</th></tr></thead><tbody id="history-table-body"></tbody></table>
+<details id="historyRecordDetails" style="margin-top:18px;border:1px solid #e2e8f0;border-radius:12px;padding:14px"><summary style="cursor:pointer;font-weight:700;color:#344054">📋 最近 50 筆五分鐘區間紀錄（點此展開／收合）</summary><div style="max-height:320px;overflow:auto;margin-top:15px">
+<table style="width:100%;min-width:680px;border-collapse:collapse;text-align:center"><thead style="background:#f1f5f9;position:sticky;top:0"><tr><th>時間（5 分鐘區間）</th><th>電壓 (V)</th><th>電流 (A)</th><th>功率 (W)</th><th>溫度 (°C)</th><th>濕度 (%)</th><th>繼電器</th></tr></thead><tbody id="history-table-body"></tbody></table>
 </div></details></div></section><section id="hospitalMonitorPanel" class="hospitalPowerDashboard" style="display:none">
 <!-- 舊病房選擇資料保留在隱藏區，避免控制板原有病房設定中斷 -->
 <div id="wardMonitorPicker" style="display:none" aria-hidden="true"></div>
@@ -2702,17 +2702,20 @@ function recordHomeRealHistorySample(d){
  Object.entries(aliases).forEach(([key,names])=>{const found=names.find(name=>Object.prototype.hasOwnProperty.call(d,name)&&numeric(d[name]));if(found)row[key]=Number(d[found]);});
  if(d.relay==='ON'||d.relay==='OFF')row.relay=d.relay;
  if(!Object.keys(row).some(key=>key!=='time'&&key!=='relay'))return;
- const key='smartctrlHomeRealHistoryV1';
+ // 保留原始實測資料，歷史圖表再依 5 分鐘區間彙整；每 5 秒輪詢不會直接變成一筆圖表資料。
+ const key='smartctrlHomeRealHistoryRawV2';
+ const legacyKey='smartctrlHomeRealHistoryV1';
  try{
-  const old=JSON.parse(localStorage.getItem(key)||'[]');
+  const stored=localStorage.getItem(key);
+  const old=JSON.parse(stored||localStorage.getItem(legacyKey)||'[]');
   const rows=Array.isArray(old)?old:[];
   const stamp=Date.parse(row.time);
-  const index=rows.findIndex(item=>item&&Number.isFinite(Date.parse(item.time))&&Date.parse(item.time)===stamp);
+  const index=rows.findIndex(item=>item&&(Date.parse(item.time)===stamp));
   if(index>=0)rows[index]={...rows[index],...row};else rows.push(row);
   rows.sort((a,b)=>Date.parse(a.time)-Date.parse(b.time));
-  localStorage.setItem(key,JSON.stringify(rows.slice(-50)));
+  localStorage.setItem(key,JSON.stringify(rows.slice(-3000)));
   if(typeof window.refreshHomeHistoryFromCache==='function')window.refreshHomeHistoryFromCache();
- }catch(error){console.warn('無法保存即時實測歷史資料',error);}
+ }catch(error){console.warn('無法保存居家實測歷史資料',error);}
 }
 function updateHomeTelemetryFromDevice(d){
  const saved=readSavedHomeTelemetry()||{values:{}};let changed=false;
@@ -2720,7 +2723,9 @@ function updateHomeTelemetryFromDevice(d){
   const key=field.aliases.find(alias=>Object.prototype.hasOwnProperty.call(d,alias)&&isRealNumber(d[alias]));
   if(key){saved.values[field.key]=Number(d[key]);changed=true;}
  });
- if(changed){saved.updatedAt=d.time||d.updatedAt||d.timestamp||new Date().toISOString();saved.deviceId=d.id||saved.deviceId||'ESP32';saveHomeTelemetry(saved);recordHomeRealHistorySample(d);}
+ if(changed){saved.updatedAt=d.time||d.updatedAt||d.timestamp||new Date().toISOString();saved.deviceId=d.id||saved.deviceId||'ESP32';saveHomeTelemetry(saved);}
+ // 即使數值連續幾次相同，也記錄具有新時間戳的實測點，供五分鐘區間平均使用。
+ recordHomeRealHistorySample(d);
  renderHomeTelemetry(saved,false);
 }
 function plugTime(value){
@@ -4417,51 +4422,133 @@ window.addEventListener("load",function(){
 <script>
 (function(){
  let historyChart=null,requestId=0,controller=null;
- const HISTORY_CACHE_KEY='smartctrlHomeRealHistoryV1';
+ const HISTORY_CACHE_KEY='smartctrlHomeRealHistoryRawV2';
+ const LEGACY_CACHE_KEY='smartctrlHomeRealHistoryV1';
+ const FIVE_MINUTES=5*60*1000;
+ const MAX_POINTS=50;
+ const RAW_HISTORY_LIMIT=3000; // 5 秒一筆時，約可涵蓋最近 4 小時 10 分鐘
  const numeric=v=>v==null||v===''?null:Number.isFinite(Number(v))?Number(v):null;
  const text=v=>v==null||v===''?'--':String(v);
- function demoRows(){const now=Date.now();return Array.from({length:50},(_,i)=>{
-  const power=18.1+Math.sin(i*.5)*2;
-  return {time:new Date(now-(49-i)*60000).toLocaleString('zh-TW',{hour12:false}),voltage:110.2,current:Number((power/110.2).toFixed(3)),power:Number(power.toFixed(2)),temp:Number((26+Math.sin(i*.2)*.6).toFixed(1)),humi:Math.round(60+Math.cos(i*.2)*3),relay:'ON'};
- });}
- function readHistoryCache(){try{const rows=JSON.parse(localStorage.getItem(HISTORY_CACHE_KEY)||'[]');return Array.isArray(rows)?rows.filter(row=>row&&Number.isFinite(Date.parse(row.time))):[];}catch(e){return [];}}
- function saveHistoryCache(rows){try{localStorage.setItem(HISTORY_CACHE_KEY,JSON.stringify(rows.slice(-50)));}catch(e){console.warn('無法儲存歷史實測資料',e);}}
- function clear(message){if(window.clearHistorySummary)window.clearHistorySummary(message);if(historyChart){historyChart.destroy();historyChart=null;}const row=document.createElement('tr'),cell=document.createElement('td');cell.colSpan=7;cell.textContent=message;row.append(cell);document.getElementById('history-table-body').replaceChildren(row);const empty=document.getElementById('historyChartEmpty');if(empty){empty.style.display='block';empty.textContent='尚無真實歷史資料，取得紀錄後會顯示趨勢圖。';}}
+ const metricAliases={
+  voltage:['voltage','v'],current:['current','a'],power:['power','w'],
+  temp:['temp','temperature','roomTemp'],humi:['humi','humidity','roomHumidity']
+ };
+ function timeMs(value){
+  if(typeof value==='number')return value<1e12?value*1000:value;
+  if(value==null||value==='')return NaN;
+  if(typeof plugTime==='function')return plugTime(value);
+  return Date.parse(value);
+ }
+ function taiwanTime(value){
+  const ms=timeMs(value);if(!Number.isFinite(ms))return text(value);
+  return new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(ms));
+ }
+ function normalizeRawRow(item){
+  if(!item||typeof item!=='object')return null;
+  const raw=item.time??item.timestamp??item.updatedAt??item.createdAt;
+  const ms=timeMs(raw);if(!Number.isFinite(ms))return null;
+  const row={...item,time:new Date(ms).toISOString()};
+  return row;
+ }
+ function readHistoryCache(){
+  try{
+   let raw=localStorage.getItem(HISTORY_CACHE_KEY);
+   if(!raw){raw=localStorage.getItem(LEGACY_CACHE_KEY);if(raw)localStorage.setItem(HISTORY_CACHE_KEY,raw);}
+   const rows=JSON.parse(raw||'[]');
+   return Array.isArray(rows)?rows.map(normalizeRawRow).filter(Boolean):[];
+  }catch(e){return [];}
+ }
+ function saveHistoryCache(rows){
+  try{localStorage.setItem(HISTORY_CACHE_KEY,JSON.stringify(rows.slice(-RAW_HISTORY_LIMIT)));}
+  catch(e){console.warn('無法儲存居家歷史實測資料',e);}
+ }
+ function aggregateFiveMinute(rawRows){
+  const buckets=new Map();
+  const sorted=[...rawRows].map(normalizeRawRow).filter(Boolean).sort((a,b)=>timeMs(a.time)-timeMs(b.time));
+  sorted.forEach(item=>{
+   const ms=timeMs(item.time),start=Math.floor(ms/FIVE_MINUTES)*FIVE_MINUTES;
+   let bucket=buckets.get(start);
+   if(!bucket){bucket={time:new Date(start).toISOString(),_samples:0,_sums:{voltage:0,current:0,power:0,temp:0,humi:0},_counts:{voltage:0,current:0,power:0,temp:0,humi:0},relay:undefined};buckets.set(start,bucket);}
+   bucket._samples++;
+   Object.entries(metricAliases).forEach(([metric,aliases])=>{
+    const key=aliases.find(name=>Object.prototype.hasOwnProperty.call(item,name)&&numeric(item[name])!==null);
+    if(key){bucket._sums[metric]+=Number(item[key]);bucket._counts[metric]++;}
+   });
+   if(item.relay==='ON'||item.relay==='OFF')bucket.relay=item.relay;
+  });
+  return [...buckets.values()].sort((a,b)=>timeMs(a.time)-timeMs(b.time)).map(bucket=>{
+   const out={time:bucket.time,sampleCount:bucket._samples};
+   Object.keys(metricAliases).forEach(metric=>{if(bucket._counts[metric])out[metric]=Number((bucket._sums[metric]/bucket._counts[metric]).toFixed(metric==='current'?3:2));});
+   if(bucket.relay)out.relay=bucket.relay;
+   return out;
+  }).slice(-MAX_POINTS);
+ }
+ function clear(message){
+  if(window.clearHistorySummary)window.clearHistorySummary(message);
+  if(historyChart){historyChart.destroy();historyChart=null;}
+  const row=document.createElement('tr'),cell=document.createElement('td');cell.colSpan=7;cell.textContent=message;
+  document.getElementById('history-table-body').replaceChildren(row);row.append(cell);
+  const empty=document.getElementById('historyChartEmpty');if(empty){empty.style.display='block';empty.textContent='尚無真實歷史資料；取得紀錄後會依每 5 分鐘平均一筆顯示。';}
+ }
  function showHistoryUnavailable(message){clear(message);document.getElementById('homeHistorySection').style.display='block';}
- function render(rows,fromCache=false){
-  document.getElementById('homeHistorySection').style.display='block';const empty=document.getElementById('historyChartEmpty');if(empty)empty.style.display=rows.length?'none':'block';
+ function render(rawRows,fromCache=false){
+  const rows=aggregateFiveMinute(rawRows);
+  document.getElementById('homeHistorySection').style.display='block';
+  const empty=document.getElementById('historyChartEmpty');if(empty)empty.style.display=rows.length?'none':'block';
   if(window.updateHistorySummary)window.updateHistorySummary(rows,false);
-  const sorted=[...rows].slice(0,50);const fullDates=sorted.every(x=>Number.isFinite(Date.parse(x.time)));
-  if(fullDates)sorted.sort((a,b)=>Date.parse(a.time)-Date.parse(b.time));
+  if(historyChart){historyChart.destroy();historyChart=null;}
   const body=document.getElementById('history-table-body');body.replaceChildren();
-  [...sorted].reverse().forEach(item=>{const tr=document.createElement('tr');['time','voltage','current','power','temp','humi','relay'].forEach(key=>{const td=document.createElement('td');td.style.cssText='padding:8px;border-bottom:1px solid #e2e8f0';td.textContent=text(item[key]);if(key==='relay')td.style.color=String(item[key]).toUpperCase()==='ON'?'green':'gray';tr.append(td);});body.append(tr);});
-  if(typeof Chart!=='undefined')historyChart=new Chart(document.getElementById('historyChart'),{type:'line',data:{labels:sorted.map(x=>text(x.time)),datasets:[{label:'功率 (W)',data:sorted.map(x=>numeric(x.power)),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,yAxisID:'power',tension:.3},{label:'溫度 (°C)',data:sorted.map(x=>numeric(x.temp)),borderColor:'#ef4444',borderDash:[5,5],yAxisID:'temp',tension:.3},{label:'濕度 (%)',data:sorted.map(x=>numeric(x.humi)),borderColor:'#10b981',yAxisID:'humi',tension:.3}]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{maxRotation:45,maxTicksLimit:10}},power:{type:'linear',position:'left',title:{display:true,text:'功率 W'}},temp:{type:'linear',position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'溫度 °C'}},humi:{type:'linear',position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'濕度 %'},min:0,max:100}}}});
-  document.getElementById('historyStatus').textContent=(fromCache?'最後取得的真實歷史資料（本機保留）':'後端真實歷史資料')+'｜居家設備｜'+sorted.length+' 筆'+(typeof Chart==='undefined'?'｜圖表元件未載入，仍可查看表格。':'');
+  [...rows].reverse().forEach(item=>{
+   const tr=document.createElement('tr');
+   ['time','voltage','current','power','temp','humi','relay'].forEach(key=>{
+    const td=document.createElement('td');td.style.cssText='padding:8px;border-bottom:1px solid #e2e8f0';
+    td.textContent=key==='time'?taiwanTime(item[key]):text(item[key]);
+    if(key==='relay')td.style.color=String(item[key]).toUpperCase()==='ON'?'green':'gray';
+    tr.append(td);
+   });body.append(tr);
+  });
+  if(typeof Chart!=='undefined')historyChart=new Chart(document.getElementById('historyChart'),{
+   type:'line',data:{labels:rows.map(x=>taiwanTime(x.time)),datasets:[
+    {label:'五分鐘平均功率 (W)',data:rows.map(x=>numeric(x.power)),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.1)',fill:true,yAxisID:'power',tension:.3},
+    {label:'五分鐘平均溫度 (°C)',data:rows.map(x=>numeric(x.temp)),borderColor:'#ef4444',borderDash:[5,5],yAxisID:'temp',tension:.3},
+    {label:'五分鐘平均濕度 (%)',data:rows.map(x=>numeric(x.humi)),borderColor:'#10b981',yAxisID:'humi',tension:.3}
+   ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{ticks:{maxRotation:45,maxTicksLimit:10}},power:{type:'linear',position:'left',title:{display:true,text:'功率 W'}},temp:{type:'linear',position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'溫度 °C'}},humi:{type:'linear',position:'right',grid:{drawOnChartArea:false},title:{display:true,text:'濕度 %'},min:0,max:100}}}
+  });
+  const rawCount=rawRows.length;
+  document.getElementById('historyStatus').textContent=(fromCache?'本機保留的真實量測資料':'後端與 ESP32 真實量測資料')+'｜每 5 分鐘平均一筆｜最近 '+rows.length+' / 50 筆｜原始量測 '+rawCount+' 筆'+(typeof Chart==='undefined'?'｜圖表元件未載入，仍可查看表格。':'');
  }
  window.refreshHomeHistoryFromCache=function(){
   const cached=readHistoryCache();
-  if(cached.length){render(cached,true);const status=document.getElementById('historyStatus');if(status)status.textContent='已接收 ESP32 真實量測；圖表使用本機保留的最近 '+cached.length+' 筆實測資料。';}
+  if(cached.length){render(cached,true);}
   else if(!window.plugConnected){showHistoryUnavailable('尚未接收到真實歷史資料；收到 ESP32 實測後才會顯示圖表。');}
  };
  window.loadHistoryData=async function(){
   const id=++requestId;controller?.abort();const status=document.getElementById('historyStatus');
   const cached=readHistoryCache();window.historyFallbackDemo=false;
-  if(cached.length){render(cached,true);status.textContent='顯示最後取得的真實歷史資料；正在確認是否有更新…';}
-  else{showHistoryUnavailable('尚未取得真實歷史紀錄；收到 ESP32 或後端實測資料後會顯示圖表。');status.textContent='正在讀取後端真實歷史資料…';}
-  controller=new AbortController();const currentController=controller,timer=setTimeout(()=>currentController.abort(),15000);
+  if(cached.length){render(cached,true);status.textContent='先顯示本機真實紀錄；正在更新最近 50 個五分鐘區間…';}
+  else{showHistoryUnavailable('尚未取得真實歷史紀錄；正在讀取後端資料…');status.textContent='正在讀取後端真實歷史資料…';}
+  controller=new AbortController();const currentController=controller,timer=setTimeout(()=>currentController.abort(),20000);
   try{
-   const res=await fetch('https://ascent-disperser-groove.ngrok-free.dev/api/history?limit=50',{headers:{'ngrok-skip-browser-warning':'true'},signal:currentController.signal});if(!res.ok)throw new Error('HTTP '+res.status);
-   const result=await res.json();if(!result.success||!Array.isArray(result.data))throw new Error('回傳格式不符：需要 success 與 data 陣列');if(id!==requestId)return;
+   const res=await fetch('https://ascent-disperser-groove.ngrok-free.dev/api/history?limit='+RAW_HISTORY_LIMIT,{headers:{'ngrok-skip-browser-warning':'true'},signal:currentController.signal,cache:'no-store'});
+   if(!res.ok)throw new Error('HTTP '+res.status);
+   const result=await res.json();
+   if(!result.success||!Array.isArray(result.data))throw new Error('回傳格式不符：需要 success 與 data 陣列');
+   if(id!==requestId)return;
    if(result.data.length){
     const mergedMap=new Map();
-    [...cached,...result.data].forEach(item=>{const stamp=Date.parse(item?.time);if(Number.isFinite(stamp))mergedMap.set(stamp,{...(mergedMap.get(stamp)||{}),...item});});
-    const merged=[...mergedMap.values()].sort((a,b)=>Date.parse(a.time)-Date.parse(b.time)).slice(-50);
-    saveHistoryCache(merged);render(merged,false);status.textContent='後端與 ESP32 真實歷史資料已更新｜'+merged.length+' 筆';
+    [...cached,...result.data].forEach(item=>{const row=normalizeRawRow(item);if(!row)return;const stamp=timeMs(row.time);mergedMap.set(stamp,{...(mergedMap.get(stamp)||{}),...row});});
+    const merged=[...mergedMap.values()].sort((a,b)=>timeMs(a.time)-timeMs(b.time)).slice(-RAW_HISTORY_LIMIT);
+    saveHistoryCache(merged);render(merged,false);
+    status.textContent='已更新五分鐘區間｜'+aggregateFiveMinute(merged).length+' 個區間｜原始量測 '+merged.length+' 筆';
    }
-   else if(cached.length){render(cached,true);status.textContent='後端目前沒有新紀錄；保留最後取得的真實歷史資料。';}
+   else if(cached.length){render(cached,true);status.textContent='後端目前沒有新紀錄；保留本機真實量測資料。';}
    else{showHistoryUnavailable('後端目前沒有歷史紀錄；圖表區保留顯示，等待真實資料。');status.textContent='後端目前沒有真實歷史紀錄。';}
-  }catch(error){if(id!==requestId)return;const latestCache=readHistoryCache();if(latestCache.length){render(latestCache,true);status.textContent='目前無法連線；保留最後取得的真實歷史資料。';}else{showHistoryUnavailable('尚無真實歷史資料；圖表區已保留，收到實測資料後會自動繪圖。');status.textContent='後端未連線，且沒有先前實測紀錄。';}}
-  finally{clearTimeout(timer);}
+  }catch(error){
+   if(id!==requestId)return;
+   const latestCache=readHistoryCache();
+   if(latestCache.length){render(latestCache,true);status.textContent='目前無法連線後端；保留本機真實量測資料。';}
+   else{showHistoryUnavailable('尚無真實歷史資料；取得實測資料後會每 5 分鐘彙整一筆。');status.textContent='後端未連線，且沒有先前實測紀錄。';}
+  }finally{clearTimeout(timer);}
  };
  document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('historyRefresh').onclick=loadHistoryData;
